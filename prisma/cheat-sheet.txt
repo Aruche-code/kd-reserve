@@ -1,0 +1,126 @@
+このコードは、Prismaを使用してMongoDBデータベースのためのスキーマ定義をしています。
+PrismaはNode.jsとTypeScriptのためのデータベースORM（Object-Relational Mapping）ツールで、
+データベースとアプリケーションの間のデータのやり取りを容易にします。
+ここでのスキーマは、ユーザー、アカウント、会話、メッセージというデータ構造を定義しています。
+
+
+データベースとの接続:
+datasource db セクションでは、MongoDBへの接続設定が定義されています。
+url パラメーターは環境変数 DATABASE_URL を使用してデータベースに接続します。
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+--------------------------------------------------------------------------------------------------|
+
+User（ユーザー）:
+ユーザー情報を保持（例: 名前、メール、パスワードなど）。
+conversationIds と seenMessageIds は、ユーザーが関与する会話や既読メッセージのIDを格納。
+conversations と messages は関連フィールドで、具体的な会話やメッセージのデータを関連付け。
+
+Account（アカウント）:
+ユーザーのアカウント情報を保持します（例: アクセストークン、プロバイダー情報など）。
+これは、ソーシャルログインやAPI認証に使用。
+
+Conversation（会話）:
+会話やチャットグループの情報を保持します。
+messagesIds で会話に含まれるメッセージのIDを、userIds で会話に参加しているユーザーのIDを格納。
+
+Message（メッセージ）:
+個々のメッセージの内容を保持。
+送信者や所属する会話、既読ユーザーの情報を関連付け。
+
+
+-----------------------------------------------------------------------------------------------------|
+
+
+データベースフィールドの注釈
+@id: プライマリキーを示します。
+@default(auto()): 自動生成されるデフォルト値を設定します。
+@map("_id"): データベース内の実際のフィールド名を指定します（MongoDBでは通常 _id）。
+@db.ObjectId: MongoDBのObjectIdタイプを指定します。
+@updatedAt: レコードが更新されるたびに自動で更新されるタイムスタンプです。
+
+リレーション
+@relation アノテーションを使用して、異なるモデル間の関係を定義します。
+例えば、User と Message の間には、「ユーザーが見たメッセージ」という関係があります。
+
+その他
+@@unique: 複数のフィールドを組み合わせたユニーク制約を定義します。
+
+------------------------------------------------------------------------------------------------------|
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  conversationIds String[]       @db.ObjectId
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  seenMessageIds String[]  @db.ObjectId
+  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
+
+  accounts Account[]
+  messages Message[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Conversation {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+  isGroup       Boolean?
+
+  messagesIds String[]  @db.ObjectId
+  messages    Message[]
+
+  userIds String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIds], references: [id])
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String?
+  image     String?
+  createdAt DateTime @default(now())
+
+  seenIds String[] @db.ObjectId
+  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
+
+  conversationId String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String @db.ObjectId
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
