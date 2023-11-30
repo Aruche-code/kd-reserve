@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// DB接続関数
 export async function main() {
   try {
     await prisma.$connect();
@@ -11,11 +12,12 @@ export async function main() {
   }
 }
 
+// test_dbからpostコレクション内の全ドキュメントを取得するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-  console.log("GET");
+  console.log("GETS");
   try {
     await main();
-    const posts = await prisma.post.findMany({});
+    const posts = await prisma.post.findMany();
     return NextResponse.json({ message: "Success", posts }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
@@ -24,6 +26,7 @@ export const GET = async (req: Request, res: NextResponse) => {
   }
 };
 
+// postコレクションに新たなドキュメントを追加
 export const POST = async (req: Request, res: NextResponse) => {
   console.log("POST");
 
@@ -32,21 +35,6 @@ export const POST = async (req: Request, res: NextResponse) => {
     await main();
     const post = await prisma.post.create({ data: { title, description } });
     return NextResponse.json({ message: "Success", post }, { status: 201 });
-  } catch (err) {
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
-  }
-};
-
-export const DELETE = async (req: Request, res: NextResponse) => {
-  console.log("DELETE");
-
-  try {
-    const { id } = await req.json();
-    await main();
-    const post = await prisma.post.delete({ where: { id } });
-    return NextResponse.json({ message: "Success", post }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
