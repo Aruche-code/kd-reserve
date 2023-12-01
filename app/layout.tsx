@@ -1,3 +1,4 @@
+import Sidebar from "./components/sidebar";
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
@@ -16,7 +17,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <div className="flex flex-col h-screen">
+          {/* <Navigation /> */}
+          <div className="flex flex-1 overflow-hidden">
+            {/* <Sidebar /> */}
+            {/* <div className="flex flex-col flex-1 py-2.5 pr-4 overflow-auto"> */}
+            <main className="flex-1 container max-w-screen-xl mx-auto py-2 pr-4 ">
+              {children}
+            </main>
+            {/* </div> */}
+          </div>
+        </div>
+      </body>
     </html>
   );
 }

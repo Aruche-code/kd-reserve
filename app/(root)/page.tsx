@@ -1,3 +1,3 @@
-export default function Home() {
-  return <div>ハロー Kd-Reserve</div>;
+export default function Login() {
+  return <div>NextAuth認証ログイン画面</div>;
 }
