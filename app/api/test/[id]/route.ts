@@ -17,7 +17,7 @@ export const GET = async (req: Request, res: NextResponse) => {
   console.log("GET");
 
   try {
-    const id = req.url.split("/test/")[1]; //http://localhost:3000/api/test/65687f2641b2be27d7265817
+    const id = req.url.split("/test/")[1]; //http://localhost:3000/api/test/id
     await main();
     const post = await prisma.post.findMany({
       where: { id },
@@ -35,7 +35,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
   console.log("PUT");
 
   try {
-    const id = req.url.split("/test/")[1]; //http://localhost:3000/api/test/65687f2641b2be27d7265817
+    const id = req.url.split("/test/")[1]; //http://localhost:3000/api/test/id
     const { title, description } = await req.json();
     await main();
     const post = await prisma.post.update({
