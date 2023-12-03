@@ -7,8 +7,22 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "kd-main-cl": "#cce1ee",
+        "kd-sub-cl": "#1a4f77",
+        "kd-syb2-cl": "#1b4c6a",
+        "kd-button-cl": "#1facf3",
+        "kd-black-cl": "#052238",
+        "kd-white-cl": "#e8f7fd",
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    // formデザインの一貫性を持たせるためのカスタムスタイル
+    require("@tailwindcss/forms")({
+      strategy: "class",
+    }),
+  ],
 };
 export default config;
