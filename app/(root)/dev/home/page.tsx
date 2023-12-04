@@ -6,6 +6,12 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 const Home = () => {
     const [date, setDate] = useState(new Date());
+    interface SelectedDate {
+        month: number;
+        date: number; 
+    }
+    
+    const [selectedDate, setSelectedDate] = useState<SelectedDate | null>(null);
 
     const daysInMonth = () => {
         const year = date.getFullYear();
@@ -23,6 +29,11 @@ const Home = () => {
     const nextMonth = () => {
         setDate(new Date(date.getFullYear(), date.getMonth() + 1));
     };
+
+    //右画面に詳細表示
+    const detail = () => {
+        setSelectedDate(day);
+    }
 
     return (
         <div className="flex h-full w-full">
@@ -43,13 +54,21 @@ const Home = () => {
                 <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
                 ))}
                 {daysInMonth().map(day => (
-                <div key={day} className="text-center border-2 h-20 hover:border-cyan-400">
+                <div key={day} className="text-center border-2 h-20 hover:border-cyan-400" onClick={() => detail({month: date.getMonth(), date: day})}>
                     {day}
                 </div>
                 ))}
             </div>
         </div>
-        <div className="flex-auto h-full bg-red-100"></div>
+        <div className="flex-auto h-full bg-red-100">
+        <h2 className="text-5xl font-bold">
+          {
+            selectedDate 
+              ? `${selectedDate.month + 1}/${selectedDate.date}`  
+              : date.getMonth() + 1
+          }月  
+        </h2>
+      </div>
     </div>
     );
 }
