@@ -6,6 +6,8 @@ import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGoogle, BsGithub } from "react-icons/bs";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -38,17 +40,43 @@ const AuthForm = () => {
 
     if (variant === "REGISTER") {
       // Axios Register
-      axios.post("/api/register", data);
+      axios
+        .post("/api/register", data)
+        .catch(() => toast.error("登録に失敗、再入力してください。"))
+        .finally(() => setIsLoading(false));
     }
 
     if (variant === "LOGIN") {
       // NextAuth SignIn
+      signIn("credentials", {
+        ...data,
+        redirect: false,
+      })
+        .then((callback) => {
+          if (callback?.error) {
+            toast.error("ログインできませんでした。");
+          }
+          if (callback?.ok && !callback?.error) {
+            toast.success("ログインしました。");
+          }
+        })
+        .finally(() => setIsLoading(false));
     }
   };
 
   const socialAction = (action: string) => {
     setIsLoading(true);
     // NextAuth Social Sign In
+    signIn(action, { redirect: false })
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error("ログインできませんでした。");
+        }
+        if (callback?.ok && !callback?.error) {
+          toast.success("ログインしました。");
+        }
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -98,7 +126,7 @@ const AuthForm = () => {
           />
           <div>
             <Button disabled={isLoading} fullWidth type="submit">
-              {variant === "LOGIN" ? "サインイン" : "Register"}
+              {variant === "LOGIN" ? "サインイン" : "新規登録"}
             </Button>
           </div>
         </form>
@@ -134,7 +162,7 @@ const AuthForm = () => {
         <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
           <div>
             {variant === "LOGIN"
-              ? "KD-reserveを始めて利用する"
+              ? "KD-reserveを初めて利用する"
               : "すでにアカウントをお持ちですか？"}
           </div>
           <div onClick={toggleVariant} className="underline cursor-pointer">
