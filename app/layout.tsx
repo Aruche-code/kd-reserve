@@ -2,6 +2,8 @@ import Sidebar from "./components/sidebar";
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
+import TosterContext from "./context/TosterContext";
+import AuthContext from "./context/AuthContext";
 
 export const metadata: Metadata = {
   title: "KD Reserve App",
@@ -24,7 +26,10 @@ export default function RootLayout({
         {/* <Sidebar /> */}
         {/* <div className="flex flex-col flex-1 py-2.5 pr-4 overflow-auto"> */}
         {/* <main className="flex-1 container max-w-screen-xl mx-auto py-4 px-4 "> */}
-        {children}
+        <AuthContext>
+          <TosterContext />
+          {children}
+        </AuthContext>
         {/* </main> */}
         {/* </div> */}
         {/* </div> */}
