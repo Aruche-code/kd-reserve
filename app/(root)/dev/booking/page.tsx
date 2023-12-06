@@ -4,7 +4,7 @@ const Booking= () => {
         <div className='w-full h-screen bg-white'>
             <div className="mb-4">
                 <div className="bg-white p-4">
-					{/* 内容 */}
+					{/* 内容　 */}
                     <h1 className="mt-1 mb-3">1. 予約内容を選択してください</h1>
                         <div className="flex flex-wrap -mx-2">
                             <ul className="grid w-full gap-6 md:grid-cols-6">
