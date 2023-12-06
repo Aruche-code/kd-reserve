@@ -49,3 +49,22 @@ export const PUT = async (req: Request, res: NextResponse) => {
     await prisma.$disconnect();
   }
 };
+
+// postコレクションから_idオブジェクト指定しドキュメントを削除するAPI
+export const DELETE = async (req: Request, res: NextResponse) => {
+  console.log("DELETE");
+
+  try {
+    const id = req.url.split("/test/")[1]; //http://localhost:3000/api/test/id
+    const { title, description } = await req.json();
+    await main();
+    const post = await prisma.post.delete({
+      where: { id },
+    });
+    return NextResponse.json({ message: "Success", post }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};

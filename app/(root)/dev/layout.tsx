@@ -1,7 +1,7 @@
 
-import Sidebar from "../components/sidebar2";
-import Appbar from "../components/appbar";
-import "../globals.css";
+import Sidebar from "../../components/sidebar2";
+import Appbar from "../../components/appbar";
+import "../../globals.css";
 
 export default function Layout({
   children,

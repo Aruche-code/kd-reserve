@@ -9,56 +9,56 @@ export const SidebarData = [
     {
         title: "初来ページ",
         icon: <HomeIcon />,
-        link: "/",
+        link: "/dev/",
     },
     {
         title: "プロフィール編集",
         icon: <PersonAddIcon />,
-        link: "/profile",
+        link: "/dev/profile",
     },
     {
         title: "プロフィール画面",
         icon: <PersonAddIcon />,
-        link: "/profile1",
+        link: "/dev/profile1",
     },
     {
         title: "ホーム画面",
         icon: <EditCalendarIcon />,
-        link: "/home",
+        link: "/dev/home",
     },
     {
         title: "予約画面",
         icon: <EditCalendarIcon />,
-        link: "/booking",
+        link: "/dev/booking",
     },
     {
         title: "新規登録",
         icon: <EditCalendarIcon />,
-        link: "/signup",
+        link: "/dev/signup",
     },
     {
         title: "ログイン",
         icon: <EditCalendarIcon />,
-        link: "/login",
+        link: "/dev/login",
     },
     {
         title: "パスワード再設定画面",
         icon: <EditCalendarIcon />,
-        link: "/password",
+        link: "/dev/password",
     },
     {
         title: "学生カルテ",
         icon: <EditCalendarIcon />,
-        link: "/record",
+        link: "/dev/record",
     },
     {
         title: "設定",
         icon: <SettingsIcon />,
-        link: "/",
+        link: "/dev/",
     },
     {
         title: "動作確認用",
         icon: <CreateIcon />,
-        link: "/user",
+        link: "/dev/user",
     },
 ];
