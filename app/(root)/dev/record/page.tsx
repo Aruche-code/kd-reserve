@@ -8,23 +8,41 @@ const data = [
     {
         question: "2023/10/3　　履歴書の作成",
         answer:
-            <textarea
-                className="w-full border-2 border-gray-300 rounded-lg p-1 px-5"
-            />
+            <div>
+                <textarea
+                    className="w-full border-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
+                    style={{ resize: "none" }}
+                />
+                <div className="flex justify-end ">
+                    <button type="button" className="rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">保存</button>
+                </div>
+            </div>
     },
     {
         question: "2023/9/19　　履歴書の作成",
         answer:
-            <textarea
-                className="w-full border-2 border-gray-300 rounded-lg p-1 px-5"
-            />
+            <div>
+                <textarea
+                    className="w-full border-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
+                    style={{ resize: "none" }}
+                />
+                <div className="flex justify-end ">
+                    <button type="button" className="rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">保存</button>
+                </div>
+            </div>
     },
     {
         question: "2023/9/14　　面接練習",
         answer:
-            <textarea
-                className="w-full border-2 border-gray-300 rounded-lg p-1 px-5"
-            />
+            <div>
+                <textarea
+                    className="w-full border-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
+                    style={{ resize: "none" }}
+                />
+                <div className="flex justify-end ">
+                    <button type="button" className="rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">保存</button>
+                </div>
+            </div>
     }
 ]
 
@@ -71,7 +89,7 @@ const Record = () => {
                     </div>
                     <div className="px-5 mb-1 flex flex-row">
                         <div className="w-1/3 text-right">卒業予定 /</div>
-                        <div className="w-2/3 px-4">2023年3月</div>
+                        <div className="w-2/3 px-4">2025年3月</div>
                     </div>
                     <div className="px-5 mb-1 flex flex-row">
                         <div className="w-1/3 text-right">電話番号 /</div>

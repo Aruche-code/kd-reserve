@@ -100,12 +100,14 @@ const Profile = () => {
             onChange={(e) => handleChange("qualifications", e.target.value)}
           />
         </div>
-        <button
-          className="flex items-center px-20 py-2 text-center text-white bg-blue-600 rounded-xl hover:bg-blue-700 mt-7 mb-4"
-          onClick={handleConfirm}
-        >
-          確認する
-        </button>
+        <Link href="../dev/profile1">
+          <button
+            className="flex items-center px-20 py-2 text-center text-white bg-blue-600 rounded-xl hover:bg-blue-700 mt-7 mb-4"
+            onClick={handleConfirm}
+          >
+            確認する
+          </button>
+        </Link>
       </div>
     </main>
   );
