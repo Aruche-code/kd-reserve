@@ -34,7 +34,7 @@ const Auth = () => {
             text-gray-900
           "
         >
-          アカウントにサインイン
+          KD-Reserve にサインイン
         </h2>
       </div>
       <AuthForm />

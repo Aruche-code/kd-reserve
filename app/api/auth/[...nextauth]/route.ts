@@ -1,4 +1,6 @@
 // Prisma, NextAuth, そして各種認証プロバイダとbcryptをインポート
+// AuthOptionsでPrismaAdapterを使う設定になっているので、プロバイダーごとに返したユーザーオブジェクトが、
+// usersテーブルに保存されます。
 
 import bcrypt from "bcrypt"; // bcryptライブラリのインポート
 import NextAuth, { AuthOptions } from "next-auth"; // NextAuthとその型定義のインポート
@@ -25,6 +27,18 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string, // 環境変数からGoogleのクライアントIDを取得
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, // 環境変数からGoogleのクライアントシークレットを取得
+      profile(profile) {
+        // メールアドレスが指定されたドメイン以外であるかチェック
+        if (!profile.email.endsWith("@st.kobedenshi.ac.jp")) {
+          throw new Error("Unauthorized email domain");
+        }
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      },
     }),
     // カスタム資格情報プロバイダの設定
     CredentialsProvider({
