@@ -4,13 +4,13 @@ const Booking= () => {
         <div className='w-full h-screen bg-white'>
             <div className="mb-4">
                 <div className="bg-white p-4">
-					{/* 内容 */}
+					{/* 内容　 */}
                     <h1 className="mt-1 mb-3">1. 予約内容を選択してください</h1>
                         <div className="flex flex-wrap -mx-2">
                             <ul className="grid w-full gap-6 md:grid-cols-6">
                                 <li>
                                     <input type="radio" id="hosting-1" name="hosting" value="hosting-1" className="hidden peer" required />
-                                        <label htmlFor="hosting-1" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                        <label htmlFor="hosting-1" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">                           
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">面談</div>
                                             </div>
@@ -18,7 +18,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="hosting-2" name="hosting" value="hosting-2" className="hidden peer" />
-                                        <label htmlFor="hosting-2" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="hosting-2" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">履歴書の作成・添削</div>
                                             </div>                                                    
@@ -26,7 +26,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="hosting-3" name="hosting" value="hosting-3" className="hidden peer" />
-                                        <label htmlFor="hosting-3" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="hosting-3" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">エントリーシートの作成</div>
                                             </div>                                            
@@ -34,7 +34,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="hosting-4" name="hosting" value="hosting-4" className="hidden peer" required />
-                                        <label htmlFor="hosting-4" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                        <label htmlFor="hosting-4" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">                           
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">企業探し</div>
                                             </div>
@@ -42,7 +42,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="hosting-5" name="hosting" value="hosting-5" className="hidden peer" required />
-                                            <label htmlFor="hosting-5" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                            <label htmlFor="hosting-5" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">                           
                                                 <div className="block">
                                                     <div className="w-full text-lg font-semibold">企業の相談</div>
                                                 </div>
@@ -50,7 +50,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="hosting-6" name="hosting" value="hosting-6" className="hidden peer" required />
-                                        <label htmlFor="hosting-6" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                        <label htmlFor="hosting-6" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">                           
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">その他</div>
                                             </div>
@@ -68,7 +68,7 @@ const Booking= () => {
                             <ul className="grid w-full gap-6 md:grid-cols-6">
                                 <li>
                                     <input type="radio" id="t-1" name="teacher" value="t-1" className="hidden peer" required />
-                                        <label htmlFor="t-1" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="t-1" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">
                                                     <div className="flex flex-row justify-between items-center">
@@ -109,7 +109,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="t-2" name="teacher" value="t-2" className="hidden peer"  />
-                                        <label htmlFor="t-2" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="t-2" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">
                                                     <div className="flex flex-row justify-between items-center">
@@ -150,7 +150,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="t-3" name="teacher" value="t-3" className="hidden peer"  />
-                                        <label htmlFor="t-3" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="t-3" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hecked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">
                                                     <div className="flex flex-row justify-between items-center">
@@ -191,7 +191,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="t-4" name="teacher" value="t-4" className="hidden peer"  />
-                                        <label htmlFor="t-4" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="t-4" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">
                                                     <div className="flex flex-row justify-between items-center">
@@ -232,7 +232,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="t-5" name="teacher" value="t-5" className="hidden peer" />
-                                        <label htmlFor="t-5" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="t-5" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">
                                                     <div className="flex flex-row justify-between items-center">
@@ -273,7 +273,7 @@ const Booking= () => {
                                 </li>
                                 <li>
                                     <input type="radio" id="t-6" name="teacher" value="t-6" className="hidden peer"  />
-                                        <label htmlFor="t-6" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <label htmlFor="t-6" className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
                                             <div className="block">
                                                 <div className="w-full text-lg font-semibold">
                                                     <div className="flex flex-row justify-between items-center">
@@ -328,7 +328,7 @@ const Booking= () => {
                             <div className="flex flex-row -mx-2">
                                     <li className="list-none mr-2">
                                         <input type="radio" id="time-1" name="time" value="time-1" className="hidden peer" required />
-                                            <label htmlFor="time-1" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                            <label htmlFor="time-1" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">                           
                                                 <div className="block">
                                                     <div className="w-full text-lg font-semibold">12:00</div>
                                                 </div>
@@ -336,7 +336,7 @@ const Booking= () => {
                                     </li>
                                     <li className="list-none mr-2">
                                         <input type="radio" id="time-2" name="time" value="time-2" className="hidden peer"  />
-                                            <label htmlFor="time-2" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                            <label htmlFor="time-2" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">                           
                                                 <div className="block">
                                                     <div className="w-full text-lg font-semibold">13:00</div>
                                                 </div>
@@ -344,7 +344,7 @@ const Booking= () => {
                                     </li>
                                     <li className="list-none mr-2">
                                         <input type="radio" id="time-3" name="time" value="time-3" className="hidden peer" />
-                                            <label htmlFor="time-3" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                            <label htmlFor="time-3" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">                           
                                                 <div className="block">
                                                     <div className="w-full text-lg font-semibold">16:00</div>
                                                 </div>
