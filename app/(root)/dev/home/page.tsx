@@ -8,6 +8,30 @@ const Home = () => {
     const [date, setDate] = useState(new Date());
     const [showModal, setShowModal] = useState(false);
 
+    const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
+
+    // バックグラウンドカラーを切り替える関数
+    const toggleBgColor = (time) => {
+        setSelectedTimes((prev) => {
+        if (prev.includes(time)) {
+            // 時間がすでに選択されている場合は削除
+            return prev.filter((selectedTime) => selectedTime !== time);
+        } else {
+            // 時間が選択されていない場合は追加
+            return [...prev, time];
+        }
+        });
+    };
+
+    // 表示する時間の選択肢
+    const timeOptions = [
+        "午前", "午後", "全日",
+        "09:00", "09:30", "10:00", "10:30",
+        "11:00", "11:30", "12:00", "12:30",
+        "13:00", "13:30", "14:00", "14:30",
+        "15:00", "15:30", "16:00",
+    ];
+
     const daysInMonth = () => {
         const year = date.getFullYear();
         const month = date.getMonth();
@@ -57,32 +81,10 @@ const Home = () => {
             onClick={() => setShowModal(false)}
         ></div>
 
-        <div className="fixed inset-44 p-10 bg-white shadow-xl rounded-xl">
-            <div className="flex justify-between items-start">
-                <span className="font-bold">NG日程追加</span>
-                <div className="flex space-x-4">
-                    {/* 全日程 */}
-                    <div className="flex-shrink-0 p-4 bg-white shadow-md rounded-md">
-                        <span className="font-bold">全日程</span>
-                        {/* ここに全日程のコンテンツを追加 */}
-                    </div>
-
-                    {/* 午前 */}
-                    <div className="flex-shrink-0 p-4 bg-white shadow-md rounded-md">
-                        <span className="font-bold">午前</span>
-                        {/* ここに午前のコンテンツを追加 */}
-                    </div>
-
-                    {/* 午後 */}
-                    <div className="flex-shrink-0 p-4 bg-white shadow-md rounded-md">
-                        <span className="font-bold">午後</span>
-                        {/* ここに午後のコンテンツを追加 */}
-                    </div>
-                </div>
-            </div>
-            <button onClick={() => setShowModal(false)}>
+        <div className="fixed p-10 w-auto h-auto bg-white shadow-xl rounded-xl ">
+            <button onClick={() => setShowModal(false)} className="absolute top-3 right-3">
                 <svg
-                className="w-6 h-6"
+                className="w-6 h-6 text-4xl"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -96,11 +98,27 @@ const Home = () => {
                 />
                 </svg>
             </button>
+            <div className="flex justify-between items-start">
+                <span className="font-bold">NG日程追加</span>
+            </div>
+            <div className="flex flex-wrap justify-center max-w-4xl">
+            {timeOptions.map((time) => (
+                <div
+                    key={time}
+                    className={`border border-black hover:border-red-400 rounded-lg flex items-center justify-center w-48 h-16 m-3 font-bold ${
+                    selectedTimes.includes(time) ? "bg-red-400" : "bg-white"
+                    }`}
+                    onClick={() => toggleBgColor(time)}
+                >
+                    <span>{time}</span>
+                </div>
+            ))}
+                
+            </div>
         </div>
         </>
     ) : null}
-        </div>
-    );
+        </div>    );
 }
 
 export default Home
