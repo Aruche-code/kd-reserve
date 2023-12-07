@@ -27,6 +27,11 @@ export const SidebarData = [
         link: "/dev/home",
     },
     {
+        title: "生徒用ホーム画面",
+        icon: <EditCalendarIcon />,
+        link: "/dev/homest",
+    },
+    {
         title: "予約画面",
         icon: <EditCalendarIcon />,
         link: "/dev/booking",
@@ -50,6 +55,11 @@ export const SidebarData = [
         title: "学生カルテ",
         icon: <EditCalendarIcon />,
         link: "/dev/record",
+    },
+    {
+        title: "学生カルテ一覧",
+        icon: <EditCalendarIcon />,
+        link: "/dev/students",
     },
     {
         title: "設定",
