@@ -47,6 +47,7 @@ const data = [
 ]
 
 const Record = () => {
+
     const [selected, setSelected] = useState(0);
 
     const toggle = (i) => {
@@ -62,10 +63,10 @@ const Record = () => {
         <div className="bg-white h-screen w-full">
             <div className="bg-white flex-col text-center mt-10 mb-10">
                 <div className="text-gray-900">
-                    コウベ タロウ
+                    コウベタロウ
                 </div>
                 <div className="text-gray-900 text-3xl">
-                    神戸 太郎
+                    神戸太郎
                 </div>
                 <div className="text-gray-900 mt-2 flex flex-row">
                     <div className="w-full ">学籍番号 ： 1111111</div>
