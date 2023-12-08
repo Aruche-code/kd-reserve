@@ -37,21 +37,6 @@ export const SidebarData = [
         link: "/dev/booking",
     },
     {
-        title: "新規登録",
-        icon: <EditCalendarIcon />,
-        link: "/dev/signup",
-    },
-    {
-        title: "ログイン",
-        icon: <EditCalendarIcon />,
-        link: "/dev/login",
-    },
-    {
-        title: "パスワード再設定画面",
-        icon: <EditCalendarIcon />,
-        link: "/dev/password",
-    },
-    {
         title: "学生カルテ",
         icon: <EditCalendarIcon />,
         link: "/dev/record",
