@@ -7,7 +7,7 @@ import { SidebarData } from "./SidebarData";
 // - none:
 const Sidebar2 = () => {
   return (
-    <aside className="flex-shrink-0 w-48 bg-gray-800 text-white">
+    <aside className="flex-shrink-0 w-48 bg-blue-600 text-white">
       <nav className="p-4">
         <ul>
           {SidebarData.map((item, key) => (
