@@ -189,16 +189,25 @@ import { useRouter } from "next/navigation";
 // export default AuthForm;
 
 const AuthForm = () => {
-  const session = useSession();
+  // const session = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (session?.status === "authenticated") {
-      router.push("/users");
-      console.log("Authenticated");
+    if (status === "authenticated") {
+      if (session?.user?.role === "student") {
+        router.push("/student");
+        console.log("Authenticated as student");
+      } else if (session?.user?.role === "staff") {
+        router.push("/staff");
+        console.log("Authenticated as staff");
+      } else {
+        router.push("/users");
+        console.log("Authenticated");
+      }
     }
-  }, [session?.status, router]);
+  }, [status, session?.user?.role, router]);
 
   const {
     register,
@@ -224,7 +233,7 @@ const AuthForm = () => {
         }
         if (callback?.ok && !callback?.error) {
           toast.success("ログインしました。");
-          router.push("/users");
+          router.push("/staff");
         }
       })
       .finally(() => setIsLoading(false));
@@ -239,7 +248,7 @@ const AuthForm = () => {
         }
         if (callback?.ok && !callback?.error) {
           toast.success("ログインしました。");
-          router.push("/users");
+          router.push("/student");
         }
       })
       .finally(() => setIsLoading(false));
