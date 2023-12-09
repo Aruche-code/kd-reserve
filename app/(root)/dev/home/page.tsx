@@ -23,14 +23,61 @@ const Home = () => {
         });
     };
 
+    const toggleALL = (value) => {
+        switch (value) {
+            case "午前":
+                const timeAM = [
+                    "09:00", "09:30", "10:00", "10:30",
+                    "11:00", "11:30", "12:00", 
+                ];
+
+                {timeAM.map((time) => (
+                    toggleBgColor(time)
+                ))};
+
+            break;
+        
+            case "午後":
+                const timePM = [
+                    "12:30","13:00", "13:30", "14:00",
+                    "14:30","15:00", "15:30", "16:00",
+                ]
+                
+                {timePM.map((time) => (
+                    toggleBgColor(time)
+                ))};
+
+            break;
+        
+            default:
+                const timeALL = [
+                    "09:00", "09:30", "10:00", "10:30",
+                    "11:00", "11:30", "12:00", "12:30",
+                    "13:00", "13:30", "14:00", "14:30",
+                    "15:00", "15:30", "16:00",
+                ];
+                {timeALL.map((time) => (
+                    toggleBgColor(time)
+                ))};
+
+        }
+        toggleBgColor(value)
+        
+    }
+
+    //全体選択
+    const timeAll = [
+        "午前", "午後", "全日",
+    ]
+
     // 表示する時間の選択肢
     const timeOptions = [
-        "午前", "午後", "全日",
         "09:00", "09:30", "10:00", "10:30",
         "11:00", "11:30", "12:00", "12:30",
         "13:00", "13:30", "14:00", "14:30",
         "15:00", "15:30", "16:00",
     ];
+
 
     const daysInMonth = () => {
         const year = date.getFullYear();
@@ -101,19 +148,33 @@ const Home = () => {
             <div className="flex justify-between items-start">
                 <span className="font-bold">NG日程追加</span>
             </div>
+
+            <div className="flex flex-wrap justify-center max-w-4xl my-9">
+                {timeAll.map((time) => (
+                    <div
+                        key={time}
+                        className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-48 h-16 m-3 font-bold ${
+                        selectedTimes.includes(time) ? "bg-gray-400" : "bg-white"
+                        }`}
+                        onClick={() => toggleALL(time)}
+                    >
+                        <span>{time}</span>
+                    </div>
+                ))}
+            </div>
+
             <div className="flex flex-wrap justify-center max-w-4xl">
-            {timeOptions.map((time) => (
-                <div
-                    key={time}
-                    className={`border border-black hover:border-red-400 rounded-lg flex items-center justify-center w-48 h-16 m-3 font-bold ${
-                    selectedTimes.includes(time) ? "bg-red-400" : "bg-white"
-                    }`}
-                    onClick={() => toggleBgColor(time)}
-                >
-                    <span>{time}</span>
-                </div>
-            ))}
-                
+                {timeOptions.map((time) => (
+                    <div
+                        key={time}
+                        className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-48 h-16 m-3 font-bold ${
+                        selectedTimes.includes(time) ? "bg-gray-400" : "bg-white"
+                        }`}
+                        onClick={() => toggleBgColor(time)}
+                    >
+                        <span>{time}</span>
+                    </div>
+                ))}
             </div>
         </div>
         </>
