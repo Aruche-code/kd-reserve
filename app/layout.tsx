@@ -1,4 +1,3 @@
-import Sidebar from "./components/sidebar";
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";

@@ -1,4 +1,5 @@
 "use client";
+//認証確認用です
 import { signOut } from "next-auth/react";
 
 const Users = () => {

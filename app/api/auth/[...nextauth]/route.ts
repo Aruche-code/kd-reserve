@@ -29,12 +29,12 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, // 環境変数からGoogleのクライアントシークレットを取得
 
       profile(profile) {
-        // const emailRegex = /^kd.*@st\.kobedenshi\.ac\.jp$/;
+        const emailRegex = /^kd.*@st\.kobedenshi\.ac\.jp$/;
 
-        // // メールアドレスが指定された形式に一致するかどうかをチェック
-        // if (!emailRegex.test(profile.email)) {
-        //   throw new Error("Unauthorized email address format");
-        // }
+        // メールアドレスが指定された形式に一致するかどうかをチェック
+        if (!emailRegex.test(profile.email)) {
+          throw new Error("Unauthorized email address format");
+        }
         return {
           id: profile.sub,
           name: profile.name,

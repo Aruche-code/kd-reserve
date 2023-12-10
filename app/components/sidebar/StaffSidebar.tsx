@@ -1,4 +1,5 @@
 "use client";
+// 職員用サイドバーです
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,17 +9,22 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname(); //  アクティブなメニューを追跡するための状態
+  const pathname = usePathname(); // アクティブなメニューを追跡するための状態
 
   const Menus = [
-    { title: "home", icon: <HomeIcon />, link: "/", gap: false },
+    { title: "home", icon: <HomeIcon />, link: "/staff", gap: false },
     {
-      title: "about",
-      icon: <InsertPhotoIcon />,
-      link: "/staff",
+      title: "calender",
+      icon: <InsertPhotoIcon />, //適切なアイコンに変えてください
+      link: "/staff/calender",
       gap: false,
     },
-    { title: "about", icon: <SettingsIcon />, link: "/student", gap: true },
+    {
+      title: "none",
+      icon: <SettingsIcon />, //適切なアイコンに変えてください
+      link: "/staff/none",
+      gap: true,
+    },
   ];
 
   return (
@@ -36,12 +42,12 @@ const Sidebar = () => {
               <Link href={menu.link} key={index}>
                 <li
                   className={`flex rounded-md p-2 cursor-pointer hover:bg-cyan-100 text-sky-500 text-sm items-center gap-x-4
-                ${menu.gap ? "mt-9" : "mt-2"} 
-                ${pathname === menu.link && "bg-cyan-100"}`}
+                  ${menu.gap ? "mt-9" : "mt-2"} 
+                  ${pathname === menu.link && "bg-cyan-100"}`}
                 >
                   {menu.icon}
                   <span
-                    className={`${!open && "hidden"} origin-left duration-200 `}
+                    className={`${!open && "hidden"} origin-left duration-200`}
                   >
                     {menu.title}
                   </span>
