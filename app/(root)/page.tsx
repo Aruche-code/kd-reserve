@@ -1,3 +1,4 @@
+// "/"ページ  サインイン＆サインアップを求めます
 import Image from "next/image";
 import AuthForm from "./components/AuthForm";
 
