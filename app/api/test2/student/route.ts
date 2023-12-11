@@ -17,10 +17,10 @@ export const GET = async (req: Request, res: NextResponse) => {
     console.log("GET");
 
     try {
-        const email = "hogehoge@gmail.com"
+        const email = "sample2@gmail.com"
         await main();
-        const post = await prisma.testUser.findUnique({
-            select: { name: true, hashedPassword: true },
+        const post = await prisma.user.findMany({
+            include: { studentPlofile: true },
             where: { email },
         });
         return NextResponse.json({ message: "Success", post }, { status: 200 });
@@ -36,9 +36,23 @@ export const POST = async (req: Request, res: NextResponse) => {
     console.log("POST");
 
     try {
-        const { name, email } = await req.json();
+        const { name, email, hashedPassword, department, tel, graduationYear, qualification } = await req.json();
         await main();
-        const post = await prisma.testUser.create({ data: { name, email } });
+        const post = await prisma.user.create({
+            data: {
+                name,
+                email,
+                hashedPassword,
+                studentPlofile: {
+                    create: {
+                        department,
+                        tel,
+                        graduationYear,
+                        qualification,
+                    },
+                },
+            },
+        });
         return NextResponse.json({ message: "Success", post }, { status: 201 });
     } catch (err) {
         return NextResponse.json({ message: "Error", err }, { status: 500 });
@@ -55,7 +69,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
         const id = req.url.split("/student/")[1]; //http://localhost:3000/api/student/id
         const { name } = await req.json();
         await main();
-        const post = await prisma.testUser.update({
+        const post = await prisma.user.update({
             where: { id },
             data: { name },
         });
@@ -74,7 +88,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     try {
         const id = req.url.split("/student/")[1]; //http://localhost:3000/api/student/id
         await main();
-        const post = await prisma.testUser.delete({
+        const post = await prisma.user.delete({
             where: { id },
         });
         return NextResponse.json({ message: "Success", post }, { status: 200 });
