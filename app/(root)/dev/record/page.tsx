@@ -73,66 +73,68 @@ const Record = () => {
                 </div>
             </div>
 
-            <div className="bg-white flex flex-row">
-                <div className="bg-blue-400 w-1/2 p-2 ml-5 border-4 border-blue-400 rounded-lg text-white">
-                    プロフィール
-                </div>
-                <div className="bg-blue-400 w-1/2 p-2 ml-5  border-4 border-blue-400 rounded-lg text-white">
-                    話し合いメモ
-                </div>
-            </div>
-
-            <div className="bg-white flex flex-row mt-2">
-                <div className="bg-white w-1/2 p-2 ml-5 text-gray-700 px-2">
-                    <div className="px-5 mb-1 flex flex-row mt-2">
-                        <div className="w-1/3 text-right">学科・学年 /</div>
-                        <div className="w-2/3 px-4">ITエキスパート学科 3年</div>
+            <div className="flex flex-row">
+                <div className="bg-white flex flex-col w-1/2">
+                    <div className="bg-blue-400 p-2 ml-5 border-4 border-blue-400 rounded-lg text-white">
+                        プロフィール
                     </div>
-                    <div className="px-5 mb-1 flex flex-row">
-                        <div className="w-1/3 text-right">卒業予定 /</div>
-                        <div className="w-2/3 px-4">2025年3月</div>
-                    </div>
-                    <div className="px-5 mb-1 flex flex-row">
-                        <div className="w-1/3 text-right">電話番号 /</div>
-                        <div className="w-2/3 px-4">000-0000-0000</div>
-                    </div>
-                    <div className="px-5 mb-1 flex flex-row">
-                        <div className="w-1/3 text-right">志望業界 /</div>
-                        <div className="w-2/3 px-4">IT業界</div>
-                    </div>
-                    <div className="px-5 mb-1 flex flex-row">
-                        <div className="w-1/3 text-right">志望勤務地 /</div>
-                        <div className="w-2/3 px-4">兵庫県</div>
-                    </div>
-                    <div className="px-5 mb-1 flex flex-row">
-                        <div className="w-1/3 text-right">保有資格 /</div>
-                        <div className="w-2/3 px-4">基本情報技術者試験</div>
+                    <div className="bg-white p-2 ml-5 mr-5 text-gray-700 px-2">
+                        <div className="px-5 mb-1 flex flex-row mt-2">
+                            <div className="w-1/3 text-right">学科・学年 /</div>
+                            <div className="w-2/3 px-4">ITエキスパート学科 3年</div>
+                        </div>
+                        <div className="px-5 mb-1 flex flex-row">
+                            <div className="w-1/3 text-right">卒業予定 /</div>
+                            <div className="w-2/3 px-4">2025年3月</div>
+                        </div>
+                        <div className="px-5 mb-1 flex flex-row">
+                            <div className="w-1/3 text-right">電話番号 /</div>
+                            <div className="w-2/3 px-4">000-0000-0000</div>
+                        </div>
+                        <div className="px-5 mb-1 flex flex-row">
+                            <div className="w-1/3 text-right">志望業界 /</div>
+                            <div className="w-2/3 px-4">IT業界</div>
+                        </div>
+                        <div className="px-5 mb-1 flex flex-row">
+                            <div className="w-1/3 text-right">志望勤務地 /</div>
+                            <div className="w-2/3 px-4">兵庫県</div>
+                        </div>
+                        <div className="px-5 mb-1 flex flex-row">
+                            <div className="w-1/3 text-right">保有資格 /</div>
+                            <div className="w-2/3 px-4">基本情報技術者試験</div>
+                        </div>
                     </div>
                 </div>
 
-                <div className="bg-white w-1/2 p-2 ml-5 text-gray-700 px-2">
-                    <div>
-                        <div className="wrapper">
-                            <div className="accordion">
-                                {data.map((item, i) =>
-                                    <div className="item" key={i}>
-                                        <div className='title' onClick={() => toggle(i)}>
-                                            <h2>{item.question}</h2>
-                                            <span>{selected === i ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
+                <div className="bg-white flex flex-col w-1/2">
+
+                    <div className="bg-blue-400 p-2 ml-5  border-4 border-blue-400 rounded-lg text-white">
+                        話し合いメモ
+                    </div>
+                    <div className="bg-white p-2 mt-2 ml-5 mr-5 text-gray-700 px-2">
+                        <div>
+                            <div className="wrapper">
+                                <div className="accordion">
+                                    {data.map((item, i) =>
+                                        <div className="item" key={i}>
+                                            <div className='title' onClick={() => toggle(i)}>
+                                                <h2>{item.question}</h2>
+                                                <span>{selected === i ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
+                                            </div>
+                                            <div
+                                                className={
+                                                    selected === i ? "content show" : "content"
+                                                }
+                                            >
+                                                {item.answer}</div>
                                         </div>
-                                        <div
-                                            className={
-                                                selected === i ? "content show" : "content"
-                                            }
-                                        >
-                                            {item.answer}</div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
-
                 </div>
             </div>
         </div>
