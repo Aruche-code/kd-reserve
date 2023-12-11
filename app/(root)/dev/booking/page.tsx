@@ -82,7 +82,7 @@ const Booking= () => {
                                                     </div>
                                                 <div className="text-center">
                                                     <div className="bg-gray-50 w-full border rounded-lg mt-2">
-                                                        <table className=" divide-gray-200 dark:divide-gray-700">
+                                                        <table className=" divide-gray-200 ">
                                                         <thead>
                                                             <tr>
                                                                 <td className="border border-slate-200 text-xs">性別</td>
@@ -125,7 +125,7 @@ const Booking= () => {
                                                     </div>
                                                 <div className="text-center">
                                                     <div className="bg-gray-50 w-full border rounded-lg mt-2">
-                                                        <table className=" divide-gray-200 dark:divide-gray-700">
+                                                        <table className=" divide-gray-200">
                                                         <thead>
                                                             <tr>
                                                                 <td className="border border-slate-200 text-xs">性別</td>
@@ -168,7 +168,7 @@ const Booking= () => {
                                                     </div>
                                                 <div className="text-center">
                                                     <div className="bg-gray-50 w-full border rounded-lg mt-2">
-                                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                        <table className="min-w-full divide-y divide-gray-200 ">
                                                         <thead>
                                                             <tr>
                                                                 <td className="border border-slate-200 text-xs">性別</td>
@@ -211,7 +211,7 @@ const Booking= () => {
                                                     </div>
                                                 <div className="text-center">
                                                     <div className="bg-gray-50 w-full border rounded-lg mt-2">
-                                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                        <table className="min-w-full divide-y divide-gray-200">
                                                         <thead>
                                                             <tr>
                                                                 <td className="border border-slate-200 text-xs">性別</td>
@@ -254,7 +254,7 @@ const Booking= () => {
                                                     </div>
                                                 <div className="text-center">
                                                     <div className="bg-gray-50 w-full border rounded-lg mt-2">
-                                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                        <table className="min-w-full divide-y divide-gray-200 ">
                                                         <thead>
                                                             <tr>
                                                                 <td className="border border-slate-200 text-xs">性別</td>
@@ -297,7 +297,7 @@ const Booking= () => {
                                                     </div>
                                                 <div className="text-center">
                                                     <div className="bg-gray-50 w-full border rounded-lg mt-2">
-                                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                        <table className="min-w-full divide-y divide-gray-200 ">
                                                         <thead>
                                                             <tr>
                                                                 <td className="border border-slate-200 text-xs">性別</td>
@@ -335,34 +335,41 @@ const Booking= () => {
                         <div className="bg-white p-2">
                             {/* 日時 */}
                             <p className="mb-3 text-1xl">3. 日時を選択してください</p>
-                            
-                            <div className="flex flex-row -mx-2">
-                                    <li className="list-none mr-2">
-                                        <input type="radio" id="time-1" name="time" value="time-1" className="hidden peer" required />
-                                            <label htmlFor="time-1" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">                           
-                                                <div className="block">
-                                                    <div className="w-full text-xs">12:00</div>
-                                                </div>
-                                            </label>
-                                    </li>
-                                    <li className="list-none mr-2">
-                                        <input type="radio" id="time-2" name="time" value="time-2" className="hidden peer"  />
-                                            <label htmlFor="time-2" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 ">                           
-                                                <div className="block">
-                                                    <div className="w-full text-xs">13:00</div>
-                                                </div>
-                                            </label>
-                                    </li>
-                                    <li className="list-none mr-2">
-                                        <input type="radio" id="time-3" name="time" value="time-3" className="hidden peer" />
-                                            <label htmlFor="time-3" className="inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">                           
-                                                <div className="block">
-                                                    <div className="w-full text-xs">16:00</div>
-                                                </div>
-                                            </label>
-                                    </li>
+
+                            <div className="flex flex-row -mx-1 bg-slate-300">
+                                <div className="flex flex-col w-1/3">
+                                    <div className='bg-red-100'>
+                                        <p>1. 第1希望を選択してください</p>
+                                    </div>
+                                    <div className='bg-red-200'>
+                                        <div className="flex flex-row">
+                                            <div className='bg-white w-1/3'>
+                                            <select className="py-1 px-6 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                                            <option selected>選択する</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                        </select>
+                                            </div>
+                                            <div className='bg-white text-center w-1/3'>
+                                                <p>～</p>
+                                            </div>
+                                            <select className="py-1 px-6 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                                            <option selected>選択する</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                        </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                                 
-                            </div>                            
+                            </div>
+
+                            
+                                                  
                         </div>  
                     </div>              
         {/* ボタン */}
