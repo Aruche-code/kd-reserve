@@ -19,7 +19,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     try {
         const id = req.url.split("/student/")[1]; //http://localhost:3000/api/student/id
         await main();
-        const post = await prisma.testUser.findMany({
+        const post = await prisma.user.findMany({
             where: { id },
         });
         return NextResponse.json({ message: "Success", post }, { status: 200 });
@@ -39,7 +39,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
 
         const { name, hashedPassword } = await req.json();
         await main();
-        const post = await prisma.testUser.update({
+        const post = await prisma.user.update({
             where: { id },
             data: { name, hashedPassword },
         });
@@ -59,7 +59,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
         const id = req.url.split("/student/")[1]; //http://localhost:3000/api/student/id
         const { title, description } = await req.json();
         await main();
-        const post = await prisma.post.delete({
+        const post = await prisma.user.delete({
             where: { id },
         });
         return NextResponse.json({ message: "Success", post }, { status: 200 });
