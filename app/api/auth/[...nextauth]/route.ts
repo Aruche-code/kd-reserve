@@ -27,16 +27,20 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string, // 環境変数からGoogleのクライアントIDを取得
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, // 環境変数からGoogleのクライアントシークレットを取得
+
       profile(profile) {
-        // メールアドレスが指定されたドメイン以外であるかチェック
-        if (!profile.email.endsWith("@st.kobedenshi.ac.jp")) {
-          throw new Error("Unauthorized email domain");
+        const emailRegex = /^kd.*@st\.kobedenshi\.ac\.jp$/;
+
+        // メールアドレスが指定された形式に一致するかどうかをチェック
+        if (!emailRegex.test(profile.email)) {
+          throw new Error("Unauthorized email address format");
         }
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
           image: profile.picture,
+          role: profile.role ?? "student", // ここでロールを追加
         };
       },
     }),
@@ -82,6 +86,25 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+
+  // session情報にrole属性を追加
+  callbacks: {
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.role = user.role;
+      }
+
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.role = token.role;
+      return session;
+    },
+  },
 
   debug: process.env.NODE_ENV === "development", // 開発環境の場合、デバッグ情報を有効にする
 

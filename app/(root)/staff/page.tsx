@@ -1,8 +1,14 @@
 "use client";
+//ここが職員のホームルートになります
+//ログアウトボタンはサイドバーに組み込む予定です
 import { signOut } from "next-auth/react";
 
 const Staff = () => {
-  return <button onClick={() => signOut()}>staffログアウト</button>;
+  return (
+    <div>
+      <button onClick={() => signOut()}>staffログアウト</button>
+    </div>
+  );
 };
 
 export default Staff;
