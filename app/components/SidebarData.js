@@ -37,6 +37,11 @@ export const SidebarData = [
         link: "/dev/booking",
     },
     {
+        title: "承認待ち画面",
+        icon: <EditCalendarIcon />,
+        link: "/dev/pending",
+    },
+    {
         title: "学生カルテ",
         icon: <EditCalendarIcon />,
         link: "/dev/record",
