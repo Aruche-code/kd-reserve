@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -73,12 +74,12 @@ const Record = () => {
                 </div>
             </div>
 
-            <div className="flex flex-row">
-                <div className="bg-white flex flex-col w-1/2">
-                    <div className="bg-blue-400 p-2 ml-5 border-4 border-blue-400 rounded-lg text-white">
+            <div className="flex flex-wrap">
+                <div className="bg-white flex flex-col w-full lg:w-1/2">
+                    <div className="bg-blue-400 p-2 mx-4 border-4 border-blue-400 rounded-lg text-white">
                         プロフィール
                     </div>
-                    <div className="bg-white p-2 ml-5 mr-5 text-gray-700 px-2">
+                    <div className="bg-white p-2 ml-5 mr-5 text-gray-700 px-2 text-sm md:text-base">
                         <div className="px-5 mb-1 flex flex-row mt-2">
                             <div className="w-1/3 text-right">学科・学年 /</div>
                             <div className="w-2/3 px-4">ITエキスパート学科 3年</div>
@@ -106,12 +107,12 @@ const Record = () => {
                     </div>
                 </div>
 
-                <div className="bg-white flex flex-col w-1/2">
+                <div className="flex flex-col w-full lg:w-1/2">
 
-                    <div className="bg-blue-400 p-2 ml-5  border-4 border-blue-400 rounded-lg text-white">
+                    <div className="bg-blue-400 p-2 mx-5 border-4 border-blue-400 rounded-lg text-white">
                         話し合いメモ
                     </div>
-                    <div className="bg-white p-2 mt-2 ml-5 mr-5 text-gray-700 px-2">
+                    <div className=" p-2 mt-2 mx-5 text-gray-700 px-2 text-sm md:text-base">
                         <div>
                             <div className="wrapper">
                                 <div className="accordion">
