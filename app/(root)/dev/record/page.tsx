@@ -79,7 +79,7 @@ const Record = () => {
     return (
         <div>
             {testUsers.map(user => (
-                <div className="bg-white h-screen w-full">
+                <div className="bg-white h-screen w-full" key={user.id}>
 
                     <div className="bg-white flex-col text-center mt-10 mb-10">
                         <div className="text-gray-900">
