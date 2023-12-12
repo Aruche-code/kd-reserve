@@ -50,18 +50,18 @@ const Pending = () => {
     ];
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-wrap items-center justify-center text-xs md:text-base">
             {testUsers.map(user => (
-                <div className="w-1/2">
+                <div className="w-5px mx-3">
                     <Link href="../dev/record" key={user.id}>
-                        <button className="mt-5 p-3 w-full border-2 border-gray-100 shadow-md rounded-lg">
-                            <div className="text-xl">
+                        <button className="mt-5 p-3 px-24 w-full border-2 border-gray-100 shadow-md rounded-lg">
+                            <div className="text-base md:text-xl">
                                 {user.name}<br />
                             </div>
 
-                            1.希望日時：{user.day1}　{user.time1}<br />
-                            2.希望日時：{user.day2}　{user.time2}<br />
-                            3.希望日時：{user.day3}　{user.time3}<br />
+                            1.　{user.day1}　{user.time1}<br />
+                            2.　{user.day2}　{user.time2}<br />
+                            3.　{user.day3}　{user.time3}<br />
 
                         </button>
                     </Link>

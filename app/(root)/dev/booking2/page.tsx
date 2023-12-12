@@ -17,7 +17,7 @@ const Booking2= () => {
     return (
 
     <div className="h-screen flex justify-center items-center">
-        <div className="bg-white border-4 border-blue-400 rounded-lg shadow-sm w-1/2 p-2">
+        <div className="bg-white border-4 border-blue-400 rounded-lg shadow-sm w-1/2 p-2 text-xs md:text-base ">
             <div className="p-2 px-2 ">
                 <table className="w-full">
                     <thead className="">
@@ -35,8 +35,16 @@ const Booking2= () => {
                                 <td className="border-r border-gray-400 p-3">担当教員</td>
                                 <td className="p-3">〇〇先生</td>
                             </tr>
+                            <tr className="border-b border-gray-400">
+                                <td className="border-r border-gray-400 p-3">予約日時（第1希望）</td>
+                                <td className="p-3">10/12 13:00</td>
+                            </tr>
+                            <tr className="border-b border-gray-400">
+                                <td className="border-r border-gray-400 p-3">予約日時（第2希望）</td>
+                                <td className="p-3">10/12 13:00</td>
+                            </tr>
                             <tr>
-                                <td className="border-r border-gray-400 p-3">予約日程</td>
+                                <td className="border-r border-gray-400 p-3">予約日時（第3希望）</td>
                                 <td className="p-3">10/12 13:00</td>
                             </tr>
                         </tbody>
@@ -63,16 +71,17 @@ const Booking2= () => {
             {/* メッセージボックスが表示されるときに表示する部分 */}
             {showMessageBox && (
                 <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50">
-                    <div className="bg-blue-300 p-4 flex flex-col">
-                        <p>予約完了</p>
+                    <div className="bg-blue-500 p-4 flex flex-col rounded-lg">
+                        <p className='text-white'>予約完了</p>
                         <div className="bg-gray-100 p-6 rounded-lg flex flex-col">
-                        <p>予約が確定しました。<br /><br />
-                            当日は、学生証の持参と時間厳守でお願いします。
+                        <p>予約リクエストを送信しました。<br />
+                            予約の確定はホーム画面からご確認お願いします。<br/>
+                            <a className="underline decoration-wavy decoration-red-400">当日は、学生証の持参と時間厳守でお願いします。</a>
                         </p>
                             <div className="flex justify-end mt-4">
                                 <button
                                     onClick={handleCloseMessageBox}
-                                    className="text-xs text-zinc-50 bg-red-400 p-2 rounded-lg "
+                                    className="rounded-lg border border-primary-500 bg-red-300 px-5 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-red-500 hover:text-white"
                                 >
                                 閉じる
                                 </button>
