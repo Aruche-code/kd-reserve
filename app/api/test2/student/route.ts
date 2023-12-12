@@ -20,7 +20,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         const email = "sample2@gmail.com"
         await main();
         const post = await prisma.user.findMany({
-            include: { studentPlofile: true },
+            include: { studentProfile: true },
             where: { email },
         });
         return NextResponse.json({ message: "Success", post }, { status: 200 });
@@ -43,7 +43,7 @@ export const POST = async (req: Request, res: NextResponse) => {
                 name,
                 email,
                 hashedPassword,
-                studentPlofile: {
+                studentProfile: {
                     create: {
                         department,
                         tel,
