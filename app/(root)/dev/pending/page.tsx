@@ -74,7 +74,7 @@ const Pending = () => {
                     <div className="mt-2">
                         <Link href="../dev/record" key={user.id}>
                             <div className="flex items-center justify-center">
-                                <button className="mt-5 p-3 w-5/6 border-2 border-gray-100 shadow-md rounded-lg hover:border-4 hover:border-blue-300">
+                                <button className="mt-5 p-3 w-5/6 border-2 border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-blue-300">
                                     <div className="text-base md:text-xl">
                                         {user.name}<br />
                                     </div>
@@ -99,7 +99,7 @@ const Pending = () => {
                     <div className="mt-2">
                         <Link href="../dev/record" key={user.id}>
                             <div className="flex items-center justify-center">
-                                <button className="mt-5 p-3 w-5/6 border-2 border-gray-100 shadow-md rounded-lg hover:border-4 hover:border-orange-200">
+                                <button className="mt-5 p-3 w-5/6 border-2 border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-orange-200">
                                     <div className="text-base md:text-xl">
                                         {user.name}<br />
                                     </div>
