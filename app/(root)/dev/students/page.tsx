@@ -69,7 +69,7 @@ const Students = () => {
                     <Link href="../dev/record">
                         <button
                             key={user.id}
-                            className={'mt-5 ml-10 px-8 p-5 border-2 border-gray-100 shadow-md rounded-lg hover:border-4 hover:border-blue-300'}
+                            className={'mt-5 ml-10 px-8 p-5 border-2 border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-blue-300'}
                         >
                             {user.name}<br />
                             学籍番号：{user.number}
