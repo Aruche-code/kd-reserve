@@ -3,7 +3,7 @@ import React from "react";
 const homest = () => {
     return (
 
-        <div className="h-screen w-full flex flex-row flex-wrap ">
+        <div className="flex flex-row flex-wrap ">
 
             <div className="flex flex-col mt-10 w-full lg:w-1/2">
 
@@ -29,7 +29,7 @@ const homest = () => {
                         </div>
 
                         <div className="w-1/5 flex items-center justify-center">
-                            <button type="button" className="rounded-lg bg-red-400 px-2 p-1 text-[8px] md:text-xs font-medium">キャンセル</button>
+                            <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
                         </div>
                     </div>
 
@@ -49,7 +49,7 @@ const homest = () => {
                         </div>
 
                         <div className="w-1/5 flex items-center justify-center">
-                            <button type="button" className="rounded-lg bg-red-400 px-2 p-1 text-[8px] md:text-xs font-medium">キャンセル</button>
+                            <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@ const homest = () => {
                         </div>
 
                         <div className="w-1/5 flex items-center justify-center">
-                            <button type="button" className="rounded-lg bg-red-400 px-2 p-1 text-[8px] md:text-xs font-medium">キャンセル</button>
+                            <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
                         </div>
                     </div>
 
@@ -102,7 +102,7 @@ const homest = () => {
                         </div>
 
                         <div className="w-1/5 flex items-center justify-center">
-                            <button type="button" className="rounded-lg bg-red-400 px-2 p-1 text-[8px] md:text-xs font-medium">キャンセル</button>
+                            <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
                         </div>
                     </div>
 
