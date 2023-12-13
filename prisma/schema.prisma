@@ -70,8 +70,9 @@ model Account {
 // 職員NG日程用テーブル
 model StaffNg {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId   // オブジェクトID
-  email             String?   @unique                                       // メールアドレス ＊主キー
+  email             String?                                                 // メールアドレス
   ymd               String?                                                 // 年月日
   time              String[]                                                // 時間帯 ＊配列で格納
-  details           String?                                                 // 面談内容
+
+  @@unique(fields: [email, ymd], name: "staffng_identifier")                // emailとymdの複合主キー 名前は"staffng_identifier"
 }
