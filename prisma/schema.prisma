@@ -23,7 +23,7 @@ model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String?
   email          String?   @unique
-  role           String?
+  role           String? //役割
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
@@ -38,14 +38,31 @@ model User {
 
 model StudentProfile {
   id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  department     String?
-  tel            String?
-  graduationYear String?
-  qualification  String?
+  department     String? // 学科
+  tel            String? // 電話番号
+  graduationYear String? // 卒業年
+  qualification  String? // 資格
 
   // Userとの逆向きのリレーション
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique @db.ObjectId
+
+  // Calteとのリレーション
+  record Record[]
+}
+
+model Record {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  content  String? // 面談の内容（ES添削、面談など）
+  progress String? // テキスト
+  date     DateTime @default(now())
+
+  // studentProfileモデルのIDフィールドを参照
+  studentProfileId String @db.ObjectId
+
+  studentProfile StudentProfile @relation(fields: [studentProfileId], references: [id])
+
+  @@index([progress], name: "idx_calte_progress")
 }
 
 model Account {
