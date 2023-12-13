@@ -67,12 +67,38 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-// 職員NG日程用テーブル
+// 職員NG日程用モデル
 model StaffNg {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId   // オブジェクトID
   email             String?                                                 // メールアドレス
   ymd               String?                                                 // 年月日
   time              String[]                                                // 時間帯 ＊配列で格納
 
-  @@unique(fields: [email, ymd], name: "staffng_identifier")                // emailとymdの複合主キー 名前は"staffng_identifier"
+  @@unique(fields: [email, ymd], name: "staffng_id")                        // emailとymdの複合主キー 名前は"staffng_identifier"
+}
+
+// 予約承認待ちリストのモデル
+// 暫定版 ＊変更される可能性あり
+model WaitingList {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId   // オブジェクトID
+  student_email     String?                                                 // 申請者メールアドレス
+  staff_email       String?                                                 // 担当職員メールアドレス
+  ymd               String?                                                 // 年月日
+  time              String[]                                                // 時間帯 ＊配列で格納
+  details           String?                                                 // 面談内容
+
+  @@unique(fields: [student_email, staff_email, ymd], name: "waiting_id")   // 学生・職員のemailとymdの複合主キー 名前は"waiting_id"
+}
+
+// 予約リストのモデル
+// 暫定版 ＊変更される可能性あり
+model Booking {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId   // オブジェクトID
+  student_email     String?                                                 // 申請者メールアドレス
+  staff_email       String?                                                 // 担当職員メールアドレス
+  ymd               String?                                                 // 年月日
+  time              String[]                                                // 時間帯 ＊配列で格納
+  details           String?                                                 // 面談内容
+
+  @@unique(fields: [student_email, staff_email, ymd], name: "booking_id")   // 学生・職員のemailとymdの複合主キー 名前は"booking_id"
 }
