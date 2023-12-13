@@ -6,9 +6,9 @@ import Link from 'next/link';
 const Profile = () => {
 
   const [formData, setFormData] = useState({
-    kanjiName: "",
-    kanaName: "",
-    phoneNumber: "",
+    name: "",
+    kana: "",
+    tel: "",
     department: "",
     grade: "",
     graduationYear: "",
@@ -32,24 +32,24 @@ const Profile = () => {
 
   return (
     <main className="flex flex-col flex-1 p-2 overflow-auto items-center">
-      <div className="mt-2 flex flex-col items-center w-6/12 py-2 border-4 border-blue-400 rounded-lg">
+      <div className="mt-2 flex flex-col items-center md:w-4/5 lg:w-2/3 xl:w-1/2 text-xs sm:text-xs md:text-base lg:text-base py-2 border-4 border-blue-400 rounded-lg">
         <h1 className="mt-5 text-xl text-gray-800 font-semibold">プロフィール</h1>
         <div className="flex items-center mt-3 w-8/12">
           <label className="text-gray-900 w-1/3">氏名（漢字）</label>
           <input className="p-1 border-2 rounded-lg w-2/3 px-4"
-            value={formData.kanjiName}
+            value={formData.name}
             onChange={(e) => handleChange("kanjiName", e.target.value)} />
         </div>
         <div className="flex items-center mt-3 w-8/12">
           <label className="text-gray-900 w-1/3">氏名（カナ）</label>
           <input className="p-1 border-2 rounded-lg w-2/3 px-4"
-            value={formData.kanaName}
+            value={formData.kana}
             onChange={(e) => handleChange("kanaName", e.target.value)} />
         </div>
         <div className="flex items-center mt-3 w-8/12">
           <label className="text-gray-900 w-1/3">電話番号</label>
           <input className="p-1 border-2 rounded-lg w-2/3 px-4"
-            value={formData.phoneNumber}
+            value={formData.tel}
             onChange={(e) => handleChange("phoneNumber", e.target.value)} />
         </div>
         <div className="flex items-center mt-3 w-8/12">
@@ -63,7 +63,7 @@ const Profile = () => {
           <input className="p-1 border-2 rounded-lg w-1/4 px-4"
             value={formData.grade}
             onChange={(e) => handleChange("grade", e.target.value)} />
-          <label className="ms-2 text-sm font-medium text-gray-900">年</label>
+          <label className="ms-2 text-gray-900">年</label>
         </div>
         <div className="flex items-center mt-3 w-8/12">
           <label className=" text-gray-900 w-2/6">卒業予定</label>
@@ -71,11 +71,11 @@ const Profile = () => {
             <input className="p-1 border-2 rounded-lg w-1/3 px-4"
               value={formData.graduationYear}
               onChange={(e) => handleChange("graduationYear", e.target.value)} />
-            <label className="ms-2 text-sm font-medium text-gray-900">年</label>
+            <label className="ms-2 text-gray-900">年</label>
             <input className="ml-2 p-1 border-2 rounded-lg w-1/3 px-4"
               value={formData.graduationMonth}
               onChange={(e) => handleChange("graduationMonth", e.target.value)} />
-            <label className="ms-2 text-sm font-medium text-gray-900">月</label>
+            <label className="ms-2 text-gray-900">月</label>
           </div>
         </div>
         <div className="flex items-center mt-3 w-8/12">

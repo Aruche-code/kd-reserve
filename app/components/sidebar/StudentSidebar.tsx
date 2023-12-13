@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import HomeIcon from "@mui/icons-material/Home";
-import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
+import BadgeIcon from "@mui/icons-material/Badge";
+import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 const Sidebar = () => {
@@ -15,14 +16,20 @@ const Sidebar = () => {
     { title: "home", icon: <HomeIcon />, link: "/student", gap: false },
     {
       title: "plofile",
-      icon: <InsertPhotoIcon />, //適切なアイコンに変えてください
-      link: "/student/plofile",
+      icon: <BadgeIcon />, //適切なアイコンに変えてください
+      link: "/student/profile",
       gap: false,
     },
     {
       title: "booking",
-      icon: <SettingsIcon />, //適切なアイコンに変えてください
+      icon: <CalendarTodaySharpIcon />, //適切なアイコンに変えてください
       link: "/student/booking",
+      gap: false,
+    },
+    {
+      title: "setting",
+      icon: <SettingsIcon />, //適切なアイコンに変えてください
+      link: "/student/setting",
       gap: true,
     },
   ];
@@ -33,7 +40,7 @@ const Sidebar = () => {
         <div
           className={`${
             open ? "w-40" : "w-20"
-          } h-screen p-5 pt-8 relative duration-300`}
+          } h-screen p-5 pt-8 relative duration-300 bg-kd-sub2-cl`}
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
@@ -41,9 +48,9 @@ const Sidebar = () => {
             {Menus.map((menu, index) => (
               <Link href={menu.link} key={index}>
                 <li
-                  className={`flex rounded-md p-2 cursor-pointer hover:bg-cyan-100 text-sky-500 text-sm items-center gap-x-4
+                  className={`flex rounded-md p-2 cursor-pointer hover:bg-white text-kd-button-cl text-sm items-center gap-x-4
                   ${menu.gap ? "mt-9" : "mt-2"} 
-                  ${pathname === menu.link && "bg-cyan-100"}`}
+                  ${pathname === menu.link && " bg-white"}`}
                 >
                   {menu.icon}
                   <span

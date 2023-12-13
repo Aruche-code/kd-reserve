@@ -11,7 +11,7 @@ const config: Config = {
       colors: {
         "kd-main-cl": "#cce1ee",
         "kd-sub-cl": "#1a4f77",
-        "kd-syb2-cl": "#1b4c6a",
+        "kd-sub2-cl": "#1b4c6a",
         "kd-button-cl": "#1facf3",
         "kd-black-cl": "#052238",
         "kd-white-cl": "#e8f7fd",
