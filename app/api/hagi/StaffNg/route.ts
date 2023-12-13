@@ -64,7 +64,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 
         const post = await prisma.staffNg.findUnique({
             where: {
-                staffng_identifier: {
+                staffng_id: {
                     email,
                     ymd
                 }
@@ -87,7 +87,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
         await main();
         const create = await prisma.staffNg.update({
             where: {
-                staffng_identifier: {
+                staffng_id: {
                     email,
                     ymd
                 }
@@ -115,7 +115,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
 
         const post = await prisma.staffNg.delete({
             where: {
-                staffng_identifier: {
+                staffng_id: {
                     email,
                     ymd
                 }
