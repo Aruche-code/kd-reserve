@@ -21,11 +21,11 @@ const Profile1 = () => {
   return (
     <div className="flex flex-col justify-center items-center">
       {testUsers.map(user => (
-        <div className="p-1.5 px-2 inline-block w-full md:w-4/5 lg:w-2/3 xl:w-1/2">
+        <div className="p-1.5 px-2 inline-block w-full md:w-4/5 lg:w-2/3 xl:w-1/2" key={user.id}>
           <div className="bg-white border-4 border-blue-400 rounded-lg shadow-sm overflow-hidden">
             <div className="px-6 py-2 border-gray-200">
               <h2 className="text-xl font-semibold flex justify-center text-gray-800 mt-6">
-                メールアドレス
+                プロフィール
               </h2>
             </div>
 
