@@ -139,10 +139,11 @@ const Booking = () => {
                 <div className="bg-white p-2">
                     <p className="mb-3 text-1xl">2. 担当教員を選択してください</p>
                     <div className="flex flex-row flex-wrap">
-                        {[...Array(6)].map((_, index) => (
+                        {[...Array(7)].map((_, index) => (
                             <TeacherItem key={index} index={index} />
                         ))}
                     </div>
+
                 </div>
             </div>
             <div className="mb-2">
