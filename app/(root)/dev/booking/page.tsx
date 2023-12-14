@@ -15,6 +15,14 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ index }) => {
         setIsCollapseOpen((prev) => !prev);
     };
 
+    if (index !== 6) { 
+        
+    }
+    else{
+        
+    }
+
+
     return (
         <div className="w-full mb-2 sm:w-1/2 sm:p-1 md:w-1/3 md:p-1 lg:w-1/6 lg:p-1 xl:w-1/6 xl:p-2">
             <input
@@ -143,7 +151,6 @@ const Booking = () => {
                             <TeacherItem key={index} index={index} />
                         ))}
                     </div>
-
                 </div>
             </div>
             <div className="mb-2">
