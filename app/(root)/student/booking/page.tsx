@@ -43,7 +43,7 @@ interface ApiResponse {
 //axios
 const fetchStaffUsers = async (): Promise<StaffUser[]> => {
   try {
-    const response = await axios.get<ApiResponse>("/api/getstaffusers");
+    const response = await axios.get<ApiResponse>("/api/student/booking");
     return response.data.staffusers;
   } catch (error) {
     console.error("Error fetching staff users", error);
