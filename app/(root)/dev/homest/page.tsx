@@ -1,6 +1,6 @@
 import React from "react";
 
-const homest = () => {
+const Homest = () => {
     return (
 
         <div className="flex flex-row flex-wrap ">
@@ -113,4 +113,4 @@ const homest = () => {
     );
 }
 
-export default homest
+export default Homest

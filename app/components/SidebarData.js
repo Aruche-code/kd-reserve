@@ -22,7 +22,7 @@ export const SidebarData = [
         link: "/dev/profile1",
     },
     {
-        title: "ホーム画面",
+        title: "NG日程管理画面",
         icon: <EditCalendarIcon />,
         link: "/dev/home",
     },
@@ -30,6 +30,11 @@ export const SidebarData = [
         title: "生徒用ホーム画面",
         icon: <EditCalendarIcon />,
         link: "/dev/homest",
+    },
+    {
+        title: "教員用ホーム画面",
+        icon: <EditCalendarIcon />,
+        link: "/dev/hometeacher",
     },
     {
         title: "予約画面",
