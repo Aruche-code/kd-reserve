@@ -1,6 +1,29 @@
+import Link from "next/link";
 import React from "react";
 
 const Hometeacher = () => {
+
+    const testUsers = [
+        {
+            id: '601b92ee95861639c3e2c44b',
+            kana: 'コウベタロウ',
+            name: '神戸太郎',
+            gakuseki: '1111111',
+            day: '2023/12/3',
+            time: '10:00~12:00',
+            subject: '面接練習'
+        },
+        {
+            id: '601b95a595861639c3e2c44c',
+            kana: 'コウベジロウ',
+            name: '神戸次郎',
+            gakuseki: '2222222',
+            day: '2023/12/3',
+            time: '13:00~14:00',
+            subject: 'エントリーシート作成'
+        },
+    ];
+
     return (
 
         <div className="flex flex-row items-center justify-center">
@@ -10,51 +33,32 @@ const Hometeacher = () => {
                 <div className="bg-blue-400 p-2 mx-4 border-4 border-blue-400 rounded-lg text-white">
                     本日の予定
                 </div>
+                <div className="mt-5">
+                    {testUsers.map(user => (
+                        <div className="flex flex-col p-2">
 
-                <div className="flex flex-col p-4">
+                            <Link href="../dev/record">
+                                <div className="mx-2 p-3 border-2 border-gray-400 rounded-lg flex flex-row">
 
-                    <div className="mt-5 mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
+                                    <div className="w-full flex flex-row text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
 
-                        <div className="w-4/5 flex flex-row text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                            <div className="w-1/3 px-3 flex flex-col">
-                                <div>2023/12/3</div>
-                                <div className="">12:00~13:00</div>
-                            </div>
-                            <div className="w-1/3 border-x-2 border-gray-200 px-3">
-                                ○○先生
-                            </div>
-                            <div className="w-1/3 px-3">
-                                面接練習
-                            </div>
+                                        <div className="w-1/3 px-3">
+                                            {user.time}
+                                        </div>
+                                        <div className="w-1/3 border-x-2 border-gray-200 px-3">
+                                            {user.gakuseki}<br />
+                                            {user.name}
+                                        </div>
+                                        <div className="w-1/3 px-3">
+                                            {user.subject}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </Link>
                         </div>
-
-                        <div className="w-1/5 flex items-center justify-center">
-                            <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
-                        </div>
-                    </div>
-
-                    <div className="mt-5 ml-4 mr-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
-
-                        <div className="w-4/5 flex flex-row text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                            <div className="w-1/3 px-3 flex flex-col">
-                                <div>2023/12/3</div>
-                                <div className="">12:00~13:00</div>
-                            </div>
-                            <div className="w-1/3 border-x-2 border-gray-200 px-3">
-                                ○○先生
-                            </div>
-                            <div className="w-1/3 px-3">
-                                面接練習
-                            </div>
-                        </div>
-
-                        <div className="w-1/5 flex items-center justify-center">
-                            <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
-                        </div>
-                    </div>
-
+                    ))}
                 </div>
-
             </div>
 
         </div>
