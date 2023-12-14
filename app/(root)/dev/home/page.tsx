@@ -1,6 +1,6 @@
 //トップレベルの予約ページコンポーネント
 "use client";
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
@@ -15,6 +15,10 @@ const Home = () => {
 
     //NG日程の選択状況
     const [selectedTimes, setSelectedTimes] = useState<{ [key: string]: string[] }>({});
+    useEffect(() => {
+        const ngdays = { "16": ["11:30", "12:00", "14:00", "13:30"], "5": ["11:30", "13:30"] };
+        setSelectedTimes(ngdays);
+    }, []); 
 
     // バックグラウンドカラーを切り替える関数
     const toggleBgColor = (day:string, time:string) => {
@@ -140,19 +144,40 @@ const Home = () => {
                     <ArrowCircleRightIcon onClick={nextMonth} className="mx-5" />
                 </div>
                 <div className="grid grid-cols-7 w-11/12 mx-auto">
+                    {/* 曜日表示 */}
                     {['日', '月', '火', '水', '木', '金', '土'].map(day => (
-                    <div key={day} className="text-center font-bold">{day}</div>
+                        <div key={day} className="text-center font-bol">{day}</div>
                     ))}
+
+                    {/* 月の初めの調節 */}
                     {Array.from({ length: date.getDay() }, (_, i) => (
-                    <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
+                        <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
                     ))}
-                    {daysInMonth().map(day => (
-                    <div key={day} className="text-center border-2 h-20 hover:border-cyan-400" onClick={() => {setShowModal(true);setSelectedDay(day);}}>
-                        {day}
-                    </div>
+
+                    {daysInMonth().map((day, index) => (
+                        ((index + date.getDay()) % 7 === 0 || (index + date.getDay()) % 7 === 6) ? (
+                            <div
+                            key={day}
+                            className={`text-center border-2 h-20 bg-gray-100`}
+                            >
+                            {day}
+                            </div>
+                        ) : (
+                            <div
+                            key={day}
+                            className={`text-center border-2 h-20 hover:border-cyan-400 `}
+                            onClick={() => { setShowModal(true); setSelectedDay(day); }}
+                            >
+                                {day}
+                                <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-sm my-1">NG日程あり</div>
+                                <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-sm my-1">面接予定あり</div>
+                            </div>
+                        )
                     ))}
                 </div>
             </div>
+
+            {/* モーダルウィンドウ */}
             {showModal ? (
                 <>
                     <div
