@@ -16,6 +16,10 @@ const config: Config = {
         "kd-black-cl": "#052238",
         "kd-white-cl": "#e8f7fd",
       },
+      //カスタムワイド
+      width: {
+        "46": "11.5rem",
+      },
     },
   },
   plugins: [
