@@ -4,11 +4,21 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 // TeacherItem コンポーネントの定義
+interface Teacher {
+    id: string;
+    name: string;
+    seibetu: string;
+    tokui: string;
+    syumi: string;
+    reki: string;
+}
+
 interface TeacherItemProps {
+    teacher: Teacher;
     index: number;
 }
 
-const TeacherItem: React.FC<TeacherItemProps> = ({ index }) => {
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, index }) => {
     const [isCollapseOpen, setIsCollapseOpen] = useState(false);
 
     const handleCollapseToggle = () => {
@@ -16,7 +26,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ index }) => {
     };
 
     return (
-        <div className="w-full mb-2 sm:w-1/2 sm:p-1 md:w-1/3 md:p-1 lg:w-1/6 lg:p-1 xl:w-1/6 xl:p-2">
+        <div key={teacher.id} className="w-full mb-2 sm:w-1/2 sm:p-1 md:w-1/3 md:p-1 lg:w-1/6 lg:p-1 xl:w-1/6 xl:p-2">
             <input
                 type="radio"
                 id={`t-${index + 1}`}
@@ -41,54 +51,58 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ index }) => {
                                 <path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h1 1 14H20z"></path>
                             </svg>
                         </div>
-                        <div className="text-xs p-2">{`先生 ${index + 1}`}</div>
+                        <div className="text-xs p-2">{teacher.name}</div>
                     </div>
-                    <button
-                        type="button"
-                        className="hs-collapse-toggle px-2 inline-flex items-center gap-x-2 text-xs font-semibold rounded-sm bg-gray-200 text-gray-400 hover:bg-blue-500"
-                        onClick={handleCollapseToggle}
-                        aria-expanded={isCollapseOpen}
-                        aria-controls={`hs-basic-collapse-heading-${index}`}
-                    >
-                        詳細
-                        <svg
-                            className={`hs-collapse-open:${isCollapseOpen ? 'rotate-180' : ''} flex-shrink-0 w-4 h-4 text-white`}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
-                    </button>
-                    <div
-                        id={`hs-basic-collapse-heading-${index}`}
-                        className={`hs-collapse ${isCollapseOpen ? '' : 'hidden'} w-full overflow-hidden transition-[height] duration-300`}
-                        aria-labelledby={`hs-basic-collapse-${index}`}
-                    >
-                        <div className="text-center bg-gray-50 w-full border rounded-lg mt-2">
-                            <table className="w-full divide-gray-200">
-                                <thead>
-                                    {[
-                                        ['性別', '女性'],
-                                        ['得意なこと', 'スポーツ'],
-                                        ['趣味', '映画鑑賞'],
-                                        ['勤務歴', '4年'],
-                                    ].map(([label, value], i) => (
-                                        <tr key={i}>
-                                            <td className="border border-slate-200 text-xs">{label}</td>
-                                            <td className="border border-slate-200 text-xs">{value}</td>
-                                        </tr>
-                                    ))}
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
+                    {teacher.name !== '指名なし' && (
+                        <>
+                            <button
+                                type="button"
+                                className="hs-collapse-toggle px-2 inline-flex items-center gap-x-2 text-xs font-semibold rounded-sm bg-gray-200 text-gray-400 hover:bg-blue-500"
+                                onClick={handleCollapseToggle}
+                                aria-expanded={isCollapseOpen}
+                                aria-controls={`hs-basic-collapse-heading-${index}`}
+                            >
+                                詳細
+                                <svg
+                                    className={`hs-collapse-open:${isCollapseOpen ? 'rotate-180' : ''} flex-shrink-0 w-4 h-4 text-white`}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </button>
+                            <div
+                                id={`hs-basic-collapse-heading-${index}`}
+                                className={`hs-collapse ${isCollapseOpen ? '' : 'hidden'} w-full overflow-hidden transition-[height] duration-300`}
+                                aria-labelledby={`hs-basic-collapse-${index}`}
+                            >
+                                <div className="text-center bg-gray-50 w-full border rounded-lg mt-2">
+                                    <table className="w-full divide-gray-200">
+                                        <thead>
+                                            {[
+                                                ['性別', teacher.seibetu],
+                                                ['得意なこと', teacher.tokui],
+                                                ['趣味', teacher.syumi],
+                                                ['勤務歴', teacher.reki],
+                                            ].map(([label, value], i) => (
+                                                <tr key={i}>
+                                                    <td className="border border-slate-200 text-xs">{label}</td>
+                                                    <td className="border border-slate-200 text-xs">{value}</td>
+                                                </tr>
+                                            ))}
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </label>
         </div>
@@ -97,6 +111,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ index }) => {
 
 // Booking コンポーネントの定義
 const Booking = () => {
+
     const hostingOptions = [
         '面談',
         '履歴書の作成・添削',
@@ -104,6 +119,65 @@ const Booking = () => {
         '企業探し',
         '企業の相談',
         'その他',
+    ];
+
+    const testTeachars: Teacher[] = [
+        {
+            id: '601b92ee95861639c3e2c44a',
+            name: '田中先生',
+            seibetu: '女性',
+            tokui: 'スポーツ',
+            syumi: '映画鑑賞',
+            reki: '4年',
+        },
+        {
+            id: '601b92ee95861639c3e2c44b',
+            name: '山本先生',
+            seibetu: '男性',
+            tokui: 'サッカー',
+            syumi: 'サウナ',
+            reki: '10年',
+        },
+        {
+            id: '601b92ee95861639c3e2c44c',
+            name: '鈴木先生',
+            seibetu: '男性',
+            tokui: 'フラフープ',
+            syumi: 'マラソン',
+            reki: '3年',
+        },
+        {
+            id: '601b92ee95861639c3e2c44d',
+            name: '小林先生',
+            seibetu: '女性',
+            tokui: '食べること',
+            syumi: '晩酌',
+            reki: '7年',
+        },
+        {
+            id: '601b92ee95861639c3e2c44e',
+            name: '中村先生',
+            seibetu: '女性',
+            tokui: 'すぐに寝れる',
+            syumi: '旅行',
+            reki: '2年',
+        },
+        {
+            id: '601b92ee95861639c3e2c44f',
+            name: '高橋先生',
+            seibetu: '男性',
+            tokui: 'プログラミング',
+            syumi: '人間観察',
+            reki: '15年',
+        },
+        {
+            id: '601b92ee95861639c3e2c44f',
+            name: '指名なし',
+            seibetu: '',
+            tokui: '',
+            syumi: '',
+            reki: '',
+        }
     ];
 
     return (
@@ -134,13 +208,12 @@ const Booking = () => {
                     </li>
                 ))}
             </div>
-
             <div className="">
                 <div className="bg-white p-2">
                     <p className="mb-3 text-1xl">2. 担当教員を選択してください</p>
                     <div className="flex flex-row flex-wrap">
-                        {[...Array(6)].map((_, index) => (
-                            <TeacherItem key={index} index={index} />
+                        {testTeachars.map((teacher, index) => (
+                            <TeacherItem key={index} teacher={teacher} index={index} />
                         ))}
                     </div>
                 </div>

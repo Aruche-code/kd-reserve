@@ -169,7 +169,7 @@ const Profile1 = () => {
             </div>
             <div className="flex justify-end">
               <Link href="../dev/profile">
-                <button className="mr-10 mb-5 py-2 px-6 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-green-500 text-white shadow-sm hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none ">
+                <button className="mr-10 mb-5 py-1 px-5 items-center text-sm font-medium rounded-lg border border-gray-200 bg-green-500 text-white shadow-sm hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none ">
                   編集
                 </button>
               </Link>
