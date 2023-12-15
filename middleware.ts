@@ -14,10 +14,7 @@ export default withAuth({
       else if (req.nextUrl.pathname.startsWith("/student")) {
         return token?.role === "student";
       }
-      // "/users" へのアクセスは認証されたユーザーのみ許可
-      else if (req.nextUrl.pathname.startsWith("/users")) {
-        return Boolean(token);
-      }
+
       // 上記以外のパスへのアクセスは全て拒否
       return false;
     },
@@ -25,5 +22,5 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/users/:path*", "/student/:path*", "/staff/:path*"],
+  matcher: ["/student/:path*", "/staff/:path*"],
 };
