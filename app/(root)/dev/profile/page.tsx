@@ -49,16 +49,16 @@ const Profile = () => {
 
   return (
     <main className="flex flex-col flex-1 p-1.5 overflow-auto items-center">
-      <div className="bg-gray-100 shadow-lg flex flex-col items-center md:w-4/5 lg:w-2/3 xl:w-1/2 text-xs sm:text-xs md:text-sm lg:text-sm rounded-lg">
+      <div className="bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-2/3 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
         <h1 className="mt-8 mb-2 text-xl text-gray-800 font-semibold">プロフィール</h1>
         <div className="flex items-center mt-3 w-8/12">
-          <label className="text-gray-900 w-1/3">氏名（漢字）</label>
+          <label className="text-gray-900 w-1/3">氏名 (漢字)</label>
           <input className="p-1 border-1 rounded-lg w-2/3 px-4"
             value={formData.name}
             onChange={(e) => handleChange("name", e.target.value)} />
         </div>
         <div className="flex items-center mt-3 w-8/12">
-          <label className="text-gray-900 w-1/3">氏名（カナ）</label>
+          <label className="text-gray-900 w-1/3">氏名 (カナ)</label>
           <input className="p-1 border-1 rounded-lg w-2/3 px-4"
             value={formData.kana}
             onChange={(e) => handleChange("kana", e.target.value)} />
@@ -85,7 +85,7 @@ const Profile = () => {
         <div className="flex items-center mt-3 w-8/12">
           <label className=" text-gray-900 w-1/3">学年</label>
           <select
-            className="p-1 border-1 rounded-lg w-1/4 px-4"
+            className="p-1 border-1 rounded-lg w-1/2 sm:w-1/3 md:w-1/4 px-4"
             value={formData.grade}
             onChange={(e) => handleChange("grade", e.target.value)}
           >
@@ -100,7 +100,7 @@ const Profile = () => {
         <div className="flex items-center mt-3 w-8/12">
           <label className=" text-gray-900 w-1/3">卒業予定</label>
           <select
-            className="p-1 border-1 rounded-lg w-1/4 px-4"
+            className="p-1 border-1 rounded-lg w-1/2 sm:w-1/3 md:w-1/4 px-4"
             value={formData.graduationYear}
             onChange={(e) => handleChange("graduationYear", e.target.value)}
           >
