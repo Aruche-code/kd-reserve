@@ -44,7 +44,7 @@ export const SidebarData = [
     {
         title: "承認待ち画面",
         icon: <EditCalendarIcon />,
-        link: "/dev/pending",
+        link: "/dev/waiting",
     },
     {
         title: "学生カルテ",

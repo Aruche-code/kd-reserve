@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-const Pending = () => {
+const Waiting = () => {
     const testUsers = [
         {
             id: '601b92ee95861639c3e2c44b',
@@ -120,4 +120,4 @@ const Pending = () => {
 
 }
 
-export default Pending;
+export default Waiting;
