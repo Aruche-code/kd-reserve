@@ -1,7 +1,6 @@
 import prisma from "@/app/libs/prismadb";
 import getSession from "./getSession";
 
-// 現在のセッションユーザーのメールアドレスと異なるユーザー (NOT: { email: session.user.email })、かつ
 // role が 'staff' であるユーザー (role: "staff")
 // これらの条件を満たすユーザーをデータベースから検索し、結果を返します。
 
@@ -22,16 +21,7 @@ const getStaffUsers = async () => {
         createdAt: "desc",
       },
       where: {
-        // AND: [
-        //   {
-        //     NOT: {
-        //       email: session?.user?.email,
-        //     },
-        //   },
-        // {
         role: "staff",
-        // }
-        // ],
       },
     });
     return staffusers;

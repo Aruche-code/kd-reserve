@@ -1,6 +1,6 @@
 //トップレベルの予約ページコンポーネント
 "use client";
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
@@ -11,10 +11,38 @@ const Home = () => {
     const [showModal, setShowModal] = useState(false);
 
     //選ばれている日
-    const [selectedDay, setSelectedDay] = useState<string>("1");
+    const [selectedDay, setselectedDay] = useState<string>("1");
 
     //NG日程の選択状況
     const [selectedTimes, setSelectedTimes] = useState<{ [key: string]: string[] }>({});
+        // selectedTimes の変化を監視
+        useEffect(() => {
+            // 空になったキーを検出して削除
+            const updatedSelectedTimes = Object.fromEntries(
+            Object.entries(selectedTimes).filter(([key, value]) => value.length > 0)
+            );
+
+            setSelectedTimes(updatedSelectedTimes);
+        }, [selectedTimes]); // selectedTimes が変化したときに実行
+        useEffect(() => {
+            const ngdays = { "2023-12-14": ["11:30", "12:00", "14:00", "13:30"], "2023-12-5": ["11:30", "13:30"] };
+            setSelectedTimes(ngdays);
+        }, []); 
+
+    //面談の選択状況
+    const [interview, setInterview] = useState<{ [key: string]: string[] }>({});
+        useEffect(() => {
+            // 空になったキーを検出して削除
+            const updatedInterview = Object.fromEntries(
+                Object.entries(interview).filter(([key, value]) => value.length > 0)
+            );
+
+            setInterview(updatedInterview);
+        }, [interview]); // interview が変化したときに実行
+        useEffect(() => {
+            const inter = { "2023-12-12": ["11:30", "12:00", "14:00", "13:30"], "2023-12-6": ["11:30", "13:30"] };
+            setInterview(inter);
+        }, []); 
 
     // バックグラウンドカラーを切り替える関数
     const toggleBgColor = (day:string, time:string) => {
@@ -127,32 +155,65 @@ const Home = () => {
         return timeslot ? timeslot.includes(time) : false;
     };
 
+     //日付のみを取り枝素処理
+    const extraday = (date: string) => {
+        const parts = date.split("-"); // ハイフンで文字列を区切る
+        const lastPart = parts[parts.length - 1]; // 配列の最後の要素を取得
+        return lastPart;
+    }
+
     return (
         // カレンダー部分
-        <div className="flex h-full w-full justify-center items-center">
-            <div className="ml-8 mt-0 w-9/12 pr-5">
-                <div className="text-3xl">{date.getFullYear()}年</div>
-                <div className="flex justify-start items-center mb-4">
+        <div className="flex h-auto w-full justify-center items-center">
+            <div className="ml-8 mt-0 w-10/12 pr-5">
+                <div className="text-xl">{date.getFullYear()}年</div>
+                <div className="flex justify-start items-center mb-1">
                     <ArrowCircleLeftIcon onClick={prevMonth} className="mr-5" />
-                    <h2 className="text-5xl font-bold">
+                    <h2 className="text-4xl font-bold">
                     {date.getMonth() + 1}月
                     </h2>
                     <ArrowCircleRightIcon onClick={nextMonth} className="mx-5" />
                 </div>
                 <div className="grid grid-cols-7 w-11/12 mx-auto">
+                    {/* 曜日表示 */}
                     {['日', '月', '火', '水', '木', '金', '土'].map(day => (
-                    <div key={day} className="text-center font-bold">{day}</div>
+                        <div key={day} className="text-center font-bol">{day}</div>
                     ))}
+
+                    {/* 月の初めの調節 */}
                     {Array.from({ length: date.getDay() }, (_, i) => (
-                    <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
+                        <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
                     ))}
-                    {daysInMonth().map(day => (
-                    <div key={day} className="text-center border-2 h-20 hover:border-cyan-400" onClick={() => {setShowModal(true);setSelectedDay(day);}}>
-                        {day}
-                    </div>
+
+                    {daysInMonth().map((day, index) => (
+                        ((index + date.getDay()) % 7 === 0 || (index + date.getDay()) % 7 === 6) ? (
+                            <div
+                            key={day}
+                            className={`text-center border-2 h-20 bg-gray-100`}
+                            >
+                            {day}
+                            </div>
+                        ) : (
+                            <div
+                            key={day}
+                            className={`text-center border-2 h-20 hover:border-cyan-400 `}
+                            onClick={() => { setShowModal(true); setselectedDay(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day); }}
+                            >
+                                {day}
+                                {interview[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
+                                <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-xxs my-1">面接予定あり</div>
+                                ):""}
+                                {selectedTimes[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
+                                <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-xxs my-1">NG日程あり</div>
+                                ):""}
+                            </div>
+                        )
                     ))}
                 </div>
             </div>
+            
+
+            {/* モーダルウィンドウ */}
             {showModal ? (
                 <>
                     <div
@@ -160,7 +221,7 @@ const Home = () => {
                         onClick={() => setShowModal(false)}
                     ></div>
 
-                    <div className="fixed p-10 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
                         {/* 解除ボタン */}
                         <button onClick={() => setShowModal(false)} className="absolute top-3 right-3">
                             <svg
@@ -183,11 +244,11 @@ const Home = () => {
                         </div>
 
                         {/* 一括指定ボタン */}
-                        <div className="flex flex-wrap justify-center max-w-4xl my-9">
+                        <div className="flex flex-wrap justify-center max-w-3xl my-6">
                             {timeAll.map((time) => (
                                 <div
                                     key={time}
-                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-48 h-16 m-3 font-bold ${
+                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-36 h-12 m-3 font-bold ${
                                     isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
                                     }`}
                                     onClick={() => toggleALL(time)}
@@ -198,11 +259,11 @@ const Home = () => {
                         </div>
 
                         {/* 個別指定ボタン */}
-                        <div className="flex flex-wrap justify-center max-w-4xl">
+                        <div className="flex flex-wrap justify-center max-w-3xl">
                             {timeOptions.map((time) => (
                                 <div
                                     key={time}
-                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-48 h-16 m-3 font-bold ${
+                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-32 h-11 m-3 font-bold ${
                                     isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
                                     }`}
                                     onClick={() => toggleBgColor(selectedDay,time)}

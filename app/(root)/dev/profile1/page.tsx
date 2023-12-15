@@ -22,7 +22,7 @@ const Profile1 = () => {
     <div className="flex flex-col justify-center items-center">
       {testUsers.map(user => (
         <div className="p-1.5 px-2 inline-block w-full md:w-4/5 lg:w-2/3 xl:w-1/2" key={user.id}>
-          <div className="bg-white border-4 border-blue-400 rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-gray-100 shadow-lg rounded-lg overflow-hidden">
             <div className="px-6 py-2 border-gray-200">
               <h2 className="text-xl font-semibold flex justify-center text-gray-800 mt-6">
                 プロフィール
@@ -169,7 +169,7 @@ const Profile1 = () => {
             </div>
             <div className="flex justify-end">
               <Link href="../dev/profile">
-                <button className="mr-10 mb-5 py-2 px-6 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-green-500 text-white shadow-sm hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none ">
+                <button className="mr-10 mb-5 py-1 px-5 items-center text-sm font-medium rounded-lg border border-gray-200 bg-green-500 text-white shadow-sm hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none ">
                   編集
                 </button>
               </Link>
