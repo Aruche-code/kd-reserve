@@ -90,6 +90,7 @@ model StaffNg {
   email             String?                                                 // メールアドレス
   ymd               String?                                                 // 年月日
   time              String[]                                                // 時間帯 ＊配列で格納
+  staffName         String?                                                 // 職員の名前
 
   @@unique(fields: [email, ymd], name: "staffng_id")                        // emailとymdの複合主キー 名前は"staffng_identifier"
 }
@@ -98,24 +99,27 @@ model StaffNg {
 // 暫定版 ＊変更される可能性あり
 model WaitingList {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId   // オブジェクトID
-  student_email     String?                                                 // 申請者メールアドレス
-  staff_email       String?                                                 // 担当職員メールアドレス
+  studentEmail     String?                                                 // 申請者メールアドレス
+  staffEmail       String?                                                 // 担当職員メールアドレス
+                                                                            // 第一希望
+                                                                            // 第二希望
+                                                                            // 第三希望
   ymd               String?                                                 // 年月日
   time              String[]                                                // 時間帯 ＊配列で格納
   details           String?                                                 // 面談内容
 
-  @@unique(fields: [student_email, staff_email, ymd], name: "waiting_id")   // 学生・職員のemailとymdの複合主キー 名前は"waiting_id"
+  @@unique(fields: [studentEmail, staffEmail, ymd], name: "waiting_id")   // 学生・職員のemailとymdの複合主キー 名前は"waiting_id"
 }
 
 // 予約リストのモデル
 // 暫定版 ＊変更される可能性あり
 model Booking {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId   // オブジェクトID
-  student_email     String?                                                 // 申請者メールアドレス
-  staff_email       String?                                                 // 担当職員メールアドレス
+  studentEmail      String?                                                 // 申請者メールアドレス
+  staffEmail        String?                                                 // 担当職員メールアドレス
   ymd               String?                                                 // 年月日
   time              String[]                                                // 時間帯 ＊配列で格納
   details           String?                                                 // 面談内容
 
-  @@unique(fields: [student_email, staff_email, ymd], name: "booking_id")   // 学生・職員のemailとymdの複合主キー 名前は"booking_id"
+  @@unique(fields: [studentEmail, staffEmail, ymd], name: "booking_id")   // 学生・職員のemailとymdの複合主キー 名前は"booking_id"
 }
