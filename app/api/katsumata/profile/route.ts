@@ -41,15 +41,17 @@ export const POST = async (req: Request, res: NextResponse) => {
     try {
         // const email = await getUsermail() 本番
         const email = "sample3@gmail.com" //テスト
-        const { department, tel, graduationYear, qualification } = await req.json();
+        const { department, schoolYear, tel, graduationYear, qualification, workLocation } = await req.json();
         await main();
 
         const user = await prisma.studentProfile.create({
             data: {
                 department,
+                schoolYear,
                 tel,
                 graduationYear,
                 qualification,
+                workLocation,
                 // 既存のUserとStudentProfileの関連付け
                 user: { connect: { email } },
             },
@@ -73,20 +75,20 @@ export const PUT = async (req: Request, res: NextResponse) => {
     try {
         // const email = await getUsermail() 本番
         const email = "sample3@gmail.com" //テスト
-        const { name, image, department, tel, graduationYear, qualification } = await req.json();
+        const { department, schoolYear, tel, graduationYear, qualification, workLocation } = await req.json();
         await main();
 
         const user = await prisma.user.update({
             where: { email },
             data: {
-                name,
-                image,
                 studentProfile: {
                     update: {
                         department,
+                        schoolYear,
                         tel,
                         graduationYear,
                         qualification,
+                        workLocation
                     },
                 },
             },
