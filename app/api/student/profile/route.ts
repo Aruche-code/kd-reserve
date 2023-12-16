@@ -40,8 +40,8 @@ export const POST = async (req: Request, res: NextResponse) => {
   console.log("POST");
 
   try {
-    const email = await getUsermail();
-    // const email = "sample3@gmail.com" //テスト
+    // const email = await getUsermail();
+    const email = "higa@mail.com"; //テスト
     const {
       department,
       schoolYear,
