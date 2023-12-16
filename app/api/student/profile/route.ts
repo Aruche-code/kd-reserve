@@ -13,36 +13,133 @@ export async function main() {
   }
 }
 
-// ユーザーのemailを表示させるAPI テスト用
+// 指定したemailのUserとStudentprofileを表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-  console.log("GETS");
+  console.log("GET");
+
   try {
-    const useremail = await getUsermail();
-    return NextResponse.json(
-      { message: "Success", useremail },
-      { status: 200 }
-    );
+    const email = await getUsermail();
+    // const email = "sample3@gmail.com" //テスト
+    await main();
+    const user = await prisma.user.findMany({
+      where: { email },
+      include: {
+        studentProfile: true, // studentProfileテーブルも含めて取得
+      },
+    });
+    return NextResponse.json({ message: "Success", user }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
-// ユーザーを特定し名前を編集可能にするAPI テスト用
-export const PUT = async (req: Request, res: NextResponse) => {
-  console.log("PUT");
+// 指定したemailのUserにStudentprofileを追加するAPI
+export const POST = async (req: Request, res: NextResponse) => {
+  console.log("POST");
+
   try {
-    const useremail = await getUsermail();
-    const username = await req.json();
+    const email = await getUsermail();
+    // const email = "sample3@gmail.com" //テスト
+    const {
+      department,
+      schoolYear,
+      tel,
+      graduationYear,
+      qualification,
+      workLocation,
+    } = await req.json();
     await main();
-    const name = await prisma.user.update({
-      where: {
-        email: useremail,
-      },
+
+    const user = await prisma.studentProfile.create({
       data: {
-        name: username,
+        department,
+        schoolYear,
+        tel,
+        graduationYear,
+        qualification,
+        workLocation,
+        // 既存のUserとStudentProfileの関連付け
+        user: { connect: { email } },
+      },
+      include: {
+        user: true, // userテーブルも含めて取得
       },
     });
-    return NextResponse.json({ message: "Success", name }, { status: 200 });
+
+    return NextResponse.json({ message: "Success", user }, { status: 201 });
+  } catch (err) {
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+// 指定したemailのStudentprofileを編集するAPI
+export const PUT = async (req: Request, res: NextResponse) => {
+  console.log("PUT");
+
+  try {
+    const email = await getUsermail();
+    // const email = "sample3@gmail.com" //テスト
+    const {
+      department,
+      schoolYear,
+      tel,
+      graduationYear,
+      qualification,
+      workLocation,
+    } = await req.json();
+    await main();
+
+    const user = await prisma.user.update({
+      where: { email },
+      data: {
+        studentProfile: {
+          update: {
+            department,
+            schoolYear,
+            tel,
+            graduationYear,
+            qualification,
+            workLocation,
+          },
+        },
+      },
+      include: {
+        studentProfile: true, // studentProfileテーブルも含めて取得
+      },
+    });
+
+    return NextResponse.json({ message: "Success", user }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+// 指定したemailのStudentprofileを削除するAPI
+export const DELETE = async (req: Request, res: NextResponse) => {
+  console.log("DELETE");
+
+  try {
+    const email = await getUsermail();
+    // const email = "sample3@gmail.com" //テスト
+    await main();
+    const user = await prisma.user.update({
+      where: { email },
+      data: {
+        studentProfile: {
+          delete: true,
+        },
+      },
+      include: {
+        studentProfile: true, // studentProfileテーブルも含めて取得
+      },
+    });
+    return NextResponse.json({ message: "Success", user }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {

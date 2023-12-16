@@ -1,34 +1,55 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { User } from "@/app/components/types";
 
-const UserEmail = () => {
-  const [userEmail, setUserEmail] = useState("");
+const UserProfile = () => {
+  const [userData, setUserData] = useState<User[]>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // API エンドポイントへのリクエスト
-    const fetchUserEmail = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("/api/student/profile"); // ここに適切なエンドポイントのパスを設定
-        setUserEmail(response.data.useremail);
+        const response = await axios.get("/api/student/profile");
+        console.log(response);
+        setUserData(response.data.user);
       } catch (err: any) {
         setError(err.message);
       }
     };
 
-    fetchUserEmail();
+    fetchData();
   }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      {error ? (
-        <p>エラーが発生しました: {error}</p>
-      ) : (
-        <p>ユーザーのメール: {userEmail}</p>
-      )}
+      <h1>User Profile</h1>
+      {userData.map((user) => (
+        <div key={user.id}>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+          {user.studentProfile && (
+            <div>
+              <h2>Student Profile</h2>
+              <p>Department: {user.studentProfile.department}</p>
+              <p>tel: {user.studentProfile.tel}</p>
+              <p>graduationYear: {user.studentProfile.graduationYear}</p>
+              <p>qualification: {user.studentProfile.qualification}</p>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
 
-export default UserEmail;
+export default UserProfile;

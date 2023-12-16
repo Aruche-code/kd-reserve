@@ -4,11 +4,7 @@
 import { signOut } from "next-auth/react";
 
 const Student = () => {
-  return (
-    <div>
-      <button onClick={() => signOut()}>studentログアウト</button>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Student;

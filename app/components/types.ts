@@ -1,6 +1,13 @@
-export type PostProps = {
+export interface User {
   id: string;
-  title: string;
-  description: string;
-  date: Date;
-};
+  name: string;
+  email: string;
+  studentProfile?: {
+    department: string;
+    schoolYear: string;
+    tel: string;
+    graduationYear: string;
+    qualification: string;
+    workLocation: string;
+  };
+}
