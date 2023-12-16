@@ -5,6 +5,11 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 const Home = () => {
+    // オブジェクトの比較ロジック
+    function isObjectEqual(obj1:any, obj2:any) {
+        return JSON.stringify(obj1) === JSON.stringify(obj2);
+    }
+    
     const [date, setDate] = useState(new Date());
 
     //モーダルウィンドウ
@@ -22,12 +27,15 @@ const Home = () => {
             Object.entries(selectedTimes).filter(([key, value]) => value.length > 0)
             );
 
-            setSelectedTimes(updatedSelectedTimes);
+            if (!isObjectEqual(selectedTimes, updatedSelectedTimes)) {
+                setSelectedTimes(updatedSelectedTimes);
+            }
         }, [selectedTimes]); // selectedTimes が変化したときに実行
-        useEffect(() => {
-            const ngdays = { "2023-12-14": ["11:30", "12:00", "14:00", "13:30"], "2023-12-5": ["11:30", "13:30"] };
-            setSelectedTimes(ngdays);
-        }, []); 
+
+    useEffect(() => {
+        const ngdays = { "2023-12-14": ["11:30", "12:00", "14:00", "13:30"], "2023-12-5": ["11:30", "13:30"] };
+        setSelectedTimes(ngdays);
+    }, []); 
 
     //面談の選択状況
     const [interview, setInterview] = useState<{ [key: string]: string[] }>({});
@@ -37,7 +45,10 @@ const Home = () => {
                 Object.entries(interview).filter(([key, value]) => value.length > 0)
             );
 
-            setInterview(updatedInterview);
+            // interview が変更された場合のみ更新
+            if (!isObjectEqual(interview, updatedInterview)) {
+                setInterview(updatedInterview);
+            }
         }, [interview]); // interview が変化したときに実行
         useEffect(() => {
             const inter = { "2023-12-12": ["11:30", "12:00", "14:00", "13:30"], "2023-12-6": ["11:30", "13:30"] };
