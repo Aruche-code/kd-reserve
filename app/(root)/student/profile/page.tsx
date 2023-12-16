@@ -24,7 +24,6 @@ const UserProfile = () => {
           <p>メール: {user.email}</p>
           {user.studentProfile && (
             <div>
-              <h2>マイプロフィール</h2>
               <p>学科: {user.studentProfile.department}</p>
               <p>学年: {user.studentProfile.schoolYear} 年</p>
               <p>電話番号: {user.studentProfile.tel}</p>
