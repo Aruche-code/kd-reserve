@@ -109,6 +109,7 @@ model WaitingList {
   // Userとの逆向きのリレーション
   userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id])
+
 }
 
 // 予約リストのモデル

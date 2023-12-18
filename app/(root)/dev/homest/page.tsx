@@ -47,7 +47,7 @@ const Homest = () => {
                 </div>
                 <div className="mt-5">
                     {testUsers.map(user => (
-                        <div className="flex flex-col p-2">
+                        <div className="flex flex-col p-2" key={user.id}>
 
                             <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
 
@@ -83,7 +83,7 @@ const Homest = () => {
                 </div>
                 <div className="mt-5">
                     {testUsers2.map(user => (
-                        <div className="flex flex-col p-2">
+                        <div className="flex flex-col p-2" key={user.id}>
 
                             <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
 
