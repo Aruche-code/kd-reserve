@@ -1,19 +1,37 @@
 //トップレベルの予約ページコンポーネント
 "use client";
 import React, { useState , useEffect} from 'react';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import Calendar from './Calendar';
+import CloseButton from './CloseButton';
 
 const Home = () => {
     // オブジェクトの比較ロジック
     function isObjectEqual(obj1:any, obj2:any) {
         return JSON.stringify(obj1) === JSON.stringify(obj2);
     }
-    
+
+
+    //------------------------------------------------------------------//
+    //Calender用関数
     const [date, setDate] = useState(new Date());
 
-    //モーダルウィンドウ
-    const [showModal, setShowModal] = useState(false);
+    //日付の取得
+    const daysInMonth = () => {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const days = new Date(year, month + 1, 0).getDate();
+        return Array.from({ length: days }, (_, i) => (i + 1).toString());
+    };
+
+    //月を前に１つ戻す
+    const prevMonth = () => {
+        setDate(new Date(date.getFullYear(), date.getMonth() - 1));
+    };
+
+    //月を後に１つ進める
+    const nextMonth = () => {
+        setDate(new Date(date.getFullYear(), date.getMonth() + 1));
+    };
 
     //選ばれている日
     const [selectedDay, setselectedDay] = useState<string>("1");
@@ -32,10 +50,11 @@ const Home = () => {
             }
         }, [selectedTimes]); // selectedTimes が変化したときに実行
 
-    useEffect(() => {
-        const ngdays = { "2023-12-14": ["11:30", "12:00", "14:00", "13:30"], "2023-12-5": ["11:30", "13:30"] };
-        setSelectedTimes(ngdays);
-    }, []); 
+        //NG日程テストデータ
+        useEffect(() => {
+            const ngdays = { "2023-12-14": ["11:30", "12:00", "14:00", "13:30"], "2023-12-5": ["11:30", "13:30"] };
+            setSelectedTimes(ngdays);
+        }, []); 
 
     //面談の選択状況
     const [interview, setInterview] = useState<{ [key: string]: string[] }>({});
@@ -50,6 +69,8 @@ const Home = () => {
                 setInterview(updatedInterview);
             }
         }, [interview]); // interview が変化したときに実行
+
+        //面談状況テストデータ
         useEffect(() => {
             const inter = { "2023-12-12": ["11:30", "12:00", "14:00", "13:30"], "2023-12-6": ["11:30", "13:30"] };
             setInterview(inter);
@@ -87,7 +108,7 @@ const Home = () => {
         // console.log(selectedTimes);
     };
 
-    //全日指定
+    //時間の範囲指定
     const toggleALL = (value:string) => {
         switch (value) {
             case "午前":
@@ -142,23 +163,7 @@ const Home = () => {
         "13:00", "13:30", "14:00", "14:30",
         "15:00", "15:30", "16:00",
     ];
-
-    const daysInMonth = () => {
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const days = new Date(year, month + 1, 0).getDate();
-        return Array.from({ length: days }, (_, i) => (i + 1).toString());
-    };
     
-    //月を前に１つ戻す
-    const prevMonth = () => {
-        setDate(new Date(date.getFullYear(), date.getMonth() - 1));
-    };
-
-    //月を後に１つ進める
-    const nextMonth = () => {
-        setDate(new Date(date.getFullYear(), date.getMonth() + 1));
-    };
 
     // timeが指定された日付の時間配列に含まれているかを確認する関数
     const isTimeIncluded = (day: string, time: string) => {
@@ -173,53 +178,27 @@ const Home = () => {
         return lastPart;
     }
 
+    //モーダルウィンドウ
+    const [showModal, setShowModal] = useState(false);      //topモーダル
+    const [NgModal, setNgModal] = useState(false);  //ngモーダルウィンドウ
+    const [InterModal, setInterModal] = useState(false); //面接日程確認モーダル
+
     return (
         // カレンダー部分
         <div className="flex h-auto w-full justify-center items-center">
             <div className="ml-8 mt-0 w-10/12 pr-5">
-                <div className="text-xl">{date.getFullYear()}年</div>
-                <div className="flex justify-start items-center mb-1">
-                    <ArrowCircleLeftIcon onClick={prevMonth} className="mr-5" />
-                    <h2 className="text-4xl font-bold">
-                    {date.getMonth() + 1}月
-                    </h2>
-                    <ArrowCircleRightIcon onClick={nextMonth} className="mx-5" />
-                </div>
-                <div className="grid grid-cols-7 w-11/12 mx-auto">
-                    {/* 曜日表示 */}
-                    {['日', '月', '火', '水', '木', '金', '土'].map(day => (
-                        <div key={day} className="text-center font-bol">{day}</div>
-                    ))}
-
-                    {/* 月の初めの調節 */}
-                    {Array.from({ length: date.getDay() }, (_, i) => (
-                        <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
-                    ))}
-
-                    {daysInMonth().map((day, index) => (
-                        ((index + date.getDay()) % 7 === 0 || (index + date.getDay()) % 7 === 6) ? (
-                            <div
-                            key={day}
-                            className={`text-center border-2 h-20 bg-gray-100`}
-                            >
-                            {day}
-                            </div>
-                        ) : (
-                            <div
-                            key={day}
-                            className={`text-center border-2 h-20 hover:border-cyan-400 `}
-                            onClick={() => { setShowModal(true); setselectedDay(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day); }}
-                            >
-                                {day}
-                                {interview[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
-                                <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-xxs my-1">面接予定あり</div>
-                                ):""}
-                                {selectedTimes[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
-                                <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-xxs my-1">NG日程あり</div>
-                                ):""}
-                            </div>
-                        )
-                    ))}
+                <div>
+                    <Calendar 
+                        date={date}
+                        setDate={setDate} 
+                        daysInMonth={daysInMonth}
+                        prevMonth={prevMonth}
+                        nextMonth={nextMonth} 
+                        setShowModal={setShowModal}
+                        setselectedDay={setselectedDay}
+                        interview={interview}
+                        selectedTimes={selectedTimes}
+                    />
                 </div>
             </div>
             
@@ -232,24 +211,44 @@ const Home = () => {
                         onClick={() => setShowModal(false)}
                     ></div>
 
-                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
-                        {/* 解除ボタン */}
-                        <button onClick={() => setShowModal(false)} className="absolute top-3 right-3">
-                            <svg
-                            className="w-6 h-6 text-4xl"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
+                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl">
+                        <CloseButton 
+                            setShowModal={setShowModal}
+                            setNgModal={setNgModal}
+                            setInterModal={setInterModal}
+                        />
+                        
+                        <div className="flex">
+                            <div 
+                            className="bg-red-400 hover:bg-red-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-36 w-36"
+                            onClick={() => setNgModal(true)}  
                             >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                            </svg>
-                        </button>
+                            NG日程追加
+                            </div>
+
+                            <div
+                            className="bg-blue-400 hover:bg-blue-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-36 w-36"
+                            onClick={() => setInterModal(true)}
+                            >
+                            予定の確認
+                            </div>
+                        </div>
+                    </div>
+                </>
+            ) : null}
+            {NgModal ? (
+                <>
+                    <div
+                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                        onClick={() => setNgModal(false)}
+                    ></div>
+
+                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                        <CloseButton 
+                            setShowModal={setShowModal}
+                            setNgModal={setNgModal}
+                            setInterModal={setInterModal}
+                        />
                         <div className="flex justify-between items-start">
                             <span className="font-bold">NG日程追加</span>
                         </div>
@@ -282,6 +281,25 @@ const Home = () => {
                                     <span>{time}</span>
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                </>
+            ) : null}
+            {InterModal ? (
+                <>
+                    <div
+                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                        onClick={() => setInterModal(false)}
+                    ></div>
+
+                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                        <CloseButton 
+                            setShowModal={setShowModal}
+                            setNgModal={setNgModal}
+                            setInterModal={setInterModal}
+                        />
+                        <div className="flex justify-between items-start">
+                            <span className="font-bold">面談予定</span>
                         </div>
                     </div>
                 </>
