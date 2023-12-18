@@ -225,7 +225,23 @@ const Booking = () => {
                         {[1, 2, 3].map((index) => (
                             <div key={index} className="flex flex-col w-full md:w-auto border border-gray-200 rounded-lg p-2 m-1">
                                 <div className="">
-                                    <p className="p-2 text-xs mb-4 text-gray-500">{`第${index}希望を選択してください`}</p>
+                                    <p className="p-2 text-xs mb-1 text-gray-500">{`第${index}希望を選択してください`}</p>
+                                    <div className="mb-3">
+                                        <select className="p-1 text-xs px-4 bg-gray-100 border-transparent rounded-lg">
+                                            <option value=""></option>
+                                            {Array.from({ length: 12 }, (_, index) => (
+                                                <option key={index + 1} value={index + 1}>{index + 1}</option>
+                                            ))}
+                                        </select>
+                                        <label className="ms-2 me-2 text-xs text-gray-900">月</label>
+                                        <select className="p-1 text-xs px-4 bg-gray-100 border-transparent rounded-lg">
+                                            <option value=""></option>
+                                            {Array.from({ length: 31 }, (_, index) => (
+                                                <option key={index + 1} value={index + 1}>{index + 1}</option>
+                                            ))}
+                                        </select>
+                                        <label className="ms-2 text-xs text-gray-900">日</label>
+                                    </div>
                                 </div>
                                 <div className="">
                                     <div className="flex flex-row justify-center ">
