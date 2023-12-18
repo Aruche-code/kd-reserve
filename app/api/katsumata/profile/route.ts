@@ -23,7 +23,8 @@ export const GET = async (req: Request, res: NextResponse) => {
         const user = await prisma.user.findMany({
             where: { email },
             include: {
-                studentProfile: true // studentProfileテーブルも含めて取得
+                studentProfile: true, // studentProfileテーブルも含めて取得
+                record: true,
             },
         });
         return NextResponse.json({ message: "Success", user }, { status: 200 });
