@@ -90,16 +90,16 @@ model StaffNg {
 // 予約承認待ちリストのモデル
 // 暫定版 ＊変更される可能性あり
 model WaitingList {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  studentEmail String? // 申請者メールアドレス
-  staffEmail   String? // 担当職員メールアドレス
-  // 第一希望
-  // 第二希望
-  // 第三希望
-  ymd          String? // 年月日
-  time         String[] // 時間帯 ＊配列で格納
-  details      String? // 面談内容
-
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
+  studentEmail  String?   // 申請者メールアドレス
+  staffEmail    String?   // 担当職員メールアドレス
+  first         String?   // 第一希望(True or False(Null))
+  second        String?   // 第二希望(True or False(Null))
+  third         String?   // 第三希望(True or False(Null))
+  ymd           String?   // 年月日
+  time          String[]  // 時間帯 ＊配列で格納
+  details       String?   // 面談内容
+  status        String?   // 承認状況(cancelled, approved, waiting)
   @@unique(fields: [studentEmail, staffEmail, ymd], name: "waiting_id") // 学生・職員のemailとymdの複合主キー 名前は"waiting_id"
 }
 
