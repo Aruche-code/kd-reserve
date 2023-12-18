@@ -52,13 +52,13 @@ export const GET = async (req: Request, res: NextResponse) => {
 // 仮の予約待ちリスト(WaitingList)に予約を追加するAPI
 export const POST = async (req: Request, res: NextResponse) => {
   console.log("POST WaitingList");
-  try{
+  try {
     await main();   // DB接続関数の呼び出し
     // const email = await getUsermail()      // 変数emailにセッション情報から取得したemail情報を格納する
     // const email = "yama@master.mail.com"      // 変数emailにダミーのメールアドレスを格納する
     // const studentEmail = "yama@master.mail.com"     // 変数emailにダミーのメールアドレスを格納する
     // const studentEmail = email     // 変数emailにダミーのメールアドレスを格納する
-    const { studentEmail, staffEmail, ymd, time, details  } = await req.json();
+    const { studentEmail, staffEmail, ymd, time, details } = await req.json();
     const waitingList = await prisma.waitingList.create({
       data: {
         studentEmail,
@@ -66,7 +66,7 @@ export const POST = async (req: Request, res: NextResponse) => {
         ymd,
         time,
         details,
-        },
+      },
     });
     return NextResponse.json(
       // { message: "Success", waitingList, studentEmail, staffEmail },
