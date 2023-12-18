@@ -11,7 +11,6 @@ const Profile1 = () => {
       department: "ITエキスパート",
       grade: "3年",
       graduationYear: "2025年",
-      graduationMonth: "3月",
       industry: "IT系",
       workLocation: "兵庫県",
       qualifications: "基本情報技術者試験",
@@ -114,7 +113,7 @@ const Profile1 = () => {
                           </td>
                           <td scope="col" className="px-6 py-3 text-start  ">
                             <span className="text-xs font-semibold uppercase tracking-wide flex justify-center text-gray-800">
-                              {user.graduationYear}{user.graduationMonth}
+                              {user.graduationYear}
                             </span>
                           </td>
                         </tr>
