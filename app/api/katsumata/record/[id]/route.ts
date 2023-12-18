@@ -40,7 +40,7 @@ export const POST = async (req: Request, res: NextResponse) => {
     console.log("POST");
 
     try {
-        const email = "sample3@gmail.com"; // テスト
+        const email = "sample3@gmail.com";
         const { content, progress } = await req.json();
         await main();
 
@@ -63,7 +63,7 @@ export const POST = async (req: Request, res: NextResponse) => {
 
 
 
-// 指定したemailのStudentprofileを編集するAPI
+// 指定したrecordを編集するAPI
 export const PUT = async (req: Request, res: NextResponse) => {
     console.log("PUT");
 
@@ -73,7 +73,9 @@ export const PUT = async (req: Request, res: NextResponse) => {
         await main();
 
         const user = await prisma.record.update({
-            where: { id: recordId },
+            where: {
+                id: recordId
+            },
             data: {
                 content,
                 progress
@@ -89,25 +91,19 @@ export const PUT = async (req: Request, res: NextResponse) => {
 };
 
 
-// 指定したemailのStudentprofileを削除するAPI
+// 指定したrecordを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
     console.log("DELETE");
 
     try {
-        // const email = await getUsermail() 本番
-        const email = "sample3@gmail.com" //テスト
+        const recordId = req.url.split("/katsumata/record/")[1]; // リクエストURLからRecordのIDを抽出
         await main();
-        const user = await prisma.user.update({
-            where: { email },
-            data: {
-                studentProfile: {
-                    delete: true,
-                },
-            },
-            include: {
-                studentProfile: true, // studentProfileテーブルも含めて取得
+        const user = await prisma.record.delete({
+            where: {
+                id: recordId
             },
         });
+
         return NextResponse.json({ message: "Success", user }, { status: 200 });
     } catch (err) {
         return NextResponse.json({ message: "Error", err }, { status: 500 });
