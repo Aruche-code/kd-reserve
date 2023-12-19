@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/libs/prismadb";
 import getUsermail from "@/app/actions/getUsermail";
-
-const prisma = new PrismaClient();
 
 // DB接続関数
 export async function main() {
@@ -13,13 +11,11 @@ export async function main() {
   }
 }
 
-// 指定したemailのUserとStudentprofileを表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-  console.log("GET");
-
   try {
     const email = await getUsermail();
-    // const email = "sample3@gmail.com" //テスト
+    // const email = "higa@mail.com";
+
     await main();
     const user = await prisma.user.findMany({
       where: { email },
@@ -27,7 +23,27 @@ export const GET = async (req: Request, res: NextResponse) => {
         studentProfile: true, // studentProfileテーブルも含めて取得
       },
     });
-    return NextResponse.json({ message: "Success", user }, { status: 200 });
+
+    // 必要なフィールドだけを含むレスポンスを作成
+    const responseData = user.map((user) => ({
+      name: user.name,
+      email: user.email,
+      studentProfile: user.studentProfile
+        ? {
+            department: user.studentProfile?.department,
+            schoolYear: user.studentProfile?.schoolYear,
+            tel: user.studentProfile?.tel,
+            graduationYear: user.studentProfile?.graduationYear,
+            qualification: user.studentProfile?.qualification,
+            workLocation: user.studentProfile?.workLocation,
+          }
+        : null,
+    }));
+
+    return NextResponse.json(
+      { message: "Success", user: responseData },
+      { status: 200 }
+    );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
@@ -35,13 +51,10 @@ export const GET = async (req: Request, res: NextResponse) => {
   }
 };
 
-// 指定したemailのUserにStudentprofileを追加するAPI
 export const POST = async (req: Request, res: NextResponse) => {
-  console.log("POST");
-
   try {
-    // const email = await getUsermail();
-    const email = "higa@mail.com"; //テスト
+    const email = await getUsermail();
+
     const {
       department,
       schoolYear,
@@ -50,9 +63,10 @@ export const POST = async (req: Request, res: NextResponse) => {
       qualification,
       workLocation,
     } = await req.json();
+
     await main();
 
-    const user = await prisma.studentProfile.create({
+    const newStudentProfile = await prisma.studentProfile.create({
       data: {
         department,
         schoolYear,
@@ -60,15 +74,24 @@ export const POST = async (req: Request, res: NextResponse) => {
         graduationYear,
         qualification,
         workLocation,
-        // 既存のUserとStudentProfileの関連付け
         user: { connect: { email } },
-      },
-      include: {
-        user: true, // userテーブルも含めて取得
       },
     });
 
-    return NextResponse.json({ message: "Success", user }, { status: 201 });
+    // studentProfileのみをレスポンスとして返却
+    const responseData = {
+      department: newStudentProfile?.department,
+      schoolYear: newStudentProfile?.schoolYear,
+      tel: newStudentProfile?.tel,
+      graduationYear: newStudentProfile?.graduationYear,
+      qualification: newStudentProfile?.qualification,
+      workLocation: newStudentProfile?.workLocation,
+    };
+
+    return NextResponse.json(
+      { message: "Success", studentProfile: responseData },
+      { status: 201 }
+    );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
@@ -78,11 +101,9 @@ export const POST = async (req: Request, res: NextResponse) => {
 
 // 指定したemailのStudentprofileを編集するAPI
 export const PUT = async (req: Request, res: NextResponse) => {
-  console.log("PUT");
-
   try {
     const email = await getUsermail();
-    // const email = "sample3@gmail.com" //テスト
+
     const {
       department,
       schoolYear,
@@ -91,9 +112,10 @@ export const PUT = async (req: Request, res: NextResponse) => {
       qualification,
       workLocation,
     } = await req.json();
+
     await main();
 
-    const user = await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { email },
       data: {
         studentProfile: {
@@ -108,11 +130,26 @@ export const PUT = async (req: Request, res: NextResponse) => {
         },
       },
       include: {
-        studentProfile: true, // studentProfileテーブルも含めて取得
+        studentProfile: true, // 更新されたStudentProfileを含める
       },
     });
 
-    return NextResponse.json({ message: "Success", user }, { status: 200 });
+    // 更新されたStudentProfileの情報をレスポンスとして返却
+    const responseData = updatedUser.studentProfile
+      ? {
+          department: updatedUser.studentProfile?.department,
+          schoolYear: updatedUser.studentProfile?.schoolYear,
+          tel: updatedUser.studentProfile?.tel,
+          graduationYear: updatedUser.studentProfile?.graduationYear,
+          qualification: updatedUser.studentProfile?.qualification,
+          workLocation: updatedUser.studentProfile?.workLocation,
+        }
+      : null;
+
+    return NextResponse.json(
+      { message: "Success", studentProfile: responseData },
+      { status: 200 }
+    );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
@@ -122,24 +159,22 @@ export const PUT = async (req: Request, res: NextResponse) => {
 
 // 指定したemailのStudentprofileを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
-  console.log("DELETE");
-
   try {
     const email = await getUsermail();
-    // const email = "sample3@gmail.com" //テスト
+
     await main();
-    const user = await prisma.user.update({
+    await prisma.user.update({
       where: { email },
       data: {
         studentProfile: {
           delete: true,
         },
       },
-      include: {
-        studentProfile: true, // studentProfileテーブルも含めて取得
-      },
     });
-    return NextResponse.json({ message: "Success", user }, { status: 200 });
+    return NextResponse.json(
+      { message: "Success", studentProfile: null },
+      { status: 200 }
+    );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
