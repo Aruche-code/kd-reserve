@@ -232,7 +232,6 @@ const YourComponent: React.FC<YourComponentProps> = ({ testUsers, testUsers2 }) 
 
 
 const Waiting = () => {
-    //モーダルウィンドウ
     const [showModal, setShowModal] = useState(false);
 
 
