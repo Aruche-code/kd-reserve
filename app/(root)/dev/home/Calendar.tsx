@@ -15,6 +15,10 @@ export default function Calendar({
 
 const year = date.getFullYear();
 const month = date.getMonth();
+const lastday = new Date(year, month)
+// console.log(lastday);
+
+const dayArray = daysInMonth();
 
 return (
     <>
@@ -44,12 +48,12 @@ return (
         ))}
 
         {/* 月の初めの調節 */}
-        {Array.from({ length: date.getDay() }, (_, i) => (
+        {Array.from({ length: lastday.getDay() }, (_, i) => (
             <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
         ))}
         
-        {daysInMonth().map((day:any, index:any) => (
-            ((index + date.getDay()) % 7 === 0 || (index + date.getDay()) % 7 === 6) ? (
+        {dayArray.map((day:any, index:any) => (
+            ((index + lastday.getDay()) % 7 === 0 || (index + lastday.getDay()) % 7 === 6) ? (
                 <div
                 key={day}
                 className={`text-center border-2 h-20 bg-gray-100`}
