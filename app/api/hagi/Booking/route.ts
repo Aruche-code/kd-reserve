@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth"
 import getStaffUsers from '../../../actions/getStaffUsers';
 import getUsermail from '../../../actions/getStaffUsers';
-import Waiting from '../../../(root)/dev/waiting/page';
 
 const prisma = new PrismaClient();
 
@@ -18,7 +17,7 @@ export async function main() {
 
 
 // GET
-// 先生のプロフィール等の表示   ＊修正が必要(レスポンスを職員の名前,先生のプロフィールにする)
+// 先生のプロフィール等の表示   ＊2023-12-19 最終編集 後々職員プロフィール情報がレスポンスに追加される可能性あり
 export const GET = async (req: Request, res: NextResponse) => {
     try {
         await main();                                       // dbに接続
@@ -42,6 +41,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 // 指定したemailのUserにWaitingListを追加するAPI
 export const POST = async (req: Request, res: NextResponse) => {
     try {
+        // const email = getUsermail() // 本番用
         const email = "giwa@mail.com" // テスト
         const { staffEmail, details, firstYmd, firstStartTime, firstEndTime, secondYmd,
                 secondStartTime, secondEndTime, thirdYmd, thirdStartTime, thirdEndTime } = await req.json();
