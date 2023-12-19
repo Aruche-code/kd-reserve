@@ -59,7 +59,6 @@ const Record = () => {
             department: "ITエキスパート",
             grade: "3年",
             graduationYear: "2025年",
-            graduationMonth: "3月",
             industry: "IT系",
             workLocation: "兵庫県",
             qualifications: "基本情報技術者試験",
@@ -105,7 +104,7 @@ const Record = () => {
                                 </div>
                                 <div className="px-5 mb-1 flex flex-row">
                                     <div className="w-1/3 text-right">卒業予定 /</div>
-                                    <div className="w-2/3 px-4">{user.graduationYear}{user.graduationMonth}</div>
+                                    <div className="w-2/3 px-4">{user.graduationYear}</div>
                                 </div>
                                 <div className="px-5 mb-1 flex flex-row">
                                     <div className="w-1/3 text-right">電話番号 /</div>
