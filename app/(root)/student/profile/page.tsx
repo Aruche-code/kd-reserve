@@ -37,7 +37,9 @@ function UserForm() {
     }
   }, [userData, isEditing]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setProfileData((prevState) => ({
       ...prevState,
@@ -129,15 +131,6 @@ function UserForm() {
           />
         </div>
         <div>
-          <label>所持資格：</label>
-          <input
-            type="text"
-            name="qualification"
-            value={profileData.qualification}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
           <label>希望勤務地：</label>
           <input
             type="text"
@@ -146,6 +139,16 @@ function UserForm() {
             onChange={handleChange}
           />
         </div>
+        <div>
+          <label>所持資格：</label>
+          <textarea
+            name="qualification"
+            value={profileData.qualification}
+            onChange={handleChange}
+            // rows="4"
+          />
+        </div>
+
         <button type="submit">{isEditing ? "保存" : "新規作成"}</button>
         {isEditing && (
           <button type="button" onClick={handleDelete}>
