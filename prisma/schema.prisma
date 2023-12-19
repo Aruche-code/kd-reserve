@@ -24,6 +24,9 @@ model User {
   // StudentProfileとのリレーション
   studentProfile StudentProfile?
 
+  // staffprofileモデルとのリレーション
+  staffProfile StaffProfile?
+
   // Recordとのリレーション
   record Record[]
 
@@ -33,6 +36,7 @@ model User {
   waitinglist WaitingList[]
 }
 
+// 生徒プロフィール情報
 model StudentProfile {
   id             String  @id @default(auto()) @map("_id") @db.ObjectId
   department     String? // 学科
@@ -41,6 +45,19 @@ model StudentProfile {
   graduationYear String? // 卒業年
   qualification  String? // 資格
   workLocation   String? // 希望勤務地
+
+  // Userとの逆向きのリレーション
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
+}
+
+// 職員プロフィール情報
+model StaffProfile {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  gender      String? // 性別
+  Strengths   String? // 得意なこと
+  tastes      String? // 趣味
+  workhistory String? // 勤務歴
 
   // Userとの逆向きのリレーション
   user   User   @relation(fields: [userId], references: [id])
