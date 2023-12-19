@@ -20,14 +20,39 @@ export const GET = async (req: Request, res: NextResponse) => {
         // const email = await getUsermail() 本番
         const email = "sample3@gmail.com" //テスト
         await main();
-        const user = await prisma.user.findMany({
+        const users = await prisma.user.findMany({
             where: { email },
             include: {
-                record: true // studentProfileテーブルも含めて取得
+                studentProfile: true,
+                record: true
             },
         });
 
-        return NextResponse.json({ message: "Success", user }, { status: 200 });
+        const responseData = users.map((user) => ({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            studentProfile: user.studentProfile
+                ? {
+                    department: user.studentProfile?.department,
+                    schoolYear: user.studentProfile?.schoolYear,
+                    tel: user.studentProfile?.tel,
+                    graduationYear: user.studentProfile?.graduationYear,
+                    qualification: user.studentProfile?.qualification,
+                    workLocation: user.studentProfile?.workLocation,
+                }
+                : null,
+            records: user.record
+                ? user.record.map((record) => ({
+                    content: record.content,
+                    progress: record.progress,
+                }))
+                : null,
+        }));
+
+
+
+        return NextResponse.json({ message: "Success", responseData }, { status: 200 });
     } catch (err) {
         return NextResponse.json({ message: "Error", err }, { status: 500 });
     } finally {

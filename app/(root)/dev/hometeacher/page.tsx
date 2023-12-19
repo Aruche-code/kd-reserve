@@ -35,10 +35,10 @@ const Hometeacher = () => {
                 </div>
                 <div className="mt-5">
                     {testUsers.map(user => (
-                        <div className="flex flex-col p-2">
+                        <div className="flex flex-col p-2" key={user.id}>
 
                             <Link href="../dev/record">
-                                <div className="mx-2 p-3 border-2 border-gray-400 rounded-lg flex flex-row">
+                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
 
                                     <div className="w-full flex flex-row text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
 

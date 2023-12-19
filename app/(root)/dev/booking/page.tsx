@@ -111,6 +111,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, index }) => {
 
 // Booking コンポーネントの定義
 const Booking = () => {
+    const [showModal, setShowModal] = useState(false);
 
     const hostingOptions = [
         '面談',
@@ -180,8 +181,32 @@ const Booking = () => {
         }
     ];
 
+    const [showMessageBox, setShowMessageBox] = useState(false);
+
+    const handleCompleteButtonClick = () => {
+        setShowMessageBox(true);
+    };
+
+    const handleCloseMessageBox = () => {
+        setShowMessageBox(false);
+    };
+
+    const testUsers = [
+        {
+            id: '601b92ee95861639c3e2c44b',
+            teachername: '○○先生',
+            day1: '2023/12/3',
+            time1: '10:00~12:00',
+            day2: '2023/12/4',
+            time2: '10:00~12:00',
+            day3: '2023/12/5',
+            time3: '10:00~13:00',
+            subject: '面接練習'
+        }
+    ];
+
     return (
-        <div className="w-full h-screen font-banana p-2">
+        <div className="w-full h-screen font-banana relative p-2">
             <p className="mt-0 mb-2 text-1xl">1. 予約内容を選択してください</p>
             <div className="flex flex-row p-2 flex-wrap">
                 {hostingOptions.map((option, index) => (
@@ -225,7 +250,23 @@ const Booking = () => {
                         {[1, 2, 3].map((index) => (
                             <div key={index} className="flex flex-col w-full md:w-auto border border-gray-200 rounded-lg p-2 m-1">
                                 <div className="">
-                                    <p className="p-2 text-xs mb-4 text-gray-500">{`第${index}希望を選択してください`}</p>
+                                    <p className="p-2 text-xs mb-1 text-gray-500">{`第${index}希望を選択してください`}</p>
+                                    <div className="mb-3">
+                                        <select className="p-1 text-xs px-4 bg-gray-100 border-transparent rounded-lg">
+                                            <option value=""></option>
+                                            {Array.from({ length: 12 }, (_, index) => (
+                                                <option key={index + 1} value={index + 1}>{index + 1}</option>
+                                            ))}
+                                        </select>
+                                        <label className="ms-2 me-2 text-xs text-gray-900">月</label>
+                                        <select className="p-1 text-xs px-4 bg-gray-100 border-transparent rounded-lg">
+                                            <option value=""></option>
+                                            {Array.from({ length: 31 }, (_, index) => (
+                                                <option key={index + 1} value={index + 1}>{index + 1}</option>
+                                            ))}
+                                        </select>
+                                        <label className="ms-2 text-xs text-gray-900">日</label>
+                                    </div>
                                 </div>
                                 <div className="">
                                     <div className="flex flex-row justify-center ">
@@ -271,15 +312,98 @@ const Booking = () => {
             </div>
 
             <div className="flex justify-end px-3 py-4">
-                <Link href="../dev/booking2">
-                    <button
-                        type="button"
-                        className="rounded-lg border border-primary-500 bg-green-300 px-5 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white"
-                    >
-                        確認
-                    </button>
-                </Link>
+                <button
+                    type="button"
+                    onClick={() => setShowModal(true)}
+                    className="rounded-lg border border-primary-500 bg-green-300 px-5 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white"
+                >
+                    確認
+                </button>
             </div>
+
+            {showModal ? (
+                <>
+                    <div className="bg-white h-screen flex justify-center items-center absolute top-0 left-0 w-full">
+                        <div className="bg-white border-4 border-blue-400 rounded-lg shadow-sm w-1/2 p-2 text-xs md:text-base ">
+                            {testUsers.map(user => (
+                                <div className="p-2 px-2" key={user.id}>
+                                    <div className="flex justify-center items-center">
+                                        <h2 className="text-gray-400 font-bold mb-2">予約内容確認</h2>
+                                    </div>
+                                    <table className="w-full">
+                                        <tbody className="border rounded-xl border-gray-400 text-center">
+                                            <tr className="border-b border-gray-400">
+                                                <td className="border-r border-gray-400 p-3">内容</td>
+                                                <td className="p-3">{user.subject}</td>
+                                            </tr>
+                                            <tr className="border-b border-gray-400">
+                                                <td className="border-r border-gray-400 p-3">担当教員</td>
+                                                <td className="p-3">{user.teachername}</td>
+                                            </tr>
+                                            <tr className="border-b border-gray-400">
+                                                <td className="border-r border-gray-400 p-3">予約日時（第1希望）</td>
+                                                <td className="p-3">{user.day1} {user.time1}</td>
+                                            </tr>
+                                            <tr className="border-b border-gray-400">
+                                                <td className="border-r border-gray-400 p-3">予約日時（第2希望）</td>
+                                                <td className="p-3">{user.day2} {user.time2}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="border-r border-gray-400 p-3">予約日時（第3希望）</td>
+                                                <td className="p-3">{user.day3} {user.time3}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div className="flex justify-between pt-5">
+                                        <Link href="../dev/booking">
+                                            <button
+                                                onClick={() => setShowModal(false)}
+                                                type="button" className="rounded-lg border border-primary-500 bg-red-300 px-5 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-red-500 hover:text-white">
+                                                戻る
+                                            </button>
+                                        </Link>
+
+                                        <button
+                                            type="button"
+                                            onClick={handleCompleteButtonClick}
+                                            className="rounded-lg border border-primary-500 bg-green-300 px-5 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white"
+                                        >
+                                            完了
+                                        </button>
+
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* メッセージボックスが表示されるときに表示する部分 */}
+                        {showMessageBox && (
+                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50">
+                                <div className="bg-blue-500 p-4 flex flex-col rounded-lg">
+                                    <p className='text-white'>予約完了</p>
+                                    <div className="bg-gray-100 p-6 rounded-lg flex flex-col">
+                                        <p>予約リクエストを送信しました。<br />
+                                            予約の確定はホーム画面からご確認お願いします。<br />
+                                            <a className="underline decoration-wavy decoration-red-400">当日は、学生証の持参と時間厳守でお願いします。</a>
+                                        </p>
+                                        <div className="flex justify-end mt-4">
+                                            <Link href="../dev/homest">
+                                                <button
+                                                    // onClick={handleCloseMessageBox}
+                                                    className="rounded-lg border border-primary-500 bg-red-300 px-5 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-red-500 hover:text-white"
+                                                >
+                                                    閉じる
+                                                </button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                    </div>
+                </>
+            ) : null}
         </div>
     );
 };

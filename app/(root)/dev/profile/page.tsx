@@ -36,6 +36,8 @@ const Profile = () => {
     // 確認ロジックを続行
     const jsonData = JSON.stringify(formData, null, 2);
     alert(jsonData);
+
+    window.location.href = '../dev/profile1';
   };
 
   const isValidTel = (tel) => {
@@ -89,7 +91,7 @@ const Profile = () => {
             value={formData.grade}
             onChange={(e) => handleChange("grade", e.target.value)}
           >
-            <option value="">選択してください</option>
+            <option value=""></option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -104,7 +106,7 @@ const Profile = () => {
             value={formData.graduationYear}
             onChange={(e) => handleChange("graduationYear", e.target.value)}
           >
-            <option value="">選択してください</option>
+            <option value=""></option>
             <option value="2024">2024</option>
             <option value="2025">2025</option>
             <option value="2026">2026</option>
