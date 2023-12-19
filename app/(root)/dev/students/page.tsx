@@ -65,21 +65,24 @@ const Students = () => {
                 </div>
             </div>
 
-
-            <div className="">
-                {testUsers.map(user => (
-                    <Link href="../dev/record">
-                        <button
-                            key={user.id}
-                            className={'mt-5 ml-10 px-8 p-5 border-2 border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-blue-300'}
-                        >
-                            {user.name}<br />
-                            学籍番号：{user.number}
-                        </button>
-                    </Link>
-                ))
-                }
-            </div >
+            <div className="flex justify-center items-center">
+                <div className="bg-gray-100 rounded-lg shadow-md w-4/5 mt-5">
+                    <div className="mt-5 mb-5">
+                        {testUsers.map(user => (
+                            <Link href="../dev/record">
+                                <button
+                                    key={user.id}
+                                    className={'my-2 ml-10 px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-blue-300'}
+                                >
+                                    {user.name}<br />
+                                    学籍番号：{user.number}
+                                </button>
+                            </Link>
+                        ))
+                        }
+                    </div>
+                </div >
+            </div>
         </div>
     );
 }
