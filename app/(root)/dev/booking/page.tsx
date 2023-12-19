@@ -16,9 +16,10 @@ interface Teacher {
 interface TeacherItemProps {
     teacher: Teacher;
     index: number;
+    onClick: () => void;
 }
 
-const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, index }) => {
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, index, onClick }) => {
     const [isCollapseOpen, setIsCollapseOpen] = useState(false);
 
     const handleCollapseToggle = () => {
@@ -37,7 +38,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, index }) => {
             />
             <label
                 htmlFor={`t-${index + 1}`}
-                className="flex items-center justify-between w-full p-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100"
+                className="flex items-center justify-between w-full p-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100" onClick={() => onClick()}
             >
                 <div className="w-full text-lg">
                     <div className="flex flex-row justify-between items-center">
@@ -111,12 +112,14 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, index }) => {
 
 // Booking コンポーネントの定義
 const Booking = () => {
+    const [selectedOption, setSelectedOption] = useState<string>('');
+    const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
     const [showModal, setShowModal] = useState(false);
 
     const hostingOptions = [
         '面談',
         '履歴書の作成・添削',
-        'エントリーシートの作成',
+        'エントリーシート作成',
         '企業探し',
         '企業の相談',
         'その他',
@@ -194,58 +197,61 @@ const Booking = () => {
     const testUsers = [
         {
             id: '601b92ee95861639c3e2c44b',
-            teachername: '○○先生',
+            teachername: selectedTeacher ? selectedTeacher.name : '未選択',
             day1: '2023/12/3',
             time1: '10:00~12:00',
             day2: '2023/12/4',
             time2: '10:00~12:00',
             day3: '2023/12/5',
             time3: '10:00~13:00',
-            subject: '面接練習'
+            subject: selectedOption,
         }
     ];
 
     return (
-        <div className="w-full h-screen font-banana relative p-2">
-            <p className="mt-0 mb-2 text-1xl">1. 予約内容を選択してください</p>
-            <div className="flex flex-row p-2 flex-wrap">
-                {hostingOptions.map((option, index) => (
-                    <li
-                        key={index}
-                        className="list-none mb-2 w-full sm:w-1/2 sm:p-1 md:w-1/3 lg:w-1/6 lg:p-2 xl:w-1/6 xl:p-2"
-                    >
-                        <input
-                            type="radio"
-                            id={`hosting-${index + 1}`}
-                            name="hosting"
-                            value={`hosting-${index + 1}`}
-                            className="hidden peer"
-                            required={index === 0 || index === 3}
-                        />
-                        <label
-                            htmlFor={`hosting-${index + 1}`}
-                            className={`inline-flex items-center justify-center w-full p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100`}
+        <div className="w-full h-full font-banana relative p-2">
+            <div className="p-2">
+                <p className="mb-2 text-1xl">1. 予約内容を選択してください</p>
+                <div className="flex flex-row flex-wrap">
+                    {hostingOptions.map((option, index) => (
+                        <li
+                            key={index}
+                            className="list-none w-full p-1 sm:w-1/2 sm:p-1 md:w-1/3 lg:w-1/6 lg:p-2 xl:w-1/6 xl:p-2"
                         >
-                            <div className="block">
-                                <div className="text-xs">{option}</div>
-                            </div>
-                        </label>
-                    </li>
-                ))}
+                            <input
+                                type="radio"
+                                id={`hosting-${index + 1}`}
+                                name="hosting"
+                                value={`hosting-${index + 1}`}
+                                className="hidden peer"
+                                required={index === 0 || index === 3}
+                                onChange={() => setSelectedOption(option)}
+                            />
+                            <label
+                                htmlFor={`hosting-${index + 1}`}
+                                className={`inline-flex items-center justify-center w-full p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100`}
+                            >
+                                <div className="block">
+                                    <div className="text-xs">{option}</div>
+                                </div>
+                            </label>
+                        </li>
+                    ))}
+                </div>
             </div>
             <div className="">
                 <div className="bg-white p-2">
-                    <p className="mb-3 text-1xl">2. 担当教員を選択してください</p>
+                    <p className="mb-2 text-1xl">2. 担当教員を選択してください</p>
                     <div className="flex flex-row flex-wrap">
                         {testTeachars.map((teacher, index) => (
-                            <TeacherItem key={index} teacher={teacher} index={index} />
-                        ))}
+                            <TeacherItem key={index} teacher={teacher} index={index}
+                                onClick={() => setSelectedTeacher(teacher)} />))}
                     </div>
                 </div>
             </div>
             <div className="mb-2">
                 <div className=" p-2">
-                    <p className="mb-3 text-1xl">3. 日時を選択してください</p>
+                    <p className="mb-2 text-1xl">3. 日時を選択してください</p>
                     <div className="flex flex-row flex-wrap w-full">
                         {[1, 2, 3].map((index) => (
                             <div key={index} className="flex flex-col w-full md:w-auto border border-gray-200 rounded-lg p-2 m-1">
@@ -311,7 +317,7 @@ const Booking = () => {
                 </div>
             </div>
 
-            <div className="flex justify-end px-3 py-4">
+            <div className="flex justify-end px-3">
                 <button
                     type="button"
                     onClick={() => setShowModal(true)}
@@ -323,7 +329,7 @@ const Booking = () => {
 
             {showModal ? (
                 <>
-                    <div className="bg-white h-screen flex justify-center items-center absolute top-0 left-0 w-full">
+                    <div className="bg-white h-full flex justify-center items-center absolute top-0 left-0 w-full">
                         <div className="bg-white border-4 border-blue-400 rounded-lg shadow-sm w-1/2 p-2 text-xs md:text-base ">
                             {testUsers.map(user => (
                                 <div className="p-2 px-2" key={user.id}>
