@@ -24,8 +24,16 @@ export const GET = async (req: Request, res: NextResponse) => {
         const staffUsers = await prisma.user.findMany({
             where: { role: "staff" },
             select: {
-                id: true,   // スタッフのid
-                name: true  // スタッフの名前
+                id: true,                   // スタッフのid
+                name: true,                 // スタッフの名前
+                staffProfile: {             // 職員のプロフィール情報
+                    select: {
+                        gender: true,       // 性別
+                        Strengths: true,    // 得意なこと
+                        tastes: true,       // 趣味
+                        workhistory: true   // 勤務歴
+                    }
+                }
             },
         });
         return NextResponse.json({ message: "Success", staffUsers }, { status: 200 });
@@ -60,7 +68,7 @@ export const POST = async (req: Request, res: NextResponse) => {
                 thirdYmd,
                 thirdStartTime,
                 thirdEndTime,
-                // 既存のUserとStudentProfileの関連付け
+                // 既存のUserとWaitingListとの関連付け
                 user: { connect: { email } },
             },
             include: {
@@ -75,6 +83,7 @@ export const POST = async (req: Request, res: NextResponse) => {
         await prisma.$disconnect();
     }
 };
+
 
 /*
 // テスト用 削除予定
