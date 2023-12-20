@@ -4,75 +4,26 @@ import useSWR from "swr";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-interface StaffUser {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-interface ApiResponse {
-  message: string;
-  staffusers: StaffUser[];
-}
-
 // SWR
 
-// const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-// const StaffUsersComponent = () => {
-//   const { data, error } = useSWR<ApiResponse>("/api/getstaffusers", fetcher);
+const StaffList = () => {
+  const { data, error } = useSWR("/api/student/booking", fetcher);
 
-//   if (error) return <div>Failed to load</div>;
-//   if (!data) return <div>Loading...</div>;
-
-//   return (
-//     <div>
-//       <h1>Staff Users</h1>
-//       <ul>
-//         {data.staffusers.map((user) => (
-//           <li key={user.id}>{user.name}</li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default StaffUsersComponent;
-
-//axios
-const fetchStaffUsers = async (): Promise<StaffUser[]> => {
-  try {
-    const response = await axios.get<ApiResponse>("/api/student/booking");
-    return response.data.staffusers;
-  } catch (error) {
-    console.error("Error fetching staff users", error);
-    return [];
-  }
-};
-
-const StaffUsersComponent = () => {
-  const [staffUsers, setStaffUsers] = useState<StaffUser[]>([]);
-
-  useEffect(() => {
-    const loadData = async () => {
-      const users = await fetchStaffUsers();
-      setStaffUsers(users);
-    };
-
-    loadData();
-  }, []);
+  if (error) return <div>エラーが発生しました。</div>;
+  if (!data) return <div>読み込み中...</div>;
 
   return (
     <div>
-      <h1>Staff Users</h1>
-      <ul>
-        {staffUsers.map((user) => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
+      {data.staffUsers.map((staff: any) => (
+        <div key={staff.id}>
+          <p>{staff.id}</p>
+          <p>名前: {staff.name}</p>
+        </div>
+      ))}
     </div>
   );
 };
 
-export default StaffUsersComponent;
+export default StaffList;
