@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .accordion {
@@ -12,8 +12,10 @@
 .item {
     margin-bottom: 10px;
     padding: 10px;
-    border: 2px solid #3399ff;
+    border: 2px solid #cdcdcd;
+    /* #3399ff; */
     border-radius: 8px;
+    /* background: #FFFFFF; */
 }
 
 .title {

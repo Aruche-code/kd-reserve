@@ -24,6 +24,9 @@ model User {
   // StudentProfileとのリレーション
   studentProfile StudentProfile?
 
+  // staffprofileモデルとのリレーション
+  staffProfile StaffProfile?
+
   // Recordとのリレーション
   record Record[]
 
@@ -31,8 +34,12 @@ model User {
 
   // WaitingListモデルとのリレーション
   waitinglist WaitingList[]
+
+  // StaffNgとのリレーション
+  staffng StaffNg[]
 }
 
+// 生徒プロフィール情報
 model StudentProfile {
   id             String  @id @default(auto()) @map("_id") @db.ObjectId
   department     String? // 学科
@@ -41,6 +48,19 @@ model StudentProfile {
   graduationYear String? // 卒業年
   qualification  String? // 資格
   workLocation   String? // 希望勤務地
+
+  // Userとの逆向きのリレーション
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
+}
+
+// 職員プロフィール情報
+model StaffProfile {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  gender      String? // 性別
+  Strengths   String? // 得意なこと
+  tastes      String? // 趣味
+  workhistory String? // 勤務歴
 
   // Userとの逆向きのリレーション
   user   User   @relation(fields: [userId], references: [id])
@@ -82,29 +102,29 @@ model Account {
 // 職員NG日程用モデル
 model StaffNg {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  email     String? // メールアドレス
   ymd       String? // 年月日
   time      String[] // 時間帯 ＊配列で格納
-  staffName String? // 職員の名前
 
-  @@unique(fields: [email, ymd], name: "staffng_id") // emailとymdの複合主キー 名前は"staffng_identifier"
+  // Userとの逆向きのリレーション
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
 }
 
 // 予約承認待ちリストのモデル
 // 暫定版 ＊変更される可能性あり
 model WaitingList {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  staffEmail      String? // 担当職員メールアドレス
-  details         String? // 面談内容
-  firstYmd        String? // 第一希望の日時
-  firstStartTime  String? // 第一希望の開始時刻
-  firstEndTime    String? // 第一希望の終了時刻
-  secondYmd       String? // 第二希望の日時
-  secondStartTime String? // 第二希望の開始時刻
-  secondEndTime   String? // 第二希望の終了時刻
-  thirdYmd        String? // 第三希望の日時
-  thirdStartTime  String? // 第三希望の開始時刻
-  thirdEndTime    String? // 第三希望の終了時刻
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
+  staffUserId       String? // 指定職員のユーザーモデルのオブジェクトid
+  details           String? // 面談内容
+  firstYmd          String? // 第一希望の日時
+  firstStartTime    String? // 第一希望の開始時刻
+  firstEndTime      String? // 第一希望の終了時刻
+  secondYmd         String? // 第二希望の日時
+  secondStartTime   String? // 第二希望の開始時刻
+  secondEndTime     String? // 第二希望の終了時刻
+  thirdYmd          String? // 第三希望の日時
+  thirdStartTime    String? // 第三希望の開始時刻
+  thirdEndTime      String? // 第三希望の終了時刻
 
   // Userとの逆向きのリレーション
   userId String @db.ObjectId

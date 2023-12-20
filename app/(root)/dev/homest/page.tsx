@@ -47,25 +47,26 @@ const Homest = () => {
 
     return (
 
-        <div className="flex flex-row flex-wrap ">
+        <div className="flex flex-col flex-wrap justify-center items-center">
 
-            <div className="flex flex-col mt-10 w-full lg:w-1/2">
+            <div className="flex flex-col mt-4 w-full lg:w-1/2  bg-gray-100 rounded-md shadow-md p-1">
 
-                <div className="bg-blue-400 p-2 mx-4 border-4 border-blue-400 rounded-lg text-white">
-                    予約確定一覧
+                <div className=" p-2 mx-4 mt-2 rounded-lg text-gray-600">
+                    ■ 予約確定一覧
                 </div>
-                <div className="mt-5">
+                <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div>
+                <div className="mt-3 mb-3">
                     {testUsers.map(user => (
                         <div className="flex flex-col p-2" key={user.id}>
 
-                            <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
+                            <div className="mx-4 p-2 border-2 border-gray-200 bg-white rounded-lg flex flex-row">
 
-                                <div className="w-4/5 flex flex-row text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                <div className="w-4/5 flex flex-row text-center items-center justify-center text-xs md:text-base lg:text-sm xl:text-base">
                                     <div className="w-1/3 px-3 flex flex-col">
                                         <div>{user.day}</div>
                                         <div className="">{user.time}</div>
                                     </div>
-                                    <div className="w-1/3 border-x-2 border-gray-200 px-3">
+                                    <div className="w-1/3 px-3">
                                         {user.teachername}
                                     </div>
                                     <div className="w-1/3 px-3">
@@ -81,19 +82,15 @@ const Homest = () => {
                         </div>
                     ))}
                 </div>
-            </div>
 
-
-
-            <div className="flex flex-col mt-10 w-full lg:w-1/2">
-
-                <div className="bg-orange-300 p-2 mx-4 border-4 border-orange-300 rounded-lg text-white">
-                    承認待ち
+                <div className="p-2 mx-4 rounded-lg text-gray-600">
+                    ■ 承認待ち
                 </div>
-                <div className="mt-5 font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div>
+                <div className="mt-3 text-xs md:text-base lg:text-sm xl:text-base mb-3">
                     {testUsers2.map(user => (
                         <div className="flex flex-col p-2" key={user.id}>
-                            <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
+                            <div className="mx-4 p-2 border-2 bg-white border-gray-200 rounded-lg flex flex-row">
                                 <div className="w-4/5 flex flex-row text-center items-center justify-center">
                                     <div className="w-2/3 px-3 flex flex-col">
                                         1.　{user.day1}　{user.time1}<br />
