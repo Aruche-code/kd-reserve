@@ -110,18 +110,18 @@ model StaffNg {
 // 予約承認待ちリストのモデル
 // 暫定版 ＊変更される可能性あり
 model WaitingList {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  staffEmail      String? // 担当職員メールアドレス
-  details         String? // 面談内容
-  firstYmd        String? // 第一希望の日時
-  firstStartTime  String? // 第一希望の開始時刻
-  firstEndTime    String? // 第一希望の終了時刻
-  secondYmd       String? // 第二希望の日時
-  secondStartTime String? // 第二希望の開始時刻
-  secondEndTime   String? // 第二希望の終了時刻
-  thirdYmd        String? // 第三希望の日時
-  thirdStartTime  String? // 第三希望の開始時刻
-  thirdEndTime    String? // 第三希望の終了時刻
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
+  staffUserId       String? // 指定職員のユーザーモデルのオブジェクトid
+  details           String? // 面談内容
+  firstYmd          String? // 第一希望の日時
+  firstStartTime    String? // 第一希望の開始時刻
+  firstEndTime      String? // 第一希望の終了時刻
+  secondYmd         String? // 第二希望の日時
+  secondStartTime   String? // 第二希望の開始時刻
+  secondEndTime     String? // 第二希望の終了時刻
+  thirdYmd          String? // 第三希望の日時
+  thirdStartTime    String? // 第三希望の開始時刻
+  thirdEndTime      String? // 第三希望の終了時刻
 
   // Userとの逆向きのリレーション
   userId String @db.ObjectId
