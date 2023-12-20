@@ -47,17 +47,19 @@ export const GET = async (req: Request, res: NextResponse) => {
 
 // POST
 // 指定したemailのUserにWaitingListを追加するAPI
+// このAPIのテストを行うにはUserモデルからstaffユーザーのオブジェクトidをPOSTのパラメータに指定する必要があります
 export const POST = async (req: Request, res: NextResponse) => {
     try {
-        // const email = getUsermail() // 本番用
-        const email = "giwa@mail.com" // テスト
-        const { staffEmail, details, firstYmd, firstStartTime, firstEndTime, secondYmd,
+        // const email = getUserMail() // 本番用
+        const email = "giwa@mail.com" // テスト用 予約画面を操作している学生のメールアドレスを取得
+        const { staffUserId, details, firstYmd, firstStartTime, firstEndTime, secondYmd,
                 secondStartTime, secondEndTime, thirdYmd, thirdStartTime, thirdEndTime } = await req.json();
         await main();
 
+        // 予約情報をUserモデルの中の操作している学生のWaitingListに保存する
         const WaitingListCreate = await prisma.waitingList.create({
             data: {
-                staffEmail,
+                staffUserId,
                 details,
                 firstYmd,
                 firstStartTime,
