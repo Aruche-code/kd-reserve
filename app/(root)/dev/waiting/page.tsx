@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-interface YourComponentProps {
+interface selectedUser {
+
     testUsers: {
         id: string;
         kana: string;
@@ -14,7 +15,8 @@ interface YourComponentProps {
         time2: string;
         day3: string;
         time3: string;
-    }[];
+        
+    };
     testUsers2: {
         id: string;
         kana: string;
@@ -25,13 +27,16 @@ interface YourComponentProps {
         time2: string;
         day3: string;
         time3: string;
-    }[];
+    };
 }
 
-const YourComponent: React.FC<YourComponentProps> = ({ testUsers, testUsers2 }) => {
+const selectedUser: React.FC<selectedUser> = ({ testUsers, testUsers2 }) => {
+
+    // 選択されたオプションと時間を管理するためのState
     const [selectedOption, setSelectedOption] = useState("");
     const [selectedTimes, setSelectedTimes] = useState<string[]>(["", "", ""]);
 
+    // 選択された時間を更新するハンドラ
     const handleTimeChange = (index: number, selectedTime: string) => {
         setSelectedTimes((prevTimes) => {
             const newTimes = [...prevTimes];
@@ -40,191 +45,19 @@ const YourComponent: React.FC<YourComponentProps> = ({ testUsers, testUsers2 }) 
         });
     };
 
+    // 選択されたオプションを更新するハンドラ
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedOption(event.target.value);
     };
 
+    // 選択されたオプションに基づいて使用するデータセットを判断
     const selectedData = selectedOption === "firstChoice" ? testUsers : testUsers2;
 
-    
+
 
     return (
-        <div className="flex flex-col">
-            <label>
-                <div className="flex flex-row items-start">
-                    <input
-                        type="radio"
-                        value="firstChoice"
-                        checked={selectedOption === "firstChoice"}
-                        onChange={handleRadioChange}
-                    />
-                    {selectedData.map((user, index) => (
-                        <div key={user.id} className="flex flex-row ml-2 mb-2 border-2 border-gray-300 rounded-lg">
-                            <span className="flex flex-col mx-2 p-2 text-xs text-gray-500">第1希望</span>
-                            <div className="flex flex-col">
-                                <div className="m-1">{user.day1}</div>
-                                <div>
-                                    <div className="m-4">
-                                        <div className="flex flex-row justify-center ">
-                                            {[1, 2].map((part) => (
-                                                <React.Fragment key={part}>
-                                                    <div className="bg-white w-full">
-                                                        <select
-                                                            className="py-1 px-3 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-xs focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                                                            defaultValue={selectedTimes[index]}  // ここで value を指定
-                                                            onChange={(e) => handleTimeChange(index, e.target.value)}  // ここで onChange ハンドラを指定
-                                                        >
-                                                            <option value="" disabled >
-                                                                選択する
-                                                            </option>
-                                                            {Array.from({ length: 18 }, (_, hour) => {
-                                                                const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
-                                                                const formattedTime = timeValue.toLocaleTimeString("ja-JP", {
-                                                                    hour12: false,
-                                                                    hour: "2-digit",
-                                                                    minute: "2-digit",
-                                                                });
+        <div className="">
 
-                                                                return (
-                                                                    <option key={hour} value={formattedTime}>
-                                                                        {formattedTime}
-                                                                    </option>
-                                                                );
-                                                            })}
-                                                        </select>
-                                                    </div>
-                                                    {part === 1 && (
-                                                        <div className="bg-white text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 flex justify-center">
-                                                            <p>～</p>
-                                                        </div>
-                                                    )}
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    ))}
-                </div>
-            </label >
-
-
-            <label>
-                <div className="flex flex-row items-start">
-                    <input
-                        type="radio"
-                        value="secondChoice"
-                        checked={selectedOption === "secondChoice"}
-                        onChange={handleRadioChange}
-                    />
-                    {selectedData.map((user) => (
-                        <div className="flex flex-row ml-2 mb-2 border-2 border-gray-300 rounded-lg" key={user.id}>
-                            <span className="flex flex-col mx-2 p-2 text-xs text-gray-500">第2希望</span>
-                            <div className="flex flex-col">
-                                <div className="m-1">{user.day2}</div>
-                                <div>
-                                    <div className="m-4">
-                                        <div className="flex flex-row justify-center ">
-                                            {[1, 2].map((part) => (
-                                                <React.Fragment key={part}>
-                                                    <div className="bg-white w-full">
-                                                        <select
-                                                            className="py-1 px-3 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-xs focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                                                            defaultValue=""
-                                                        >
-                                                            <option value="" disabled >
-                                                                選択する
-                                                            </option>
-                                                            {Array.from({ length: 18 }, (_, hour) => {
-                                                                const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
-                                                                const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
-                                                                    hour12: false,
-                                                                    hour: '2-digit',
-                                                                    minute: '2-digit',
-                                                                });
-
-                                                                return (
-                                                                    <option key={hour} value={formattedTime}>
-                                                                        {formattedTime}
-                                                                    </option>
-                                                                );
-                                                            })}
-                                                        </select>
-                                                    </div>
-                                                    {part === 1 && (
-                                                        <div className="bg-white text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 flex justify-center">
-                                                            <p>～</p>
-                                                        </div>
-                                                    )}
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </label>
-            <label>
-                <div className="flex flex-row items-start">
-                    <input
-                        type="radio"
-                        value="thirdChoice"
-                        checked={selectedOption === "thirdChoice"}
-                        onChange={handleRadioChange}
-                    />
-                    {selectedData.map((user) => (
-                        <div className="flex flex-row ml-2 mb-2 border-2 border-gray-300 rounded-lg" key={user.id}>
-                            <span className="flex flex-col mx-2 p-2 text-xs text-gray-500">第3希望</span>
-                            <div className="flex flex-col">
-                                <div className="m-1">{user.day3}</div>
-                                <div>
-                                    <div className="m-4">
-                                        <div className="flex flex-row justify-center ">
-                                            {[1, 2].map((part) => (
-                                                <React.Fragment key={part}>
-                                                    <div className="bg-white w-full">
-                                                        <select
-                                                            className="py-1 px-3 pe-9 block w-full bg-gray-100 border-transparent rounded-lg text-xs focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                                                            defaultValue=""
-                                                        >
-                                                            <option value="" disabled >
-                                                                選択する
-                                                            </option>
-                                                            {Array.from({ length: 18 }, (_, hour) => {
-                                                                const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
-                                                                const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
-                                                                    hour12: false,
-                                                                    hour: '2-digit',
-                                                                    minute: '2-digit',
-                                                                });
-
-                                                                return (
-                                                                    <option key={hour} value={formattedTime}>
-                                                                        {formattedTime}
-                                                                    </option>
-                                                                );
-                                                            })}
-                                                        </select>
-                                                    </div>
-                                                    {part === 1 && (
-                                                        <div className="bg-white text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 flex justify-center">
-                                                            <p>～</p>
-                                                        </div>
-                                                    )}
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </label>
         </div >
     );
 };
@@ -234,7 +67,8 @@ const YourComponent: React.FC<YourComponentProps> = ({ testUsers, testUsers2 }) 
 const Waiting = () => {
     //モーダルウィンドウ
     const [showModal, setShowModal] = useState(false);
-
+    const [showModal2, setShowModal2] = useState(false);
+    
 
     const testUsers = [
         {
@@ -332,32 +166,200 @@ const Waiting = () => {
             </div>
             {showModal ? (
                 <>
-                    <div
-                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
-                        onClick={() => setShowModal(false)}>
-                    </div>
+                    {testUsers.map(user => (
+                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div className="" key={user.id}>
+                                <div className="flex justify-center items-center">
+                                    <div
+                                        className="fixed inset-0 bg-gray-600 bg-opacity-30 transition-opacity"
+                                        onClick={() => setShowModal(false)}>
+                                    </div>
 
-                    <div className="fixed p-10 w-auto h-auto bg-white shadow-xl rounded-xl ">
-                        {/* 解除ボタン */}
-                        <button onClick={() => setShowModal(false)} className="absolute top-3 right-3">
-                            <svg
-                                className="w-6 h-6 text-4xl"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                        <YourComponent testUsers={testUsers} testUsers2={testUsers2} />
+                                    <div className="fixed px-10 py-2 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                                        {/* 解除ボタン */}
+                                        <button onClick={() => setShowModal(false)} className="absolute top-3 right-3">
+                                            <svg
+                                                className="w-6 h-6 text-4xl"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
+                                            </svg>
+                                        </button>
+                                        {/* ラジオボタン */}
+                                        <div className="flex flex-col">
+                                            <div className="mb-5 text-xl text-gray-500">予約確定申請</div>
+                                            <div>{user.name}</div>
+                                            <label className="text-gray-700 flex items-start">
+                                                <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
+                                                <div className="px-5 border-2 border-gray-300 rounded-lg hover:border-blue-500 shadow-sm mb-2">
+                                                    <span className="flex flex-col p-2 text-xs text-gray-500">第1希望</span>
+                                                    <div className="flex flex-col">
+                                                        <div className="m-1 mb-2 text-gray-500">
+                                                            {user.day1}
+                                                        </div>
+                                                        <div className="flex flex-row flex-wrap w-full">
+                                                            <div className="">
+                                                                <div className="flex flex-row justify-center ">
+                                                                    {[1, 2].map((part) => (
+                                                                        <React.Fragment key={part}>
+                                                                            <div className="mb-2 w-full">
+                                                                                <select
+                                                                                    className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"
+                                                                                    defaultValue=""
+                                                                                >
+                                                                                    <option value="" disabled >
+                                                                                        選択する
+                                                                                    </option>
+                                                                                    {Array.from({ length: 18 }, (_, hour) => {
+                                                                                        const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
+                                                                                        const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
+                                                                                            hour12: false,
+                                                                                            hour: '2-digit',
+                                                                                            minute: '2-digit',
+                                                                                        });
 
-                    </div>
+                                                                                        return (
+                                                                                            <option key={hour} value={formattedTime}>
+                                                                                                {formattedTime}
+                                                                                            </option>
+                                                                                        );
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {part === 1 && (
+                                                                                <div className="text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 mx-3 flex justify-center">
+                                                                                    <p>～</p>
+                                                                                </div>
+                                                                            )}
+                                                                        </React.Fragment>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label className="text-gray-700 flex items-start">
+                                                <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
+                                                <div className="px-5 border-2 border-gray-300 rounded-lg hover:border-blue-500 shadow-sm mb-2">
+                                                    <span className="flex flex-col p-2 text-xs text-gray-500">第2希望</span>
+                                                    <div className="flex flex-col">
+                                                        <div className="m-1 mb-2 text-gray-500">
+                                                            {user.day2}
+                                                        </div>
+                                                        <div className="flex flex-row flex-wrap w-full">
+                                                            <div className="">
+                                                                <div className="flex flex-row justify-center ">
+                                                                    {[1, 2].map((part) => (
+                                                                        <React.Fragment key={part}>
+                                                                            <div className="mb-2 w-full">
+                                                                                <select
+                                                                                    className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"
+                                                                                    defaultValue=""
+                                                                                >
+                                                                                    <option value="" disabled >
+                                                                                        選択する
+                                                                                    </option>
+                                                                                    {Array.from({ length: 18 }, (_, hour) => {
+                                                                                        const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
+                                                                                        const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
+                                                                                            hour12: false,
+                                                                                            hour: '2-digit',
+                                                                                            minute: '2-digit',
+                                                                                        });
+
+                                                                                        return (
+                                                                                            <option key={hour} value={formattedTime}>
+                                                                                                {formattedTime}
+                                                                                            </option>
+                                                                                        );
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {part === 1 && (
+                                                                                <div className="text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 mx-3 flex justify-center">
+                                                                                    <p>～</p>
+                                                                                </div>
+                                                                            )}
+                                                                        </React.Fragment>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label className="text-gray-700 flex items-start">
+                                                <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
+                                                <div className="px-5 border-2 border-gray-300 rounded-lg hover:border-blue-500 shadow-sm">
+                                                    <span className="flex flex-col p-2 text-xs text-gray-500">第3希望</span>
+                                                    <div className="flex flex-col">
+                                                        <div className="m-1 mb-2 text-gray-500">
+                                                            {user.day3}
+                                                        </div>
+                                                        <div className="flex flex-row flex-wrap w-full">
+                                                            <div className="">
+                                                                <div className="flex flex-row justify-center ">
+                                                                    {[1, 2].map((part) => (
+                                                                        <React.Fragment key={part}>
+                                                                            <div className="mb-2 w-full">
+                                                                                <select
+                                                                                    className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"
+                                                                                    defaultValue=""
+                                                                                >
+                                                                                    <option value="" disabled >
+                                                                                        選択する
+                                                                                    </option>
+                                                                                    {Array.from({ length: 18 }, (_, hour) => {
+                                                                                        const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
+                                                                                        const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
+                                                                                            hour12: false,
+                                                                                            hour: '2-digit',
+                                                                                            minute: '2-digit',
+                                                                                        });
+
+                                                                                        return (
+                                                                                            <option key={hour} value={formattedTime}>
+                                                                                                {formattedTime}
+                                                                                            </option>
+                                                                                        );
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {part === 1 && (
+                                                                                <div className="text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 mx-3 flex justify-center">
+                                                                                    <p>～</p>
+                                                                                </div>
+                                                                            )}
+                                                                        </React.Fragment>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div className="flex justify-end">
+                                            <button
+                                                type="button" className="rounded-lg bg-green-300 my-2 px-3 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">
+                                                申請
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
                 </>
             ) : null}
 
@@ -370,7 +372,7 @@ const Waiting = () => {
                     <div className="mt-2">
                         <Link href="" key={user.id}>
                             <div className="flex items-center justify-center">
-                                <button onClick={() => setShowModal(true)}
+                                <button onClick={() => setShowModal2(true)}
                                     className="mt-5 p-3 w-5/6 border-2 border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-orange-200">
                                     <div className="text-base md:text-xl">
                                         {user.name}<br />
@@ -383,45 +385,216 @@ const Waiting = () => {
                                 </button>
                             </div>
                         </Link>
+
                     </div>
                 ))}
 
             </div>
-            {showModal ? (
+            {showModal2 ? (
                 <>
-                    <div
-                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
-                        onClick={() => setShowModal(false)}>
-                    </div>
+                    {testUsers2.map(user => (
+                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div className="" key={user.id}>
+                                <div className="flex justify-center items-center">
+                                    <div
+                                        className="fixed inset-0 bg-gray-600 bg-opacity-70 transition-opacity"
+                                        onClick={() => setShowModal2(false)}>
+                                    </div>
 
-                    <div className="fixed p-10 w-auto h-auto bg-white shadow-xl rounded-xl ">
-                        {/* 解除ボタン */}
-                        <button onClick={() => setShowModal(false)} className="absolute top-3 right-3">
-                            <svg
-                                className="w-6 h-6 text-4xl"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
+                                    <div className="fixed px-10 py-2 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                                        {/* 解除ボタン */}
+                                        <button onClick={() => setShowModal2(false)} className="absolute top-3 right-3">
+                                            <svg
+                                                className="w-6 h-6 text-4xl"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
+                                            </svg>
+                                        </button>
+                                        {/* ラジオボタン */}
 
+                                        <div className="flex flex-col">
+                                            <div className="mb-5 text-xl text-gray-500">予約確定申請</div>
+                                            <div>{user.name}</div>
+                                            <label className="text-gray-700 flex items-start">
+                                                <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
+                                                <div className="px-5 border-2 border-gray-300 rounded-lg hover:border-blue-500 shadow-sm mb-2">
+                                                    <span className="flex flex-col p-2 text-xs text-gray-500">第1希望</span>
+                                                    <div className="flex flex-col">
+                                                        <div className="m-1 mb-2 text-gray-500">
+                                                            {user.day1}
+                                                        </div>
+                                                        <div className="flex flex-row flex-wrap w-full">
+                                                            <div className="">
+                                                                <div className="flex flex-row justify-center ">
+                                                                    {[1, 2].map((part) => (
+                                                                        <React.Fragment key={part}>
+                                                                            <div className="mb-2 w-full">
+                                                                                <select
+                                                                                    className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"
+                                                                                    defaultValue=""
+                                                                                >
+                                                                                    <option value="" disabled >
+                                                                                        選択する
+                                                                                    </option>
+                                                                                    {Array.from({ length: 18 }, (_, hour) => {
+                                                                                        const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
+                                                                                        const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
+                                                                                            hour12: false,
+                                                                                            hour: '2-digit',
+                                                                                            minute: '2-digit',
+                                                                                        });
 
-                        <YourComponent testUsers={testUsers} testUsers2={testUsers2} />
+                                                                                        return (
+                                                                                            <option key={hour} value={formattedTime}>
+                                                                                                {formattedTime}
+                                                                                            </option>
+                                                                                        );
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {part === 1 && (
+                                                                                <div className="text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 mx-3 flex justify-center">
+                                                                                    <p>～</p>
+                                                                                </div>
+                                                                            )}
+                                                                        </React.Fragment>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label className="text-gray-700 flex items-start">
+                                                <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
+                                                <div className="px-5 border-2 border-gray-300 rounded-lg hover:border-blue-500 shadow-sm mb-2">
+                                                    <span className="flex flex-col p-2 text-xs text-gray-500">第2希望</span>
+                                                    <div className="flex flex-col">
+                                                        <div className="m-1 mb-2 text-gray-500">
+                                                            {user.day2}
+                                                        </div>
+                                                        <div className="flex flex-row flex-wrap w-full">
+                                                            <div className="">
+                                                                <div className="flex flex-row justify-center ">
+                                                                    {[1, 2].map((part) => (
+                                                                        <React.Fragment key={part}>
+                                                                            <div className="mb-2 w-full">
+                                                                                <select
+                                                                                    className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"
+                                                                                    defaultValue=""
+                                                                                >
+                                                                                    <option value="" disabled >
+                                                                                        選択する
+                                                                                    </option>
+                                                                                    {Array.from({ length: 18 }, (_, hour) => {
+                                                                                        const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
+                                                                                        const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
+                                                                                            hour12: false,
+                                                                                            hour: '2-digit',
+                                                                                            minute: '2-digit',
+                                                                                        });
 
-                    </div>
+                                                                                        return (
+                                                                                            <option key={hour} value={formattedTime}>
+                                                                                                {formattedTime}
+                                                                                            </option>
+                                                                                        );
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {part === 1 && (
+                                                                                <div className="text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 mx-3 flex justify-center">
+                                                                                    <p>～</p>
+                                                                                </div>
+                                                                            )}
+                                                                        </React.Fragment>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label className="text-gray-700 flex items-start">
+                                                <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
+                                                <div className="px-5 border-2 border-gray-300 rounded-lg hover:border-blue-500 shadow-sm">
+                                                    <span className="flex flex-col p-2 text-xs text-gray-500">第3希望</span>
+                                                    <div className="flex flex-col">
+                                                        <div className="m-1 mb-2 text-gray-500">
+                                                            {user.day3}
+                                                        </div>
+                                                        <div className="flex flex-row flex-wrap w-full">
+                                                            <div className="">
+                                                                <div className="flex flex-row justify-center ">
+                                                                    {[1, 2].map((part) => (
+                                                                        <React.Fragment key={part}>
+                                                                            <div className="mb-2 w-full">
+                                                                                <select
+                                                                                    className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"
+                                                                                    defaultValue=""
+                                                                                >
+                                                                                    <option value="" disabled >
+                                                                                        選択する
+                                                                                    </option>
+                                                                                    {Array.from({ length: 18 }, (_, hour) => {
+                                                                                        const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
+                                                                                        const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
+                                                                                            hour12: false,
+                                                                                            hour: '2-digit',
+                                                                                            minute: '2-digit',
+                                                                                        });
+
+                                                                                        return (
+                                                                                            <option key={hour} value={formattedTime}>
+                                                                                                {formattedTime}
+                                                                                            </option>
+                                                                                        );
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {part === 1 && (
+                                                                                <div className="text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 mx-3 flex justify-center">
+                                                                                    <p>～</p>
+                                                                                </div>
+                                                                            )}
+                                                                        </React.Fragment>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+
+                                        <div className="flex justify-end">
+                                            <button
+                                                type="button" className="rounded-lg bg-green-300 my-2 px-3 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">
+                                                申請
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </>
+
             ) : null}
+
         </div>
 
     );
+
 
 }
 
