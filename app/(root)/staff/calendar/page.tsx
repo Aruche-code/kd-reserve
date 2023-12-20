@@ -298,8 +298,29 @@ const Home = () => {
                             setNgModal={setNgModal}
                             setInterModal={setInterModal}
                         />
-                        <div className="flex justify-between items-start">
-                            <span className="font-bold">面談予定</span>
+                        <div className="flex flex-col items-center">
+                            <span className="font-bold relative mb-4">面談予定</span>
+                            <div className="flex flex-col p-4">
+                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
+                                    <div className="w-1/3 px-8 flex items-center justify-center">
+                                        <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                            13:30~14:00
+                                        </div>
+                                    </div>
+                                    <div className="w-1/3 border-x-2 border-gray-200 px-8">
+                                        <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                            1298533<br />
+                                            山本弘樹
+                                        </div>
+                                    </div>
+                                    <div className="w-1/3 px-4 flex items-center justify-center">
+                                        <div className="text-center font-medium text-sm">
+                                            エントリーシート
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </>
