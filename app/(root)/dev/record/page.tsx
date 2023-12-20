@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -65,6 +64,7 @@ const Record = () => {
         }
     ];
 
+    const [profileOpen, setProfileOpen] = useState(false);
     const [selected, setSelected] = useState(0);
 
     const toggle = (i) => {
@@ -74,6 +74,9 @@ const Record = () => {
         setSelected(i);
     }
 
+    const toggleProfile = () => {
+        setProfileOpen(!profileOpen);  // 状態を反転させる
+    }
 
     return (
         <div>
@@ -95,43 +98,46 @@ const Record = () => {
 
                         <div className="flex flex-wrap flex-col justify-center items-center">
                             <div className="flex flex-col w-full lg:w-4/5 bg-white rounded-md ">
-                                <div className="bg-blue-300 p-2 mx-4 mt-4 border-4 border-blue-300 rounded-lg text-gray-600">
+                                <div className="bg-blue-300 p-2 border-4 border-blue-300 rounded-lg text-gray-600 font-medium flex justify-between items-center" onClick={toggleProfile}>
                                     プロフィール
+                                    <span>{profileOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
                                 </div>
-                                <div className="p-2 ml-5 mr-5 pb-5 text-gray-700 px-2 text-sm md:text-base">
-                                    <div className="px-5 mb-1 flex flex-row mt-2">
-                                        <div className="w-1/3 text-right">学科・学年 /</div>
-                                        <div className="w-2/3 px-4">{user.department}{user.grade}</div>
+                                {profileOpen && (
+                                    <div className="p-2 ml-5 mr-5 pb-5 pt-5 text-gray-700 px-2 text-sm md:text-base">
+                                        <div className="px-5 mb-1 flex flex-row">
+                                            <div className="w-1/3 text-right">学科・学年 /</div>
+                                            <div className="w-2/3 px-4">{user.department}{user.grade}</div>
+                                        </div>
+                                        <div className="px-5 mb-1 flex flex-row">
+                                            <div className="w-1/3 text-right">卒業予定 /</div>
+                                            <div className="w-2/3 px-4">{user.graduationYear}</div>
+                                        </div>
+                                        <div className="px-5 mb-1 flex flex-row">
+                                            <div className="w-1/3 text-right">電話番号 /</div>
+                                            <div className="w-2/3 px-4">{user.tel}</div>
+                                        </div>
+                                        <div className="px-5 mb-1 flex flex-row">
+                                            <div className="w-1/3 text-right">志望業界 /</div>
+                                            <div className="w-2/3 px-4">{user.industry}</div>
+                                        </div>
+                                        <div className="px-5 mb-1 flex flex-row">
+                                            <div className="w-1/3 text-right">志望勤務地 /</div>
+                                            <div className="w-2/3 px-4">{user.workLocation}</div>
+                                        </div>
+                                        <div className="px-5 mb-1 flex flex-row">
+                                            <div className="w-1/3 text-right">保有資格 /</div>
+                                            <div className="w-2/3 px-4">{user.qualifications}</div>
+                                        </div>
                                     </div>
-                                    <div className="px-5 mb-1 flex flex-row">
-                                        <div className="w-1/3 text-right">卒業予定 /</div>
-                                        <div className="w-2/3 px-4">{user.graduationYear}</div>
-                                    </div>
-                                    <div className="px-5 mb-1 flex flex-row">
-                                        <div className="w-1/3 text-right">電話番号 /</div>
-                                        <div className="w-2/3 px-4">{user.tel}</div>
-                                    </div>
-                                    <div className="px-5 mb-1 flex flex-row">
-                                        <div className="w-1/3 text-right">志望業界 /</div>
-                                        <div className="w-2/3 px-4">{user.industry}</div>
-                                    </div>
-                                    <div className="px-5 mb-1 flex flex-row">
-                                        <div className="w-1/3 text-right">志望勤務地 /</div>
-                                        <div className="w-2/3 px-4">{user.workLocation}</div>
-                                    </div>
-                                    <div className="px-5 mb-1 flex flex-row">
-                                        <div className="w-1/3 text-right">保有資格 /</div>
-                                        <div className="w-2/3 px-4">{user.qualifications}</div>
-                                    </div>
-                                </div>
+                                )}
                             </div>
 
                             <div className="flex flex-col w-full lg:w-4/5 bg-white rounded-md mt-5 mb-5">
 
-                                <div className="bg-blue-300 p-2 mx-5 mt-4 border-4 border-blue-300 rounded-lg text-gray-600">
+                                <div className="bg-blue-300 p-2 border-4 border-blue-300 rounded-lg text-gray-600 font-medium">
                                     話し合いメモ
                                 </div>
-                                <div className=" p-2 mt-2 mx-5 text-gray-700 px-2 text-sm md:text-base">
+                                <div className=" p-2 mt-2 mx-5 pt-3 pb-3 text-gray-700 px-2 text-sm md:text-base">
                                     <div>
                                         <div className="wrapper">
                                             <div className="accordion">
