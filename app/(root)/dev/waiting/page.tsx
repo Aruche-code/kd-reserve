@@ -68,9 +68,22 @@ const Waiting = () => {
     //モーダルウィンドウ
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    // ユーザーの型を定義
+    interface User {
+        id: string;
+        kana: string;
+        name: string;
+        day1: string;
+        time1: string;
+        day2: string;
+        time2: string;
+        day3: string;
+        time3: string;
+    }
+    const [nowuser, setNowUser] = useState<User | null>(null);
     
 
-    const testUsers = [
+    const testUsers : User[] = [
         {
             id: '601b92ee95861639c3e2c44b',
             kana: 'コウベタロウ',
@@ -143,7 +156,7 @@ const Waiting = () => {
                     <div className="mt-2">
                         <Link href="" key={user.id}>
                             <div
-                                onClick={() => setShowModal(true)}
+                                onClick={() => [setShowModal(true), setNowUser(user)]}
                                 className="flex items-center justify-center"
                             >
                                 <button type="button" className="mt-5 p-3 w-5/6 border-2 border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-blue-300">
@@ -166,9 +179,8 @@ const Waiting = () => {
             </div>
             {showModal ? (
                 <>
-                    {testUsers.map(user => (
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-                            <div className="" key={user.id}>
+                            <div className="" key={nowuser!.id}>
                                 <div className="flex justify-center items-center">
                                     <div
                                         className="fixed inset-0 bg-gray-600 bg-opacity-30 transition-opacity"
@@ -196,14 +208,14 @@ const Waiting = () => {
                                         {/* ラジオボタン */}
                                         <div className="flex flex-col">
                                             <div className="mb-5 text-xl text-gray-500">予約確定申請</div>
-                                            <div>{user.name}</div>
+                                            <div>{nowuser!.name}</div>
                                             <label className="text-gray-700 flex items-start">
                                                 <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
                                                 <div className="px-5 border-2 border-gray-300 rounded-lg hover:border-blue-500 shadow-sm mb-2">
                                                     <span className="flex flex-col p-2 text-xs text-gray-500">第1希望</span>
                                                     <div className="flex flex-col">
                                                         <div className="m-1 mb-2 text-gray-500">
-                                                            {user.day1}
+                                                            {nowuser!.day1}
                                                         </div>
                                                         <div className="flex flex-row flex-wrap w-full">
                                                             <div className="">
@@ -253,7 +265,7 @@ const Waiting = () => {
                                                     <span className="flex flex-col p-2 text-xs text-gray-500">第2希望</span>
                                                     <div className="flex flex-col">
                                                         <div className="m-1 mb-2 text-gray-500">
-                                                            {user.day2}
+                                                            {nowuser!.day2}
                                                         </div>
                                                         <div className="flex flex-row flex-wrap w-full">
                                                             <div className="">
@@ -303,7 +315,7 @@ const Waiting = () => {
                                                     <span className="flex flex-col p-2 text-xs text-gray-500">第3希望</span>
                                                     <div className="flex flex-col">
                                                         <div className="m-1 mb-2 text-gray-500">
-                                                            {user.day3}
+                                                            {nowuser!.day3}
                                                         </div>
                                                         <div className="flex flex-row flex-wrap w-full">
                                                             <div className="">
@@ -358,7 +370,6 @@ const Waiting = () => {
                                 </div>
                             </div>
                         </div>
-                    ))}
 
                 </>
             ) : null}
@@ -422,7 +433,7 @@ const Waiting = () => {
                                         {/* ラジオボタン */}
 
                                         <div className="flex flex-col">
-                                            <div className="mb-5 text-xl text-gray-500">予約確定申請</div>
+                                            <div className="mb-5 text-xl text-gray-500 underline">予約確定申請</div>
                                             <div>{user.name}</div>
                                             <label className="text-gray-700 flex items-start">
                                                 <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
