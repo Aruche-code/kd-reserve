@@ -21,6 +21,15 @@ function UserForm() {
   const { data, error } = useSWR("/api/student/profile", fetcher);
   const userData = data ? data.user[0] : null;
   const isEditing = userData && userData.studentProfile;
+  // 学年の選択肢
+  const schoolYears = ["1", "2", "3", "4"];
+
+  // 現在の年を取得し、卒業予定年の選択肢を生成
+  const currentYear = new Date().getFullYear();
+  const graduationYears = Array.from(
+    { length: 4 },
+    (_, i) => currentYear + i
+  ).map(String);
 
   useEffect(() => {
     if (isEditing && userData && userData.studentProfile) {
@@ -38,7 +47,7 @@ function UserForm() {
   }, [userData, isEditing]);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setProfileData((prevState) => ({
@@ -105,12 +114,17 @@ function UserForm() {
         </div>
         <div>
           <label>学年：</label>
-          <input
-            type="text"
+          <select
             name="schoolYear"
             value={profileData.schoolYear}
             onChange={handleChange}
-          />
+          >
+            {schoolYears.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label>電話番号：</label>
@@ -123,13 +137,19 @@ function UserForm() {
         </div>
         <div>
           <label>卒業予定年：</label>
-          <input
-            type="text"
+          <select
             name="graduationYear"
             value={profileData.graduationYear}
             onChange={handleChange}
-          />
+          >
+            {graduationYears.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
         </div>
+
         <div>
           <label>希望勤務地：</label>
           <input
@@ -145,7 +165,8 @@ function UserForm() {
             name="qualification"
             value={profileData.qualification}
             onChange={handleChange}
-            // rows="4"
+            rows={2}
+            style={{ resize: "none" }}
           />
         </div>
 
