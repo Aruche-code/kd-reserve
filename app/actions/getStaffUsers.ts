@@ -11,7 +11,6 @@ const getStaffUsers = async () => {
 
   // セッション情報が存在しない、またはセッションにユーザーのメールアドレスが含まれていない場合
   if (!session?.user?.email) {
-    console.log("not session");
     return [];
   }
 
