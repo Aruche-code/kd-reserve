@@ -13,7 +13,6 @@ const getUsermail = async () => {
 
     return session.user.email;
   } catch (error) {
-    console.error("Error fetching user email:", error);
     return null;
   }
 };
