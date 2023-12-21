@@ -211,10 +211,6 @@ export default AuthForm;
 //       } else if (session?.user?.role === "staff") {
 //         router.push("/staff");
 //         console.log("Authenticated as staff");
-//       } else {
-//         router.push("/users");
-//         console.log("Authenticated");
-//       }
 //     }
 //   }, [status, session?.user?.role, router]);
 
