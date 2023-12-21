@@ -36,7 +36,7 @@ const Sidebar = () => {
     },
   ];
 
-  // モバイル向けナビゲーションバー
+  // モバイル向けナビゲーションバーcomponent
   const renderMobileNav = () => (
     <>
       <div className="fixed inset-x-0 top-0 z-30 bg-kd-sub2-cl text-white">
@@ -98,7 +98,7 @@ const Sidebar = () => {
     </>
   );
 
-  //標準ナビゲーションバー
+  //標準ナビゲーションバーcomponent
   const renderSidebar = () => (
     <aside>
       <div className="flex">
