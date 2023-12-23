@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getUsermail from "@/app/actions/getUsermail";
 
 // DB接続関数
 export async function main() {
