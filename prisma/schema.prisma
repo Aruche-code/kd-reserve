@@ -107,7 +107,7 @@ model StaffNg {
 
   // Userとの逆向きのリレーション
   user   User   @relation(fields: [userId], references: [id])
-  userId String @unique @db.ObjectId
+  userId String @db.ObjectId
 }
 
 // 予約承認待ちリストのモデル
