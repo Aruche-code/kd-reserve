@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getUsermail from "@/app/actions/getUserMail";
+import getUserMail from "@/app/actions/getUserMail";
 
 // DB接続関数
 export async function main() {
@@ -13,7 +13,7 @@ export async function main() {
 
 export const GET = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUsermail();
+    const email = await getUserMail();
     // const email = "higa@mail.com";
 
     await main();
@@ -53,7 +53,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUsermail();
+    const email = await getUserMail();
 
     const {
       department,
@@ -102,7 +102,7 @@ export const POST = async (req: Request, res: NextResponse) => {
 // 指定したemailのStudentprofileを編集するAPI
 export const PUT = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUsermail();
+    const email = await getUserMail();
 
     const {
       department,
@@ -160,7 +160,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
 // 指定したemailのStudentprofileを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUsermail();
+    const email = await getUserMail();
 
     await main();
     await prisma.user.update({

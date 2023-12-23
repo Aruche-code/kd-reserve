@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getUsermail from "@/app/actions/getUserMail";
+import getUserMail from "@/app/actions/getUserMail";
 
 // DB接続関数
 export async function main() {
@@ -48,7 +48,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 // このAPIのテストを行うにはUserモデルからstaffユーザーのオブジェクトidをPOSTのパラメータに指定する必要があります
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUsermail(); // 本番用
+    const email = await getUserMail(); // 本番用
     // const email = "giwa@mail.com"; // テスト用 予約画面を操作している学生のメールアドレスを取得
     const {
       staffUserId,
