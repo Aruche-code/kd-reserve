@@ -1,6 +1,12 @@
 "use client";
 import React from "react";
 
+/**
+ * TeachersList Component
+ * @param {Array} teachers - 教師のデータを含む配列。
+ * @param {Function} onSelect - 教師が選択された時に呼び出される関数。選択された教師のIDを引数として受け取る。
+ * @param {Number} selectedTeacherId - 現在選択されている教師のID。このIDは選択された教師をハイライト表示するために使用される。
+ */
 const TeachersList = ({ teachers, onSelect, selectedTeacherId }: any) => {
   return (
     <div>

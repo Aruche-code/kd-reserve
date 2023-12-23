@@ -1,15 +1,24 @@
-// React モジュールと useState 関数をインポート
 "use client";
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TeachersList from "../../components/TeachersList";
 
+/**
+ * InterviewScheduler Component
+ * 面談予約システムのメインコンポーネント。教師のリストを表示し、選択された教師の利用不可日をユーザーに提供します。
+ */
 const InterviewScheduler = () => {
+  // 選択された教師のIDを保持します。
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+  // 利用可能な全教師のリストを保持します。
   const [teachers, setTeachers] = useState([]);
+  // 選択された教師の利用不可日（NG日）を保持します。
   const [ngDates, setNgDates] = useState([]);
 
+  // 教師データと利用不可日をAPIから取得します。
   useEffect(() => {
+    // 教師のデータをフェッチする非同期関数
     const fetchTeachers = async () => {
       try {
         const response = await axios.get("/api/student/booking");
@@ -19,6 +28,7 @@ const InterviewScheduler = () => {
       }
     };
 
+    // 選択された教師の利用不可日をフェッチする非同期関数
     const fetchNgDates = async () => {
       try {
         if (selectedTeacher) {
@@ -32,14 +42,15 @@ const InterviewScheduler = () => {
       }
     };
 
+    // 教師データと利用不可日のデータをフェッチします。
     fetchTeachers();
     fetchNgDates();
-    console.log(selectedTeacher);
-  }, [selectedTeacher]);
+  }, [selectedTeacher]); // selectedTeacherが変更された時にのみ実行されます。
 
   return (
     <div>
       <h1>面談予約</h1>
+      {/* TeachersListコンポーネント：教師の一覧を表示し、教師を選択する機能を提供します。 */}
       <TeachersList
         teachers={teachers}
         onSelect={setSelectedTeacher}
