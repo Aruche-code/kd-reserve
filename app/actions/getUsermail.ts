@@ -1,8 +1,8 @@
 import getSession from "./getSession";
 
-// 使い方 const usermail = await getUsermail();
+// 使い方 const usermail = await getUserMail();
 
-const getUsermail = async () => {
+const getUserMail = async () => {
   try {
     const session = await getSession();
 
@@ -17,4 +17,4 @@ const getUsermail = async () => {
   }
 };
 
-export default getUsermail;
+export default getUserMail;
