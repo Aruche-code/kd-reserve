@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 
 // DB接続関数
@@ -13,10 +13,11 @@ export async function main() {
 // このエンドポイントは、生徒側予約画面で職員ごとのNG日程を取得するAPIです。
 // APIでしようする検索用キーに職員のユーザーモデルのオブジェクトIDが必要本番環境ではフロント側からオブジェクトIDを受け取る
 
-export const GET = async (req: Request, res: NextResponse) => {
+export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
+    // URLの動的な部分からstaffUserIdを抽出
+    const staffUserId = req.nextUrl.pathname.split("/").pop();
     await main(); // DB接続関数の呼び出し
-    const staffUserId = req.url.split("/student/booking")[1];
     const staffNgData = await prisma.user.findMany({
       // findManyメソッドを使用して、StaffNgモデルから複数のレコードを取得
       where: { id: staffUserId }, // whereメソッドを使用して、staffUserIdが一致するレコードを取得
