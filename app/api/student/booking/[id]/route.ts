@@ -37,8 +37,8 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       { status: 200 }
     );
   } catch (err) {
-    return NextResponse.json({ message: "Error", err }, { status: 500 }); // ステータスコード Internal Server Error
+    return NextResponse.json({ message: "Server Error", err }, { status: 500 });
   } finally {
-    await prisma.$disconnect(); // DBへの接続を解除
+    await prisma.$disconnect();
   }
 };
