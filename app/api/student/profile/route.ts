@@ -14,7 +14,6 @@ export async function main() {
 export const GET = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
-    // const email = "higa@mail.com";
 
     await main();
     const user = await prisma.user.findMany({
@@ -51,6 +50,7 @@ export const GET = async (req: Request, res: NextResponse) => {
   }
 };
 
+// 指定したemailのStudentprofileを作成するAPI
 export const POST = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
