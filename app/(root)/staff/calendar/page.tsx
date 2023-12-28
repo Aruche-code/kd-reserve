@@ -2,6 +2,7 @@
 "use client";
 import React, { useState , useEffect} from 'react';
 import Calendar from './Calendar';
+import MbCalendar from './MobileCalendar';
 import CloseButton from './CloseButton';
 
 const Home = () => {
@@ -183,7 +184,7 @@ const Home = () => {
     const [NgModal, setNgModal] = useState(false);  //ngモーダルウィンドウ
     const [InterModal, setInterModal] = useState(false); //面接日程確認モーダル
 
-    return (
+    const PcCalendar = () => (
         // カレンダー部分
         <div className="flex h-auto w-full justify-center items-center">
             <div className="ml-8 mt-0 w-10/12 pr-5">
@@ -326,6 +327,159 @@ const Home = () => {
                 </>
             ) : null}
         </div>    
+    );
+
+    const MobileCalendar = () => (
+        <div className="flex h-auto w-full justify-center items-center">
+            <div className=" mt-20 w-full">
+                <div>
+                    <MbCalendar 
+                        date={date}
+                        setDate={setDate} 
+                        daysInMonth={daysInMonth}
+                        prevMonth={prevMonth}
+                        nextMonth={nextMonth} 
+                        setShowModal={setShowModal}
+                        setselectedDay={setselectedDay}
+                        interview={interview}
+                        selectedTimes={selectedTimes}
+                    />
+                </div>
+            </div>
+
+            {/* モーダルウィンドウ */}
+            {showModal ? (
+                <>
+                    <div
+                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                        onClick={() => setShowModal(false)}
+                    ></div>
+
+                    <div className="fixed p-4 w-auto h-auto bg-white shadow-xl rounded-xl mt-24">
+                        <CloseButton 
+                            setShowModal={setShowModal}
+                            setNgModal={setNgModal}
+                            setInterModal={setInterModal}
+                        />
+                        
+                        <div className="flex flex-col">
+                            <div 
+                            className="bg-red-400 hover:bg-red-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-14 w-36"
+                            onClick={() => setNgModal(true)}  
+                            >
+                            NG日程追加
+                            </div>
+
+                            <div
+                            className="bg-blue-400 hover:bg-blue-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-14 w-36"
+                            onClick={() => setInterModal(true)}
+                            >
+                            予定の確認
+                            </div>
+                        </div>
+                    </div>
+                </>
+            ) : null}
+            {NgModal ? (
+                <>
+                    <div
+                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                        onClick={() => setNgModal(false)}
+                    ></div>
+
+                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl mt-20">
+                        <CloseButton 
+                            setShowModal={setShowModal}
+                            setNgModal={setNgModal}
+                            setInterModal={setInterModal}
+                        />
+                        <div className="flex justify-between items-start">
+                            <span className="font-bold">NG日程追加</span>
+                        </div>
+
+                        {/* 一括指定ボタン */}
+                        <div className="flex flex-wrap justify-center max-w-xl my-4">
+                            {timeAll.map((time) => (
+                                <div
+                                    key={time}
+                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
+                                    isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                    }`}
+                                    onClick={() => toggleALL(time)}
+                                >
+                                    <span>{time}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* 個別指定ボタン */}
+                        <div className="flex flex-wrap justify-center max-w-3xl">
+                            {timeOptions.map((time) => (
+                                <div
+                                    key={time}
+                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
+                                    isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                    }`}
+                                    onClick={() => toggleBgColor(selectedDay,time)}
+                                >
+                                    <span>{time}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </>
+            ) : null}
+            {InterModal ? (
+                <>
+                    <div
+                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                        onClick={() => setInterModal(false)}
+                    ></div>
+
+                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                        <CloseButton 
+                            setShowModal={setShowModal}
+                            setNgModal={setNgModal}
+                            setInterModal={setInterModal}
+                        />
+                        <div className="flex flex-col items-center">
+                            <span className="font-bold relative mb-4">面談予定</span>
+                            <div className="flex flex-col p-4">
+                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
+                                    <div className="w-1/3 px-8 flex items-center justify-center">
+                                        <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                            13:30~14:00
+                                        </div>
+                                    </div>
+                                    <div className="w-1/3 border-x-2 border-gray-200 px-8">
+                                        <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                            1298533<br />
+                                            山本弘樹
+                                        </div>
+                                    </div>
+                                    <div className="w-1/3 px-4 flex items-center justify-center">
+                                        <div className="text-center font-medium text-sm">
+                                            エントリーシート
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </>
+            ) : null}
+        </div>
+    );
+
+    return (
+        <>
+            {/* モバイル向けナビゲーションバー（mdブレークポイント以下でのみ表示） */}
+            <div className="md:hidden">{MobileCalendar()}</div>
+        
+            {/* デスクトップ向けサイドバー（mdブレークポイント以上でのみ表示） */}
+            <div className="hidden md:flex">{PcCalendar()}</div>
+        </>
     );
 }
 
