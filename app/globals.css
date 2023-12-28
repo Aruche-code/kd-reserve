@@ -7,3 +7,10 @@ body,
 :root {
     height: 100%;
 }
+
+/* react-datepicker 特定のセレクタを破壊 */
+.react-datepicker__time-list-item--disabled {
+    display: none; /* 完全に非表示にする */
+}
+
+
