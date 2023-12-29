@@ -40,7 +40,7 @@ return (
         />
     </div>
 
-    <div className="grid grid-cols-7 w-11/12 mx-auto">
+    <div className="grid grid-cols-7 w-full mx-auto mt-6">
 
         {/* 曜日表示 */}
         {['日', '月', '火', '水', '木', '金', '土'].map(day => (
@@ -68,10 +68,10 @@ return (
                 >
                     {day}
                     {interview[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
-                    <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-xxs my-1">予約あり</div>
+                    <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-xxs my-1">予約</div>
                     ):""}
                     {selectedTimes[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
-                    <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-xxs my-1">NG日程あり</div>
+                    <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-xxs my-1">NG</div>
                     ):""}
                 </div>
             )

@@ -11,7 +11,7 @@ export async function main() {
 }
 
 // このエンドポイントは、生徒側予約画面で職員ごとのNG日程を取得するAPIです。
-// APIでしようする検索用キーに職員のユーザーモデルのオブジェクトIDが必要本番環境ではフロント側からオブジェクトIDを受け取る
+// APIで仕様する検索用キーに職員のユーザーモデルのオブジェクトIDが必要フロント側からクエリパラメータとしてIDを受け取る
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
@@ -37,8 +37,8 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       { status: 200 }
     );
   } catch (err) {
-    return NextResponse.json({ message: "Error", err }, { status: 500 }); // ステータスコード Internal Server Error
+    return NextResponse.json({ message: "Server Error", err }, { status: 500 });
   } finally {
-    await prisma.$disconnect(); // DBへの接続を解除
+    await prisma.$disconnect();
   }
 };

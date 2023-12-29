@@ -88,7 +88,28 @@ function UserForm() {
   if (error) return <div>データの取得に失敗しました。</div>;
   if (!data)
     return (
-      <div>ローディング中...{/* ここにスケルトンボディを追加してほしい */}</div>
+      // <div>ローディング中...{/* ここにスケルトンボディを追加してほしい */}</div>
+      <div className="flex flex-col flex-1 p-1.5 items-center">
+        <div className="bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-2/3 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
+          <div className="animate-pulse bg-gray-300 h-6 p-4 w-1/3 mt-8 mb-3"></div>
+
+          <div className="animate-pulse w-3/4 sm:w-8/12 mx-auto">
+            {["名前", "メールアドレス", "電話番号", "学科", "学年", "卒業予定年", "希望勤務地", "資格"].map((label, index) => (
+              <div className="flex items-center mt-3" key={index}>
+                <label className="text-gray-900 w-1/3 bg-gray-300 p-3 mt-1 mx-2"></label>
+                <div className="ms-2 bg-gray-300 w-2/3 p-3 mt-1 mx-1"></div>
+              </div>
+            ))}
+            <button
+              className="flex items-center px-20 py-2 text-center text-white bg-blue-600 rounded-xl hover:bg-blue-700 mt-7 mb-7 mx-auto"
+              type="submit"
+              disabled
+            >
+              ローディング中...
+            </button>
+          </div>
+        </div>
+      </div>
     );
 
   return (
