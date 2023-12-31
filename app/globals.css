@@ -7,3 +7,22 @@ body,
 :root {
     height: 100%;
 }
+
+.react-datepicker .react-datepicker__header {
+    background-color: #1b4c6a; 
+}
+
+.react-datepicker .react-datepicker__current-month {
+    color: #fff; 
+}
+
+.react-datepicker .react-datepicker__day-name {
+    color: #fff;
+}
+
+.react-datepicker .react-datepicker__day--selected {
+    background-color: #1facf3
+}
+
+
+

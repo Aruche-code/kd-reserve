@@ -37,6 +37,9 @@ model User {
 
   // StaffNgとのリレーション
   staffng StaffNg[]
+
+  // Bookingとのリレーション
+  booking Booking[]
 }
 
 // 生徒プロフィール情報
@@ -101,9 +104,9 @@ model Account {
 
 // 職員NG日程用モデル
 model StaffNg {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  ymd       String? // 年月日
-  time      String[] // 時間帯 ＊配列で格納
+  id   String   @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
+  ymd  String? // 年月日
+  time String[] // 時間帯 ＊配列で格納
 
   // Userとの逆向きのリレーション
   user   User   @relation(fields: [userId], references: [id])
@@ -113,18 +116,18 @@ model StaffNg {
 // 予約承認待ちリストのモデル
 // 暫定版 ＊変更される可能性あり
 model WaitingList {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  staffUserId       String? // 指定職員のユーザーモデルのオブジェクトid
-  details           String? // 面談内容
-  firstYmd          String? // 第一希望の日時
-  firstStartTime    String? // 第一希望の開始時刻
-  firstEndTime      String? // 第一希望の終了時刻
-  secondYmd         String? // 第二希望の日時
-  secondStartTime   String? // 第二希望の開始時刻
-  secondEndTime     String? // 第二希望の終了時刻
-  thirdYmd          String? // 第三希望の日時
-  thirdStartTime    String? // 第三希望の開始時刻
-  thirdEndTime      String? // 第三希望の終了時刻
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
+  staffUserId     String? // 指定職員のユーザーモデルのオブジェクトid
+  details         String? // 面談内容
+  firstYmd        String? // 第一希望の日時
+  firstStartTime  String? // 第一希望の開始時刻
+  firstEndTime    String? // 第一希望の終了時刻
+  secondYmd       String? // 第二希望の日時
+  secondStartTime String? // 第二希望の開始時刻
+  secondEndTime   String? // 第二希望の終了時刻
+  thirdYmd        String? // 第三希望の日時
+  thirdStartTime  String? // 第三希望の開始時刻
+  thirdEndTime    String? // 第三希望の終了時刻
 
   // Userとの逆向きのリレーション
   userId String @db.ObjectId
@@ -140,6 +143,8 @@ model Booking {
   ymd          String? // 年月日
   time         String[] // 時間帯 ＊配列で格納
   details      String? // 面談内容
+  User         User?    @relation(fields: [userId], references: [id])
+  userId       String?  @db.ObjectId
 
   @@unique(fields: [studentEmail, staffEmail, ymd], name: "booking_id") // 学生・職員のemailとymdの複合主キー 名前は"booking_id"
 }
