@@ -16,6 +16,7 @@ import {
 } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import ja from "date-fns/locale/ja";
+import CustomInput from "@/app/components/inputs/DatePicker";
 
 type OptionType = {
   value: string;
@@ -108,7 +109,7 @@ const TimeSelector: React.FC = () => {
   }, [startTime, timeOptions]);
 
   return (
-    <div>
+    <div className="p-4 max-w-sm mx-auto bg-white rounded-lg shadow-md flex flex-col space-y-3">
       <DatePicker
         selected={selectedDate}
         onChange={(date: Date) => setSelectedDate(date)}
@@ -116,6 +117,8 @@ const TimeSelector: React.FC = () => {
         locale={ja}
         minDate={new Date()}
         excludeDates={excludeDatesArray}
+        customInput={<CustomInput />}
+        className="form-input block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
       />
       <Select
         id="selectbox"
@@ -124,6 +127,8 @@ const TimeSelector: React.FC = () => {
         value={startTime}
         onChange={handleStartTimeChange}
         placeholder="開始時間を選択..."
+        className="basic-single"
+        classNamePrefix="select"
       />
       {startTime ? (
         endTimeOptions.length > 0 ? (
@@ -134,12 +139,16 @@ const TimeSelector: React.FC = () => {
             value={endTime}
             onChange={(option) => setEndTime(option)}
             placeholder="終了時間を選択..."
+            className="basic-single"
+            classNamePrefix="select"
           />
         ) : (
-          <p>選択できる終了時間はありません。開始時間を変更してください。</p>
+          <p className="text-red-500">
+            選択できる終了時間はありません。開始時間を変更してください。
+          </p>
         )
       ) : (
-        <p>開始時間を先に選択してください。</p>
+        <p className="text-gray-500">開始時間を先に選択してください。</p>
       )}
     </div>
   );

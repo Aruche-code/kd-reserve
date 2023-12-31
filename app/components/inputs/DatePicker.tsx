@@ -14,6 +14,8 @@ const CustomInput = React.forwardRef<
     borderRadius: "6px",
     textAlign: "center",
     fontSize: "1rem",
+    backgroundColor: "#1b4c6a",
+    color: "#ffffff",
   };
 
   return <input style={inputStyle} {...props} ref={ref} readOnly />;
