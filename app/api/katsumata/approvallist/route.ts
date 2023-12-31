@@ -21,7 +21,7 @@ export const POST = async (req: Request, res: NextResponse) => {
         // const email = await getUsermail();              // 変数emailにセッション情報から取得したemail情報を格納する
         const email = "sample3@gmail.com"     // 変数emailにダミーのメールアドレスを格納する
         const {
-            staffEmail,
+            staffUserId,
             details,
             firstYmd,
             firstStartTime,
@@ -35,7 +35,7 @@ export const POST = async (req: Request, res: NextResponse) => {
         } = await req.json();
         const waitingList = await prisma.waitingList.create({
             data: {
-                staffEmail,
+                staffUserId,
                 details,
                 firstYmd,
                 firstStartTime,
