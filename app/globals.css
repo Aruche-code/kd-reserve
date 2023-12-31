@@ -8,9 +8,21 @@ body,
     height: 100%;
 }
 
-/* react-datepicker 特定のセレクタを破壊 */
-.react-datepicker__time-list-item--disabled {
-    display: none; /* 完全に非表示にする */
+.react-datepicker .react-datepicker__header {
+    background-color: #1b4c6a; 
 }
+
+.react-datepicker .react-datepicker__current-month {
+    color: #fff; 
+}
+
+.react-datepicker .react-datepicker__day-name {
+    color: #fff;
+}
+
+.react-datepicker .react-datepicker__day--selected {
+    background-color: #1facf3
+}
+
 
 
