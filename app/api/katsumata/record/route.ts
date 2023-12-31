@@ -93,7 +93,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
     console.log("PUT");
 
     try {
-        const recordId = req.url.split("/katsumata/record/")[1]; // リクエストURLからRecordのIDを抽出
+        const recordId = "658eedaad7973a3b99ca5db0" // staffNgIdに職員のオブジェクトidを格納する
         const { content, progress } = await req.json();
         await main();
 
@@ -113,26 +113,19 @@ export const PUT = async (req: Request, res: NextResponse) => {
     }
 };
 
-
-// 指定したemailのStudentprofileを削除するAPI
+// 指定したrecordを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
     console.log("DELETE");
 
     try {
-        // const email = await getUsermail() 本番
-        const email = "sample3@gmail.com" //テスト
+        const recordId = "658eedaad7973a3b99ca5db0" // staffNgIdに職員のオブジェクトidを格納する
         await main();
-        const user = await prisma.user.update({
-            where: { email },
-            data: {
-                studentProfile: {
-                    delete: true,
-                },
-            },
-            include: {
-                studentProfile: true, // studentProfileテーブルも含めて取得
+        const user = await prisma.record.delete({
+            where: {
+                id: recordId
             },
         });
+
         return NextResponse.json({ message: "Success", user }, { status: 200 });
     } catch (err) {
         return NextResponse.json({ message: "Error", err }, { status: 500 });
