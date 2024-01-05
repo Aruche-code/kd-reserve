@@ -51,6 +51,12 @@ const TimeSelector: React.FC = () => {
   );
   const staff: Staff[] = staffData?.staffUsers || [];
 
+  // スタッフNG日時データを取得するためにSWRを使用
+  const { data: ngData, error: ngError } = useSWR(
+    selectedStaffMember ? `/api/student/booking/${selectedStaffMember}` : null,
+    fetcher
+  );
+
   // 開始時間を更新し、終了時間をリセットするハンドラー
   const handleStartTimeChange = (option: OptionType | null) => {
     setStartTime(option);
@@ -60,33 +66,27 @@ const TimeSelector: React.FC = () => {
 
   useEffect(() => {
     // 選択されたスタッフに基づいてNG日を取得し更新
-    if (selectedStaffMember) {
-      fetcher(`/api/student/booking/${selectedStaffMember}`).then((ngData) => {
-        const newExcludeDates: Date[] = [];
-        const newNGTimeRanges: NGTimeRangesType = {};
+    if (ngData) {
+      const newExcludeDates: Date[] = [];
+      const newNGTimeRanges: NGTimeRangesType = {};
 
-        ngData.staffNgData[0]?.staffng.forEach((ngDate: StaffNgData) => {
-          const dateParts = ngDate.ymd
-            .split("-")
-            .map((part) => parseInt(part, 10));
-          const dateObj = new Date(
-            dateParts[0],
-            dateParts[1] - 1,
-            dateParts[2]
-          );
+      ngData.staffNgData[0]?.staffng.forEach((ngDate: StaffNgData) => {
+        const dateParts = ngDate.ymd
+          .split("-")
+          .map((part) => parseInt(part, 10));
+        const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
 
-          if (ngDate.time.includes("allng")) {
-            newExcludeDates.push(dateObj);
-          } else {
-            newNGTimeRanges[ngDate.ymd] = ngDate.time;
-          }
-        });
-
-        setExcludeDates(newExcludeDates);
-        setNGTimeRanges(newNGTimeRanges);
+        if (ngDate.time.includes("allng")) {
+          newExcludeDates.push(dateObj);
+        } else {
+          newNGTimeRanges[ngDate.ymd] = ngDate.time;
+        }
       });
+
+      setExcludeDates(newExcludeDates);
+      setNGTimeRanges(newNGTimeRanges);
     }
-  }, [selectedStaffMember]);
+  }, [ngData]);
 
   // 選択された日付が変更された時に時間オプションを再計算
   useEffect(() => {
