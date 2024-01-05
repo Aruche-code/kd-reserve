@@ -12,7 +12,7 @@ const tags = [
 ];
 
 /**
- *
+ * ReservationTags Component
  * @param {string | null} selectedTag - 現在選択されているタグ
  * @param {Function} setSelectedTag - 選択されたタグを設定する関数
  */
