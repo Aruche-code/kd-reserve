@@ -3,6 +3,7 @@
 import useSWR from "swr";
 import axios from "axios";
 import StaffList from "../../components/StaffList";
+import ReservationTags from "../../components/ReservationTags";
 import { Staff, StaffNgData } from "@/app/components/types";
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
@@ -34,7 +35,8 @@ const InterviewScheduler: React.FC = () => {
   const [selectedStaffMember, setSelectedStaffMember] = useState<string | null>(
     null
   );
-  // 選択された日付、時間、オプションの状態管理
+  // 選択された予約内容、日付、時間、オプションの状態管理
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [startTime, setStartTime] = useState<OptionType | null>(null);
   const [endTime, setEndTime] = useState<OptionType | null>(null);
@@ -148,63 +150,68 @@ const InterviewScheduler: React.FC = () => {
   }, [startTime, timeOptions, selectedDate]);
 
   return (
-    <div
-      className="p-4 mx-auto bg-white rounded-lg shadow-md flex flex-col space-y-3"
-      style={{ minWidth: "300px", maxWidth: "100%" }}
-    >
-      <h1>面談予約</h1>
-      <StaffList
-        staff={staff}
-        onSelect={setSelectedStaffMember}
-        selectedTeacherId={selectedStaffMember}
-      />
-      {/* 日付ピッカーコンポーネント */}
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date: Date) => setSelectedDate(date)}
-        dateFormat="yyyy-MM-dd"
-        locale={ja}
-        minDate={new Date()}
-        excludeDates={excludeDates}
-        customInput={<CustomInput />}
-        className="form-input block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-      />
-      {/* 開始時間のためのセレクトコンポーネント */}
-      <Select
-        id="startselect"
-        instanceId="startselect"
-        options={timeOptions}
-        value={startTime}
-        onChange={handleStartTimeChange}
-        placeholder="開始時間を選択..."
-        className="basic-single"
-        classNamePrefix="select"
-      />
-      {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-      {loadingEndTime ? (
-        <p className="text-gray-500">終了時間を計算中...</p>
-      ) : startTime ? (
-        endTimeOptions.length > 0 ? (
-          <Select
-            id="endselect"
-            instanceId="endselect"
-            options={endTimeOptions}
-            value={endTime}
-            onChange={(option) => setEndTime(option)}
-            placeholder="終了時間を選択..."
-            className="basic-single"
-            classNamePrefix="select"
-          />
+    <div>
+      <div
+        className="p-4 mx-auto bg-white rounded-lg shadow-md flex flex-col space-y-3"
+        style={{ minWidth: "300px", maxWidth: "100%" }}
+      >
+        <ReservationTags
+          selectedTag={selectedTag}
+          setSelectedTag={setSelectedTag}
+        />
+        <StaffList
+          staff={staff}
+          onSelect={setSelectedStaffMember}
+          selectedTeacherId={selectedStaffMember}
+        />
+        {/* 日付ピッカーコンポーネント */}
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date: Date) => setSelectedDate(date)}
+          dateFormat="yyyy-MM-dd"
+          locale={ja}
+          minDate={new Date()}
+          excludeDates={excludeDates}
+          customInput={<CustomInput />}
+          className="form-input block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        />
+        {/* 開始時間のためのセレクトコンポーネント */}
+        <Select
+          id="startselect"
+          instanceId="startselect"
+          options={timeOptions}
+          value={startTime}
+          onChange={handleStartTimeChange}
+          placeholder="開始時間を選択..."
+          className="basic-single"
+          classNamePrefix="select"
+        />
+        {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+        {loadingEndTime ? (
+          <p className="text-gray-500">終了時間を計算中...</p>
+        ) : startTime ? (
+          endTimeOptions.length > 0 ? (
+            <Select
+              id="endselect"
+              instanceId="endselect"
+              options={endTimeOptions}
+              value={endTime}
+              onChange={(option) => setEndTime(option)}
+              placeholder="終了時間を選択..."
+              className="basic-single"
+              classNamePrefix="select"
+            />
+          ) : (
+            <p className="text-red-500">
+              選択できる終了時間はありません。
+              <br />
+              開始時間を変更してください。
+            </p>
+          )
         ) : (
-          <p className="text-red-500">
-            選択できる終了時間はありません。
-            <br />
-            開始時間を変更してください。
-          </p>
-        )
-      ) : (
-        <p className="text-gray-500">開始時間を先に選択してください。</p>
-      )}
+          <p className="text-gray-500">開始時間を先に選択してください。</p>
+        )}
+      </div>
     </div>
   );
 };
