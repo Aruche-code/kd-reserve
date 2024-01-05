@@ -1,87 +1,34 @@
 "use client";
 
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import StaffList from "../../components/StaffList";
-// import { Staff, StaffNgData } from "@/app/components/types";
+"use client";
 
-// /**
-//  * InterviewScheduler Component
-//  * 面談予約システムのメインコンポーネント。教師のリストを表示し、選択された教師の利用不可日をユーザーに提供します。
-//  */
-// const InterviewScheduler: React.FC = () => {
-//   // 選択された職員のIDを保持します。
-//   const [selectedStaffMember, setSelectedStaffMember] = useState<string | null>(
-//     null
-//   );
-//   // 利用可能な全職員のリストを保持します。
-//   const [staff, setStaff] = useState<Staff[]>([]);
-//   // 選択された職員の利用不可日（NG日）を保持します。
-//   const [ngDates, setNgDates] = useState<StaffNgData[]>([]);
-
-//   // 教師データと利用不可日をAPIから取得します。
-//   useEffect(() => {
-//     const fetchStaff = async () => {
-//       try {
-//         const response = await axios.get("/api/student/booking");
-//         // console.log("Staff Data:", response.data.staffUsers);
-//         setStaff(response.data.staffUsers);
-//       } catch (error) {
-//         console.error("Error fetching staff", error);
-//       }
-//     };
-//     const fetchNgDates = async () => {
-//       if (selectedStaffMember) {
-//         try {
-//           const response = await axios.get(
-//             `/api/student/booking/${selectedStaffMember}`
-//           );
-//           // console.log("NG Dates Data:", response.data.staffNgData[0].staffng);
-//           setNgDates(response.data.staffNgData[0].staffng || []);
-//         } catch (error) {
-//           console.error("Error fetching NG dates", error);
-//         }
-//       }
-//     };
-
-//     // 職員データと利用不可日のデータをフェッチします。
-//     fetchStaff();
-//     fetchNgDates();
-//   }, [selectedStaffMember]); // selectedStaffMemberが変更された時にのみ実行されます。
-
-//   return (
-//     <div>
-//       <h1>面談予約</h1>
-//       {/* StaffListコンポーネント：職員の一覧を表示し、職員を選択する機能を提供します。 */}
-//       <StaffList
-//         staff={staff}
-//         onSelect={setSelectedStaffMember}
-//         selectedTeacherId={selectedStaffMember}
-//       />
-//       {/* NG日程の表示 */}
-//       {/* 日付被り対策 ngDate,index & time,timeIndex 一意のキーを生成 */}
-//       <div>
-//         {ngDates.map((ngDate, index) => (
-//           <div key={`${ngDate.ymd}-${index}`}>
-//             <p>NG Date: {ngDate.ymd}</p>
-//             {ngDate.time.map((time, timeIndex) => (
-//               <p key={`${ngDate.ymd}-${time}-${timeIndex}`}>{time}</p>
-//             ))}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default InterviewScheduler;
-
-// SWR版とても速いよ
-import React, { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 import StaffList from "../../components/StaffList";
 import { Staff, StaffNgData } from "@/app/components/types";
+import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import Select from "react-select";
+import {
+  setHours,
+  setMinutes,
+  addMinutes,
+  format,
+  isAfter,
+  isBefore,
+} from "date-fns";
+import "react-datepicker/dist/react-datepicker.css";
+import ja from "date-fns/locale/ja"; // date-fnsの日本語ロケール
+import CustomInput from "@/app/components/inputs/DatePicker";
+
+interface OptionType {
+  value: string;
+  label: string;
+}
+
+interface NGTimeRangesType {
+  [key: string]: string[];
+}
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -89,6 +36,15 @@ const InterviewScheduler: React.FC = () => {
   const [selectedStaffMember, setSelectedStaffMember] = useState<string | null>(
     null
   );
+  // 選択された日付、時間、オプションの状態管理
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [startTime, setStartTime] = useState<OptionType | null>(null);
+  const [endTime, setEndTime] = useState<OptionType | null>(null);
+  const [timeOptions, setTimeOptions] = useState<OptionType[]>([]);
+  const [endTimeOptions, setEndTimeOptions] = useState<OptionType[]>([]);
+  const [loadingEndTime, setLoadingEndTime] = useState(false);
+  const [excludeDates, setExcludeDates] = useState<Date[]>([]);
+  const [NGTimeRanges, setNGTimeRanges] = useState<NGTimeRangesType>({});
 
   // スタッフデータを取得するためにSWRを使用
   const { data: staffData, error: staffError } = useSWR(
@@ -97,35 +53,160 @@ const InterviewScheduler: React.FC = () => {
   );
   const staff: Staff[] = staffData?.staffUsers || [];
 
-  // 選択されたスタッフの利用不可日（NG日）を取得するためにSWRを使用
+  // スタッフNG日時データを取得するためにSWRを使用
   const { data: ngData, error: ngError } = useSWR(
     selectedStaffMember ? `/api/student/booking/${selectedStaffMember}` : null,
     fetcher
   );
-  const ngDates: StaffNgData[] = ngData?.staffNgData[0]?.staffng || [];
 
-  // エラーハンドリング
-  if (staffError) return <div>スタッフデータの読み込みに失敗しました。</div>;
-  if (ngError) return <div>利用不可日の読み込みに失敗しました。</div>;
+  // 開始時間を更新し、終了時間をリセットするハンドラー
+  const handleStartTimeChange = (option: OptionType | null) => {
+    setStartTime(option);
+    setEndTime(null);
+    setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
+  };
+
+  useEffect(() => {
+    // 選択されたスタッフに基づいてNG日を取得し更新
+    if (ngData) {
+      const newExcludeDates: Date[] = [];
+      const newNGTimeRanges: NGTimeRangesType = {};
+
+      ngData.staffNgData[0]?.staffng.forEach((ngDate: StaffNgData) => {
+        const dateParts = ngDate.ymd
+          .split("-")
+          .map((part) => parseInt(part, 10));
+        const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+        if (ngDate.time.includes("allng")) {
+          newExcludeDates.push(dateObj);
+        } else {
+          newNGTimeRanges[ngDate.ymd] = ngDate.time;
+        }
+      });
+
+      setExcludeDates(newExcludeDates);
+      setNGTimeRanges(newNGTimeRanges);
+    }
+  }, [ngData]);
+
+  // 選択された日付が変更された時に時間オプションを再計算
+  useEffect(() => {
+    // NG時間を除外して時間オプションを生成する関数を更新
+    const generateTimeOptions = (selectedDate: Date): OptionType[] => {
+      const options: OptionType[] = [];
+      const dateString = format(selectedDate, "yyyy-MM-dd");
+      const ngTimes = NGTimeRanges[dateString] || [];
+      let time = setHours(setMinutes(new Date(), 0), 9);
+
+      while (time <= setHours(setMinutes(new Date(), 0), 17)) {
+        const timeString = format(time, "HH:mm");
+        if (!ngTimes.includes(timeString)) {
+          options.push({
+            value: timeString,
+            label: timeString,
+          });
+        }
+        time = addMinutes(time, 30);
+      }
+
+      return options;
+    };
+
+    setTimeOptions(generateTimeOptions(selectedDate));
+    setStartTime(null);
+    setEndTime(null);
+    setLoadingEndTime(false);
+  }, [selectedDate, NGTimeRanges]);
+
+  // 開始時間が選択された時に終了時間のオプションを計算
+  useEffect(() => {
+    if (!startTime) {
+      setEndTimeOptions([]);
+      return;
+    }
+    if (startTime) {
+      const selectedTime = new Date(selectedDate);
+      const [hour, minute] = startTime.value.split(":").map(Number);
+      selectedTime.setHours(hour, minute);
+
+      // 選択された開始時間に基づいて利用可能な終了時間をフィルタリング
+      const options = timeOptions.filter((option) => {
+        const [optionHour, optionMinute] = option.value.split(":").map(Number);
+        const optionTime = new Date(selectedDate);
+        optionTime.setHours(optionHour, optionMinute);
+        return (
+          isAfter(optionTime, addMinutes(selectedTime, 29)) &&
+          isBefore(optionTime, addMinutes(selectedTime, 61))
+        );
+      });
+
+      setEndTimeOptions(options);
+      setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
+    } else {
+      setEndTimeOptions([]);
+      setLoadingEndTime(false);
+    }
+  }, [startTime, timeOptions, selectedDate]);
 
   return (
-    <div>
+    <div
+      className="p-4 mx-auto bg-white rounded-lg shadow-md flex flex-col space-y-3"
+      style={{ minWidth: "300px", maxWidth: "100%" }}
+    >
       <h1>面談予約</h1>
       <StaffList
         staff={staff}
         onSelect={setSelectedStaffMember}
         selectedTeacherId={selectedStaffMember}
       />
-      <div>
-        {ngDates.map((ngDate, index) => (
-          <div key={`${ngDate.ymd}-${index}`}>
-            <p>NG Date: {ngDate.ymd}</p>
-            {ngDate.time.map((time, timeIndex) => (
-              <p key={`${ngDate.ymd}-${time}-${timeIndex}`}>{time}</p>
-            ))}
-          </div>
-        ))}
-      </div>
+      {/* 日付ピッカーコンポーネント */}
+      <DatePicker
+        selected={selectedDate}
+        onChange={(date: Date) => setSelectedDate(date)}
+        dateFormat="yyyy-MM-dd"
+        locale={ja}
+        minDate={new Date()}
+        excludeDates={excludeDates}
+        customInput={<CustomInput />}
+        className="form-input block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      />
+      {/* 開始時間のためのセレクトコンポーネント */}
+      <Select
+        id="startselect"
+        instanceId="startselect"
+        options={timeOptions}
+        value={startTime}
+        onChange={handleStartTimeChange}
+        placeholder="開始時間を選択..."
+        className="basic-single"
+        classNamePrefix="select"
+      />
+      {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+      {loadingEndTime ? (
+        <p className="text-gray-500">終了時間を計算中...</p>
+      ) : startTime ? (
+        endTimeOptions.length > 0 ? (
+          <Select
+            id="endselect"
+            instanceId="endselect"
+            options={endTimeOptions}
+            value={endTime}
+            onChange={(option) => setEndTime(option)}
+            placeholder="終了時間を選択..."
+            className="basic-single"
+            classNamePrefix="select"
+          />
+        ) : (
+          <p className="text-red-500">
+            選択できる終了時間はありません。
+            <br />
+            開始時間を変更してください。
+          </p>
+        )
+      ) : (
+        <p className="text-gray-500">開始時間を先に選択してください。</p>
+      )}
     </div>
   );
 };
