@@ -10,11 +10,12 @@ const CustomInput = React.forwardRef<
     width: "100%",
     height: "45px",
     padding: "0",
+    outline: "none",
     border: "none",
     borderRadius: "6px",
     textAlign: "center",
     fontSize: "1rem",
-    backgroundColor: "#1b4c6a",
+    backgroundColor: "#1facf3",
     color: "#ffffff",
   };
 

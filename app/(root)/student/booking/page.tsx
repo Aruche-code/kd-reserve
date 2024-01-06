@@ -183,8 +183,7 @@ const InterviewScheduler: React.FC = () => {
           locale={ja}
           minDate={new Date()}
           excludeDates={excludeDates}
-          customInput={<CustomInput />}
-          className="form-input block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          customInput={<CustomInput />} //デザインはここ
         />
         {/* 開始時間のためのセレクトコンポーネント */}
         <Select
@@ -218,15 +217,15 @@ const InterviewScheduler: React.FC = () => {
         ) : (
           <p className="text-gray-500">開始時間を先に選択してください。</p>
         )}
+        <BookingPost
+          selectedStaffMember={selectedStaffMember}
+          selectedTag={selectedTag}
+          selectedDate={selectedDate}
+          startTime={startTime}
+          endTime={endTime}
+          resetAll={resetAll}
+        />
       </div>
-      <BookingPost
-        selectedStaffMember={selectedStaffMember}
-        selectedTag={selectedTag}
-        selectedDate={selectedDate}
-        startTime={startTime}
-        endTime={endTime}
-        resetAll={resetAll}
-      />
     </div>
   );
 };
