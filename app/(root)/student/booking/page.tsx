@@ -19,6 +19,7 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import ja from "date-fns/locale/ja"; // date-fnsの日本語ロケール
 import CustomInput from "@/app/components/inputs/DatePicker";
+import BookingPost from "@/app/components/posts/BookingPost";
 
 interface OptionType {
   value: string;
@@ -46,18 +47,28 @@ const InterviewScheduler: React.FC = () => {
   const [excludeDates, setExcludeDates] = useState<Date[]>([]);
   const [NGTimeRanges, setNGTimeRanges] = useState<NGTimeRangesType>({});
 
-  // スタッフデータを取得するためにSWRを使用
+  // スタッフデータを取得
   const { data: staffData, error: staffError } = useSWR(
     "/api/student/booking",
     fetcher
   );
   const staff: Staff[] = staffData?.staffUsers || [];
 
-  // スタッフNG日時データを取得するためにSWRを使用
+  // スタッフNG日時データを取得
   const { data: ngData, error: ngError } = useSWR(
     selectedStaffMember ? `/api/student/booking/${selectedStaffMember}` : null,
     fetcher
   );
+
+  //送信完了時リセット
+  const resetAll = () => {
+    setSelectedStaffMember(null);
+    setSelectedTag(null);
+    setSelectedDate(new Date()); // 現在の日付または適当な初期日付
+    setStartTime(null);
+    setEndTime(null);
+    // 他の必要な状態をリセット
+  };
 
   // 開始時間を更新し、終了時間をリセットするハンドラー
   const handleStartTimeChange = (option: OptionType | null) => {
@@ -183,8 +194,6 @@ const InterviewScheduler: React.FC = () => {
           value={startTime}
           onChange={handleStartTimeChange}
           placeholder="開始時間を選択..."
-          className="basic-single"
-          classNamePrefix="select"
         />
         {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
         {loadingEndTime ? (
@@ -198,8 +207,6 @@ const InterviewScheduler: React.FC = () => {
               value={endTime}
               onChange={(option) => setEndTime(option)}
               placeholder="終了時間を選択..."
-              className="basic-single"
-              classNamePrefix="select"
             />
           ) : (
             <p className="text-red-500">
@@ -212,6 +219,14 @@ const InterviewScheduler: React.FC = () => {
           <p className="text-gray-500">開始時間を先に選択してください。</p>
         )}
       </div>
+      <BookingPost
+        selectedStaffMember={selectedStaffMember}
+        selectedTag={selectedTag}
+        selectedDate={selectedDate}
+        startTime={startTime}
+        endTime={endTime}
+        resetAll={resetAll}
+      />
     </div>
   );
 };
