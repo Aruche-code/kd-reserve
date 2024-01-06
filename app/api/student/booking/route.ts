@@ -48,8 +48,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 // このAPIのテストを行うにはUserモデルからstaffユーザーのオブジェクトidをPOSTのパラメータに指定する必要があります
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUserMail(); // 本番用
-    // const email = "giwa@mail.com"; // テスト用 予約画面を操作している学生のメールアドレスを取得
+    const email = await getUserMail();
     const {
       staffUserId,
       details,
