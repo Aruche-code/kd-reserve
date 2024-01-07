@@ -179,6 +179,28 @@ const Home = () => {
         return lastPart;
     }
 
+    //テストデータ
+    const testUsers = [
+        {
+            id: '601b92ee95861639c3e2c44b',
+            kana: 'コウベタロウ',
+            name: '神戸太郎',
+            gakuseki: '1111111',
+            day: '2023/12/3',
+            time: '10:00~12:00',
+            subject: '面接練習'
+        },
+        {
+            id: '601b95a595861639c3e2c44c',
+            kana: 'コウベジロウ',
+            name: '神戸次郎',
+            gakuseki: '2222222',
+            day: '2023/12/3',
+            time: '13:00~14:00',
+            subject: 'エントリーシート作成'
+        },
+    ];
+
     //モーダルウィンドウ
     const [showModal, setShowModal] = useState(false);      //topモーダル
     const [NgModal, setNgModal] = useState(false);  //ngモーダルウィンドウ
@@ -302,26 +324,27 @@ const Home = () => {
                         <div className="flex flex-col items-center">
                             <span className="font-bold relative mb-4">面談予定</span>
                             <div className="flex flex-col p-4">
-                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
+                                {testUsers.map(user => (
+                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row mb-6">
                                     <div className="w-1/3 px-8 flex items-center justify-center">
                                         <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            13:30~14:00
+                                            {user.time}
                                         </div>
                                     </div>
                                     <div className="w-1/3 border-x-2 border-gray-200 px-8">
                                         <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            1298533<br />
-                                            山本弘樹
+                                            {user.gakuseki}<br />
+                                            {user.name}
                                         </div>
                                     </div>
                                     <div className="w-1/3 px-4 flex items-center justify-center">
                                         <div className="text-center font-medium text-sm">
-                                            エントリーシート
+                                            {user.subject}
                                         </div>
                                     </div>
                                 </div>
+                                ))}
                             </div>
-
                         </div>
                     </div>
                 </>
@@ -436,7 +459,7 @@ const Home = () => {
                         onClick={() => setInterModal(false)}
                     ></div>
 
-                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 w-auto h-auto bg-white shadow-xl rounded-xl z-50 ">
                         <CloseButton 
                             setShowModal={setShowModal}
                             setNgModal={setNgModal}
@@ -444,26 +467,28 @@ const Home = () => {
                         />
                         <div className="flex flex-col items-center">
                             <span className="font-bold relative mb-4">面談予定</span>
-                            <div className="flex flex-col p-4">
-                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
-                                    <div className="w-1/3 px-8 flex items-center justify-center">
-                                        <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            13:30~14:00
-                                        </div>
-                                    </div>
-                                    <div className="w-1/3 border-x-2 border-gray-200 px-8">
-                                        <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            1298533<br />
-                                            山本弘樹
-                                        </div>
-                                    </div>
-                                    <div className="w-1/3 px-4 flex items-center justify-center">
+                            {testUsers.map(user => (
+                                <div className="flex flex-col p-4">
+                                    <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg">
                                         <div className="text-center font-medium text-sm">
-                                            エントリーシート
+                                                {user.subject}
+                                        </div>
+                                        <div className="flex flex-row">
+                                            <div className="w-1/2 px-8 flex items-center justify-center">
+                                                <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                    {user.time}
+                                                </div>
+                                            </div>
+                                            <div className="w-1/2 border-l-2 border-gray-200 px-8">
+                                                <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                    {user.gakuseki}<br />
+                                                    {user.name}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            ))}
 
                         </div>
                     </div>
