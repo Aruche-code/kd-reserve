@@ -305,6 +305,11 @@ const Home = () => {
                                 </div>
                             ))}
                         </div>
+                        <div className="text-center">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
+                                保存
+                            </button>
+                        </div>
                     </div>
                 </>
             ) : null}
@@ -448,6 +453,11 @@ const Home = () => {
                                     <span>{time}</span>
                                 </div>
                             ))}
+                        </div>
+                        <div className="text-center">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
+                                保存
+                            </button>
                         </div>
                     </div>
                 </>
