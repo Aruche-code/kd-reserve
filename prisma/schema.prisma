@@ -117,7 +117,6 @@ model StaffNg {
 // 暫定版 ＊変更される可能性あり
 model WaitingList {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  studentUserId   String? // 予約画面を操作している学生のユーザーモデルのオブジェクトid
   staffUserId     String? // 指定職員のユーザーモデルのオブジェクトid
   details         String? // 面談内容
   firstYmd        String? // 第一希望の日時
@@ -131,8 +130,8 @@ model WaitingList {
   thirdEndTime    String? // 第三希望の終了時刻
 
   // Userとの逆向きのリレーション
-  userId String @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id])
+  studentUserId String @db.ObjectId
+  user   User   @relation(fields: [studentUserId], references: [id])
 }
 
 // 予約リストのモデル
