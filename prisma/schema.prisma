@@ -117,6 +117,7 @@ model StaffNg {
 // 暫定版 ＊変更される可能性あり
 model WaitingList {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
+  studentUserId   String? // 予約画面を操作している学生のユーザーモデルのオブジェクトid
   staffUserId     String? // 指定職員のユーザーモデルのオブジェクトid
   details         String? // 面談内容
   firstYmd        String? // 第一希望の日時
@@ -137,14 +138,14 @@ model WaitingList {
 // 予約リストのモデル
 // 暫定版 ＊変更される可能性あり
 model Booking {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  studentEmail String? // 申請者メールアドレス
-  staffEmail   String? // 担当職員メールアドレス
-  ymd          String? // 年月日
-  time         String[] // 時間帯 ＊配列で格納
-  details      String? // 面談内容
-  User         User?    @relation(fields: [userId], references: [id])
-  userId       String?  @db.ObjectId
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
+  studentUserId String? // 予約画面を操作している学生のユーザーモデルのオブジェクトid
+  staffUserId   String? // 指定職員のユーザーモデルのオブジェクトid
+  ymd           String? // 年月日
+  time          String[] // 時間帯 ＊配列で格納
+  details       String? // 面談内容
+  User          User?    @relation(fields: [userId], references: [id])
+  userId        String?  @db.ObjectId
 
-  @@unique(fields: [studentEmail, staffEmail, ymd], name: "booking_id") // 学生・職員のemailとymdの複合主キー 名前は"booking_id"
+  @@unique(fields: [studentUserId, staffUserId, ymd], name: "booking_id") // 学生・職員のemailとymdの複合主キー 名前は"booking_id"
 }
