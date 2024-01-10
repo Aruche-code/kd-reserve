@@ -181,7 +181,7 @@ const Waiting = () => {
 
 
     return (
-        <div className="flex flex-col items-center h-full mt-20 md:mt-5">
+        <div className="flex flex-col items-center h-kd-90-h mt-10 md:mt-2">
             <div className="w-full">
                 <div className="flex flex-row justify-center">
                     <button
