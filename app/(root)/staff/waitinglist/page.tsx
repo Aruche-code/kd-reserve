@@ -198,7 +198,7 @@ const Waiting = () => {
                     </button>
                 </div>
             </div>
-            <div className="-m-2 w-full shadow-lg border-2 border-gray-200 bg-gray-100">
+            <div className="-m-2 w-full shadow-lg border-2 border-gray-200 bg-gray-100 overflow-auto">
                 <div className="flex flex-col items-center h-full">
                     {testUsers.map(user => (
                         <div className="mt-2">
@@ -207,7 +207,7 @@ const Waiting = () => {
                                     // onClick={() => [setShowModal(true), setNowUser(user)]}
                                     className=""
                                 >
-                                    <div className="mt-3 mb-3 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
+                                    <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
                                         <div className="flex flex-row ">
                                             <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
                                                 {user.name}<br />
