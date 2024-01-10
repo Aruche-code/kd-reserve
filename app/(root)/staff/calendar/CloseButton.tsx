@@ -2,11 +2,12 @@ export default function CloseButton({
     setShowModal,
     setNgModal,
     setInterModal,
+    setOpen,
 }: any) {
     return(
         <>
             <button 
-                onClick={() => {setShowModal(false),setNgModal(false),setInterModal(false)}} 
+                onClick={() => {setShowModal(false),setNgModal(false),setInterModal(false),setOpen(false)}} 
                 className="absolute top-3 right-3"
             >
                 <svg 

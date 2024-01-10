@@ -10,7 +10,8 @@ export default function Calendar({
     setShowModal,
     setselectedDay,
     interview,
-    selectedTimes
+    selectedTimes,
+    setOpen,
 }: any) {
 
 const year = date.getFullYear();
@@ -64,7 +65,7 @@ return (
                 <div
                 key={day}
                 className={`text-center border-2 h-20 hover:border-cyan-400 `}
-                onClick={() => { setShowModal(true); setselectedDay(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day); }}
+                onClick={() => { setOpen(true); setselectedDay(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day); }}
                 >
                     {day}
                     {interview[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
