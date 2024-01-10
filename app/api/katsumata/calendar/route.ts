@@ -68,17 +68,18 @@ export const GET = async (req: Request, res: NextResponse) => {
                 email: getedStaffNgBooking.email,
                 staffng: getedStaffNgBooking.staffng
                     ? getedStaffNgBooking.staffng.map((staffng) => ({
-                        ymd: staffng?.ymd,
-                        time: staffng?.time,
+                        id: staffng?.id,
+                        ymd: staffng?.ymd, // 年月日
+                        time: staffng?.time, // 時間帯 ＊配列で格納
                     }))
                     : null,
                 booking: getedStaffNgBooking.booking
                     ? getedStaffNgBooking.booking.map((booking) => ({
-                        studentEmail: booking?.studentEmail,
-                        staffEmail: booking?.staffEmail,
-                        ymd: booking?.ymd,
-                        time: booking?.time,
-                        details: booking?.details,
+                        studentEmail: booking?.studentEmail, // 申請者メールアドレス
+                        staffEmail: booking?.staffEmail, // 担当職員メールアドレス
+                        ymd: booking?.ymd, // 年月日
+                        time: booking?.time, // 時間帯 ＊配列で格納
+                        details: booking?.details, // 面談内容
                     }))
                     : null,
             }
@@ -97,7 +98,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
     console.log("PUT");
 
     try {
-        const staffNgId = "658eedaad7973a3b99ca5db0" // staffNgIdに職員のオブジェクトidを格納する
+        const staffNgId = "658f7e5c30021c1f06d2181a" // staffNgIdに職員のオブジェクトidを格納する
         await main();
         const { ymd, time } = await req.json();
 
@@ -122,7 +123,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     console.log("DELETE");
 
     try {
-        const staffNgId = "658eedaad7973a3b99ca5db0" // staffNgIdに職員のオブジェクトidを格納する
+        const staffNgId = "658f7e5c30021c1f06d2181a" // staffNgIdに職員のオブジェクトidを格納する
         await main();
         const deletedStaffNg = await prisma.staffNg.delete({ // staffNgIdと一致するstaffNgテーブルを削除
             where: {
