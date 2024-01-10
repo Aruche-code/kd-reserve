@@ -67,7 +67,7 @@ const Students = () => {
                 </div>
 
                 <div className="flex justify-center items-center">
-                    <div className="mt-5 mb-5 ml-5 mr-5">
+                    <div className="mt-5 mb-5 ml-5 mr-5 flex justify-center items-center flex-wrap">
                         {testUsers.map(user => (
                             <Link href="../staff/record">
                                 <button
