@@ -373,7 +373,7 @@ const Home = () => {
                 <>
                     <div className=" w-3/12 h-full">
                     </div>
-                    <div className=" w-3/12 h-full border-l-2 border-gray-300 fixed right-0">
+                    <div className=" w-3/12 h-full border-l-2 border-gray-300 fixed right-0 bg-white">
                         <CloseButton 
                             setShowModal={setShowModal}
                             setNgModal={setNgModal}
@@ -390,7 +390,7 @@ const Home = () => {
                             予定一覧
                             </li>
                         </ul>
-                        <div className="mt-4 p-4">
+                        <div className="mt-4 p-4 bg-white">
                             {selectedTab === 'ng' && 
                                 <div className="fixed p-1 w-auto h-auto bg-white">
 
