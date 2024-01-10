@@ -22,7 +22,11 @@ const config: Config = {
       },
       fontSize:{
         'xxs' : '.7rem',
-      }
+      },
+
+      height: {
+        "kd-90-h" : "98%",
+      },
     },
   },
   plugins: [
