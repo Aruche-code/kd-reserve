@@ -47,13 +47,13 @@ const Student = () => {
   return (
     <div className="flex flex-col flex-wrap justify-center items-center">
 
-      <div className="flex flex-col mt-4 w-full lg:w-1/2  bg-gray-100 rounded-md shadow-md p-1">
+      <div className="flex flex-col mt-4 w-full lg:w-1/2  bg-gray-100 rounded-md shadow-md">
 
-        <div className=" p-2 mx-4 mt-2 rounded-lg text-gray-600">
+        <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
           ■ 予約確定一覧
         </div>
-        <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div>
-        <div className="mt-3 mb-3">
+        {/* <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div> */}
+        <div className="mt-5 mb-5">
           {testUsers.map(user => (
             <div className="flex flex-col p-2" key={user.id}>
 
@@ -81,11 +81,11 @@ const Student = () => {
           ))}
         </div>
 
-        <div className="p-2 mx-4 rounded-lg text-gray-600">
+        <div className="p-3 px-6 rounded-t bg-kd-sub2-cl text-white">
           ■ 承認待ち
         </div>
-        <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div>
-        <div className="mt-3 text-xs md:text-base lg:text-sm xl:text-base mb-3">
+        {/* <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div> */}
+        <div className="mt-5 text-xs md:text-base lg:text-sm xl:text-base mb-5">
           {testUsers2.map(user => (
             <div className="flex flex-col p-2" key={user.id}>
               <div className="mx-4 p-2 border-2 bg-white border-gray-200 rounded-lg flex flex-row">
