@@ -33,16 +33,33 @@ interface NGTimeRangesType {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const InterviewScheduler: React.FC = () => {
+  // 選択された予約内容、職員、日付、時間、オプションの状態管理
   const [selectedStaffMember, setSelectedStaffMember] = useState<string | null>(
     null
   );
-  // 選択された予約内容、日付、時間、オプションの状態管理
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [startTime, setStartTime] = useState<OptionType | null>(null);
-  const [endTime, setEndTime] = useState<OptionType | null>(null);
-  const [timeOptions, setTimeOptions] = useState<OptionType[]>([]);
-  const [endTimeOptions, setEndTimeOptions] = useState<OptionType[]>([]);
+  //------------------------------------------------
+  const [firstPreferenceDate, setFirstPreferenceDate] = useState(new Date());
+  const [firstPreferenceStartTime, setFirstPreferenceStartTime] =
+    useState<OptionType | null>(null);
+  const [firstPreferenceEndTime, setFirstPreferenceEndTime] =
+    useState<OptionType | null>(null);
+  const [firstTimeOptions, setFirstTimeOptions] = useState<OptionType[]>([]);
+  const [firstEndTimeOptions, setFirstEndTimeOptions] = useState<OptionType[]>(
+    []
+  );
+  //--------------------------------------------------
+
+  const [secondPreferenceDate, setSecondPreferenceDate] = useState(new Date());
+  const [secondPreferenceStartTime, setSecondPreferenceStartTime] =
+    useState<OptionType | null>(null);
+  const [secondPreferenceEndTime, setSecondPreferenceEndTime] =
+    useState<OptionType | null>(null);
+  const [secondTimeOptions, setSecondTimeOptions] = useState<OptionType[]>([]);
+  const [secondEndTimeOptions, setSecondEndTimeOptions] = useState<
+    OptionType[]
+  >([]);
+
   const [loadingEndTime, setLoadingEndTime] = useState(false);
   const [excludeDates, setExcludeDates] = useState<Date[]>([]);
   const [NGTimeRanges, setNGTimeRanges] = useState<NGTimeRangesType>({});
@@ -64,22 +81,23 @@ const InterviewScheduler: React.FC = () => {
   const resetAll = () => {
     setSelectedStaffMember(null);
     setSelectedTag(null);
-    setSelectedDate(new Date()); // 現在の日付または適当な初期日付
-    setStartTime(null);
-    setEndTime(null);
+    setFirstPreferenceDate(new Date()); // 現在の日付または適当な初期日付
+    setFirstPreferenceStartTime(null);
+    setFirstPreferenceEndTime(null);
     // 他の必要な状態をリセット
   };
 
-  // 週末（土曜日と日曜日）をフィルタリングする関数
-  const isWeekday = (date: Date) => {
-    const day = date.getDay();
-    return day !== 0 && day !== 6; // 0 = 日曜日、6 = 土曜日
+  // 開始時間を更新し、終了時間をリセットするハンドラー1
+  const handleFirstStartTimeChange = (option: OptionType | null) => {
+    setFirstPreferenceStartTime(option);
+    setFirstPreferenceEndTime(null);
+    setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
   };
 
-  // 開始時間を更新し、終了時間をリセットするハンドラー
-  const handleStartTimeChange = (option: OptionType | null) => {
-    setStartTime(option);
-    setEndTime(null);
+  // 開始時間を更新し、終了時間をリセットするハンドラー2
+  const handleSecondStartTimeChange = (option: OptionType | null) => {
+    setSecondPreferenceStartTime(option);
+    setSecondPreferenceEndTime(null);
     setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
   };
 
@@ -107,12 +125,13 @@ const InterviewScheduler: React.FC = () => {
     }
   }, [ngData]);
 
+  //-------------------------------------1----------------------------------------
   // 選択された日付が変更された時に時間オプションを再計算
   useEffect(() => {
     // NG時間を除外して時間オプションを生成する関数を更新
-    const generateTimeOptions = (selectedDate: Date): OptionType[] => {
+    const generateTimeOptions = (firstPreferenceDate: Date): OptionType[] => {
       const options: OptionType[] = [];
-      const dateString = format(selectedDate, "yyyy-MM-dd");
+      const dateString = format(firstPreferenceDate, "yyyy-MM-dd");
       const ngTimes = NGTimeRanges[dateString] || [];
       let time = setHours(setMinutes(new Date(), 0), 9);
 
@@ -130,27 +149,29 @@ const InterviewScheduler: React.FC = () => {
       return options;
     };
 
-    setTimeOptions(generateTimeOptions(selectedDate));
-    setStartTime(null);
-    setEndTime(null);
+    setFirstTimeOptions(generateTimeOptions(firstPreferenceDate));
+    setFirstPreferenceStartTime(null);
+    setFirstPreferenceEndTime(null);
     setLoadingEndTime(false);
-  }, [selectedDate, NGTimeRanges]);
+  }, [firstPreferenceDate, NGTimeRanges]);
 
   // 開始時間が選択された時に終了時間のオプションを計算
   useEffect(() => {
-    if (!startTime) {
-      setEndTimeOptions([]);
+    if (!firstPreferenceStartTime) {
+      setFirstEndTimeOptions([]);
       return;
     }
-    if (startTime) {
-      const selectedTime = new Date(selectedDate);
-      const [hour, minute] = startTime.value.split(":").map(Number);
+    if (firstPreferenceStartTime) {
+      const selectedTime = new Date(firstPreferenceDate);
+      const [hour, minute] = firstPreferenceStartTime.value
+        .split(":")
+        .map(Number);
       selectedTime.setHours(hour, minute);
 
       // 選択された開始時間に基づいて利用可能な終了時間をフィルタリング
-      const options = timeOptions.filter((option) => {
+      const options = firstTimeOptions.filter((option) => {
         const [optionHour, optionMinute] = option.value.split(":").map(Number);
-        const optionTime = new Date(selectedDate);
+        const optionTime = new Date(firstPreferenceDate);
         optionTime.setHours(optionHour, optionMinute);
         return (
           isAfter(optionTime, addMinutes(selectedTime, 29)) &&
@@ -158,13 +179,77 @@ const InterviewScheduler: React.FC = () => {
         );
       });
 
-      setEndTimeOptions(options);
+      setFirstEndTimeOptions(options);
       setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
     } else {
-      setEndTimeOptions([]);
+      setFirstEndTimeOptions([]);
       setLoadingEndTime(false);
     }
-  }, [startTime, timeOptions, selectedDate]);
+  }, [firstPreferenceStartTime, firstTimeOptions, firstPreferenceDate]);
+
+  //-------------------------------------2-------------------------------
+  // 選択された日付が変更された時に時間オプションを再計算
+  useEffect(() => {
+    // NG時間を除外して時間オプションを生成する関数を更新
+    const generateTimeOptions = (secondPreferenceDate: Date): OptionType[] => {
+      const options: OptionType[] = [];
+      const dateString = format(secondPreferenceDate, "yyyy-MM-dd");
+      const ngTimes = NGTimeRanges[dateString] || [];
+      let time = setHours(setMinutes(new Date(), 0), 9);
+
+      while (time <= setHours(setMinutes(new Date(), 0), 17)) {
+        const timeString = format(time, "HH:mm");
+        if (!ngTimes.includes(timeString)) {
+          options.push({
+            value: timeString,
+            label: timeString,
+          });
+        }
+        time = addMinutes(time, 30);
+      }
+
+      return options;
+    };
+
+    setSecondTimeOptions(generateTimeOptions(secondPreferenceDate));
+    setSecondPreferenceStartTime(null);
+    setSecondPreferenceEndTime(null);
+    setLoadingEndTime(false);
+  }, [secondPreferenceDate, NGTimeRanges]);
+
+  // 開始時間が選択された時に終了時間のオプションを計算
+  useEffect(() => {
+    if (!secondPreferenceStartTime) {
+      setSecondEndTimeOptions([]);
+      return;
+    }
+    if (secondPreferenceStartTime) {
+      const selectedTime = new Date(secondPreferenceDate);
+      const [hour, minute] = secondPreferenceStartTime.value
+        .split(":")
+        .map(Number);
+      selectedTime.setHours(hour, minute);
+
+      // 選択された開始時間に基づいて利用可能な終了時間をフィルタリング
+      const options = secondTimeOptions.filter((option) => {
+        const [optionHour, optionMinute] = option.value.split(":").map(Number);
+        const optionTime = new Date(secondPreferenceDate);
+        optionTime.setHours(optionHour, optionMinute);
+        return (
+          isAfter(optionTime, addMinutes(selectedTime, 29)) &&
+          isBefore(optionTime, addMinutes(selectedTime, 61))
+        );
+      });
+
+      setSecondEndTimeOptions(options);
+      setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
+    } else {
+      setSecondEndTimeOptions([]);
+      setLoadingEndTime(false);
+    }
+  }, [secondPreferenceStartTime, secondTimeOptions, secondPreferenceDate]);
+
+  //-------------------------------------------------------------------------
 
   return (
     <div>
@@ -176,43 +261,86 @@ const InterviewScheduler: React.FC = () => {
           selectedTag={selectedTag}
           setSelectedTag={setSelectedTag}
         />
-        {/* スタッフリストを取得選択されたメンバーのIDを保持 */}
         <StaffList
           staff={staff}
           onSelect={setSelectedStaffMember}
           selectedTeacherId={selectedStaffMember}
         />
+        {/* 第一希望日時 */}
         {/* 日付ピッカーコンポーネント */}
         <DatePicker
-          selected={selectedDate}
-          onChange={(date: Date) => setSelectedDate(date)}
+          selected={firstPreferenceDate}
+          onChange={(date: Date) => setFirstPreferenceDate(date)}
           dateFormat="yyyy-MM-dd"
           locale={ja}
-          filterDate={isWeekday}
           minDate={new Date()}
           excludeDates={excludeDates}
           customInput={<CustomInput />} //デザインはここ
         />
         {/* 開始時間のためのセレクトコンポーネント */}
         <Select
-          id="startselect"
-          instanceId="startselect"
-          options={timeOptions}
-          value={startTime}
-          onChange={handleStartTimeChange}
+          id="startselect1"
+          instanceId="startselect1"
+          options={firstTimeOptions}
+          value={firstPreferenceStartTime}
+          onChange={handleFirstStartTimeChange}
           placeholder="開始時間を選択..."
         />
         {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
         {loadingEndTime ? (
           <p className="text-gray-500">終了時間を計算中...</p>
-        ) : startTime ? (
-          endTimeOptions.length > 0 ? (
+        ) : firstPreferenceStartTime ? (
+          firstEndTimeOptions.length > 0 ? (
             <Select
-              id="endselect"
-              instanceId="endselect"
-              options={endTimeOptions}
-              value={endTime}
-              onChange={(option) => setEndTime(option)}
+              id="endselect1"
+              instanceId="endselect1"
+              options={firstEndTimeOptions}
+              value={firstPreferenceEndTime}
+              onChange={(option) => setFirstPreferenceEndTime(option)}
+              placeholder="終了時間を選択..."
+            />
+          ) : (
+            <p className="text-red-500">
+              選択できる終了時間はありません。
+              <br />
+              開始時間を変更してください。
+            </p>
+          )
+        ) : (
+          <p className="text-gray-500">開始時間を先に選択してください。</p>
+        )}
+
+        {/* 第二希望日時 */}
+        {/* 日付ピッカーコンポーネント */}
+        <DatePicker
+          selected={secondPreferenceDate}
+          onChange={(date: Date) => setSecondPreferenceDate(date)}
+          dateFormat="yyyy-MM-dd"
+          locale={ja}
+          minDate={new Date()}
+          excludeDates={excludeDates}
+          customInput={<CustomInput />} //デザインはここ
+        />
+        {/* 開始時間のためのセレクトコンポーネント */}
+        <Select
+          id="startselect2"
+          instanceId="startselect2"
+          options={secondTimeOptions}
+          value={secondPreferenceStartTime}
+          onChange={handleSecondStartTimeChange}
+          placeholder="開始時間を選択..."
+        />
+        {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+        {loadingEndTime ? (
+          <p className="text-gray-500">終了時間を計算中...</p>
+        ) : secondPreferenceStartTime ? (
+          secondEndTimeOptions.length > 0 ? (
+            <Select
+              id="endselect2"
+              instanceId="endselect2"
+              options={secondEndTimeOptions}
+              value={secondPreferenceEndTime}
+              onChange={(option) => setSecondPreferenceEndTime(option)}
               placeholder="終了時間を選択..."
             />
           ) : (
@@ -228,9 +356,9 @@ const InterviewScheduler: React.FC = () => {
         <BookingPost
           selectedStaffMember={selectedStaffMember}
           selectedTag={selectedTag}
-          selectedDate={selectedDate}
-          startTime={startTime}
-          endTime={endTime}
+          selectedDate={firstPreferenceDate}
+          startTime={firstPreferenceStartTime}
+          endTime={firstPreferenceEndTime}
           resetAll={resetAll}
         />
       </div>
