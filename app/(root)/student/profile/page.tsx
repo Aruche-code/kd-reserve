@@ -90,7 +90,7 @@ function UserForm() {
     return (
       // <div>ローディング中...{/* ここにスケルトンボディを追加してほしい */}</div>
       <div className="flex flex-col flex-1 p-1.5 items-center">
-        <div className="bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-2/3 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
+        <div className="mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-1/2 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
           <div className="animate-pulse bg-gray-300 h-6 p-4 w-1/3 mt-8 mb-3"></div>
 
           <div className="animate-pulse w-3/4 sm:w-8/12 mx-auto">
@@ -101,7 +101,7 @@ function UserForm() {
               </div>
             ))}
             <button
-              className="flex items-center px-20 py-2 text-center text-white bg-blue-600 rounded-xl hover:bg-blue-700 mt-7 mb-7 mx-auto"
+              className="flex items-center px-20 py-2 text-center text-white bg-blue-500 rounded-xl mt-7 mb-7 mx-auto"
               type="submit"
               disabled
             >
@@ -114,7 +114,7 @@ function UserForm() {
 
   return (
     <div className="flex flex-col flex-1 p-1.5 items-center">
-      <div className="bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-2/3 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
+      <div className="mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-1/2 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
         <h1 className="mt-8 mb-2 text-xl text-gray-800 font-semibold">
           プロフィール
         </h1>
@@ -204,7 +204,7 @@ function UserForm() {
           </div>
 
           <button
-            className="flex items-center px-20 py-2 text-center text-white bg-blue-600 rounded-xl hover:bg-blue-700 mt-7 mb-7 mx-auto"
+            className="flex items-center px-20 py-2 text-center text-white bg-kd-button-cl rounded-xl hover:bg-blue-500 mt-7 mb-7 mx-auto"
             type="submit"
           >
             {isEditing ? "保存" : "新規作成"}

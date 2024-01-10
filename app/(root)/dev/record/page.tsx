@@ -2,51 +2,19 @@
 import React, { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import AddIcon from '@mui/icons-material/Add';
 import './App.css';
 
-const data = [
-    {
-        question: "2023/10/3　　履歴書の作成",
-        answer:
-            <div>
-                <textarea
-                    className="w-full border-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
-                    style={{ resize: "none" }}
-                />
-                <div className="flex justify-end ">
-                    <button type="button" className="rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">保存</button>
-                </div>
-            </div>
-    },
-    {
-        question: "2023/9/19　　履歴書の作成",
-        answer:
-            <div>
-                <textarea
-                    className="w-full border-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
-                    style={{ resize: "none" }}
-                />
-                <div className="flex justify-end ">
-                    <button type="button" className="rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">保存</button>
-                </div>
-            </div>
-    },
-    {
-        question: "2023/9/14　　面接練習",
-        answer:
-            <div>
-                <textarea
-                    className="w-full border-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
-                    style={{ resize: "none" }}
-                />
-                <div className="flex justify-end ">
-                    <button type="button" className="rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">保存</button>
-                </div>
-            </div>
-    }
-]
+//calendar
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import CustomInput from "@/app/components/inputs/DatePicker";
+import ja from "date-fns/locale/ja"; // date-fnsの日本語ロケール
+
 
 const Record = () => {
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [excludeDates, setExcludeDates] = useState<Date[]>([]);
 
     const testUsers = [
         {
@@ -63,6 +31,25 @@ const Record = () => {
             qualifications: "基本情報技術者試験",
         }
     ];
+
+    //トグル部分追加---------------------------------------------------------------------------------------
+    const [selectedDay, setselectedDay] = useState<Array<{ time: string; question: string; answer: string }>>([
+        { time: "2023/9/19", question: "履歴書の作成", answer: "" }
+    ]);
+
+    const addDay = () => {
+        const lastDay = selectedDay[selectedDay.length - 1];
+        const newDay = { time: String(Number(lastDay.time) + 1), question: "", answer: "" };
+        setselectedDay([...selectedDay, newDay]);
+    };
+
+    const handleInputChange = (index: number, field: string, value: string) => {
+        const updatedSelectedDay = [...selectedDay];
+        updatedSelectedDay[index][field] = value;
+        setselectedDay(updatedSelectedDay);
+    };
+
+    //----------------------------------------------------------------------------------------
 
     const [profileOpen, setProfileOpen] = useState(false);
     const [selected, setSelected] = useState(0);
@@ -98,7 +85,7 @@ const Record = () => {
 
                         <div className="flex flex-wrap flex-col justify-center items-center">
                             <div className="flex flex-col w-full lg:w-4/5 bg-white rounded-md ">
-                                <div className="bg-blue-300 p-2 border-4 border-blue-300 rounded-lg text-gray-600 font-medium flex justify-between items-center" onClick={toggleProfile}>
+                                <div className="bg-kd-button-cl p-2 border-4 border-kd-button-cl rounded-lg text-white font-medium flex justify-between items-center" onClick={toggleProfile}>
                                     プロフィール
                                     <span>{profileOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
                                 </div>
@@ -134,25 +121,51 @@ const Record = () => {
 
                             <div className="flex flex-col w-full lg:w-4/5 bg-white rounded-md mt-5 mb-5">
 
-                                <div className="bg-blue-300 p-2 border-4 border-blue-300 rounded-lg text-gray-600 font-medium">
-                                    話し合いメモ
+                                <div className="flex bg-kd-button-cl p-2 border-4 border-kd-button-cl rounded-lg text-white font-medium flex-row justify-between">
+                                    <div className=''>話し合いメモ</div>
+                                    <div className="relative flex items-center">
+                                        <button onClick={addDay}><AddIcon /></button>
+                                    </div>
                                 </div>
-                                <div className=" p-2 mt-2 mx-5 pt-3 pb-3 text-gray-700 px-2 text-sm md:text-base">
+
+                                <div className="mx-5 p-2 mt-2 pt-3 pb-3 text-gray-700 px-2 text-sm md:text-base">
                                     <div>
                                         <div className="wrapper">
                                             <div className="accordion">
-                                                {data.map((item, i) =>
+                                                {selectedDay.map((item, i) =>
                                                     <div className="item" key={i}>
-                                                        <div className='title' onClick={() => toggle(i)}>
-                                                            <h2>{item.question}</h2>
-                                                            <span>{selected === i ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
+                                                        <div className='title'>
+                                                            <DatePicker
+                                                                selected={selectedDate}
+                                                                onChange={(date: Date) => handleInputChange(i, 'time', date.toISOString())}
+                                                                dateFormat="yyyy-MM-dd"
+                                                                locale={ja}
+                                                                minDate={new Date()}
+                                                                excludeDates={excludeDates}
+                                                                customInput={<CustomInput />} //デザインはここ
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                placeholder="タイトル"
+                                                                value={item.question}
+                                                                onChange={(e) => handleInputChange(i, 'question', e.target.value)}
+                                                                className="border-black"
+                                                            />
+                                                            <span onClick={() => toggle(i)}>{selected === i ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
                                                         </div>
-                                                        <div
-                                                            className={
-                                                                selected === i ? "content show" : "content"
-                                                            }
-                                                        >
-                                                            {item.answer}</div>
+                                                        <div className={selected === i ? "content show" : "content"}>
+                                                            <div>
+                                                                <textarea
+                                                                    className="w-full border-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
+                                                                    style={{ resize: "none" }}
+                                                                />
+                                                                <div className="flex justify-end flex-row">
+                                                                    <button type="button" className="mx-2 rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white">保存</button>
+                                                                    <button type="button" className="rounded-lg border border-primary-500 bg-red-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-red-500 hover:text-white">削除</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>
@@ -166,8 +179,9 @@ const Record = () => {
 
                     </div>
                 </div>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     );
 }
 

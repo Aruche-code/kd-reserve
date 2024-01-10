@@ -67,9 +67,8 @@ const Sidebar = () => {
               menu.link ? (
                 <Link href={menu.link} key={index}>
                   <li
-                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${
-                      pathname === menu.link ? "bg-white text-kd-button-cl" : ""
-                    }`}
+                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${pathname === menu.link ? "bg-white text-kd-button-cl" : ""
+                      }`}
                   >
                     {menu.icon}
                     <span>{menu.title}</span>
@@ -103,9 +102,8 @@ const Sidebar = () => {
     <aside>
       <div className="flex">
         <div
-          className={`${
-            open ? "w-46" : "w-20"
-          } h-screen p-5 pt-8 relative duration-300 bg-kd-sub2-cl`}
+          className={`${open ? "w-46" : "w-20"
+            } h-screen p-5 pt-8 relative duration-300 bg-kd-sub2-cl`}
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
@@ -121,9 +119,8 @@ const Sidebar = () => {
                   >
                     {menu.icon}
                     <span
-                      className={`${
-                        !open && "hidden"
-                      } origin-left duration-200`}
+                      className={`${!open && "hidden"
+                        } origin-left duration-200`}
                     >
                       {menu.title}
                     </span>

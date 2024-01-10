@@ -36,6 +36,9 @@ const Home = () => {
 
     //選ばれている日
     const [selectedDay, setselectedDay] = useState<string>("1");
+    const getDay = () => {
+        return selectedDay.slice(-2);
+    }
 
     //NG日程の選択状況
     const [selectedTimes, setSelectedTimes] = useState<{ [key: string]: string[] }>({});
@@ -179,154 +182,289 @@ const Home = () => {
         return lastPart;
     }
 
+    //テストデータ
+    const testUsers = [
+        {
+            id: '601b92ee95861639c3e2c44b',
+            kana: 'コウベタロウ',
+            name: '神戸太郎',
+            gakuseki: '1111111',
+            day: '2023/12/3',
+            time: '10:00~12:00',
+            subject: '面接練習'
+        },
+        {
+            id: '601b95a595861639c3e2c44c',
+            kana: 'コウベジロウ',
+            name: '神戸次郎',
+            gakuseki: '2222222',
+            day: '2023/12/3',
+            time: '13:00~14:00',
+            subject: 'エントリーシート作成'
+        },
+    ];
+
     //モーダルウィンドウ
     const [showModal, setShowModal] = useState(false);      //topモーダル
     const [NgModal, setNgModal] = useState(false);  //ngモーダルウィンドウ
     const [InterModal, setInterModal] = useState(false); //面接日程確認モーダル
 
+    //右サイドバー
+    const [open, setOpen] = useState(false);
+    const [selectedTab, setSelectedTab] = useState('ng');
+
+    const handleTabClick = (tab: any) => {
+        setSelectedTab(tab);
+    };
+
     const PcCalendar = () => (
-        // カレンダー部分
-        <div className="flex h-auto w-full justify-center items-center">
-            <div className="ml-8 mt-0 w-10/12 pr-5">
-                <div>
-                    <Calendar 
-                        date={date}
-                        setDate={setDate} 
-                        daysInMonth={daysInMonth}
-                        prevMonth={prevMonth}
-                        nextMonth={nextMonth} 
-                        setShowModal={setShowModal}
-                        setselectedDay={setselectedDay}
-                        interview={interview}
-                        selectedTimes={selectedTimes}
-                    />
+        <>
+            {/* カレンダー部分 */}
+            <div className="flex h-auto w-full justify-center items-center">
+                <div className="ml-2 mt-0 w-11/12 pr-2">
+                    <div>
+                        <Calendar 
+                            date={date}
+                            setDate={setDate} 
+                            daysInMonth={daysInMonth}
+                            prevMonth={prevMonth}
+                            nextMonth={nextMonth} 
+                            setShowModal={setShowModal}
+                            setselectedDay={setselectedDay}
+                            interview={interview}
+                            selectedTimes={selectedTimes}
+                            setOpen={setOpen}
+                        />
+                    </div>
                 </div>
-            </div>
+                
+
+                {/* モーダルウィンドウ */}
+                {showModal ? (
+                    <>
+                        <div
+                            className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                            onClick={() => setShowModal(false)}
+                        ></div>
+
+                        <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl">
+                            <CloseButton 
+                                setShowModal={setShowModal}
+                                setNgModal={setNgModal}
+                                setInterModal={setInterModal}
+                            />
+                            
+                            <div className="flex">
+                                <div 
+                                className="bg-red-400 hover:bg-red-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-36 w-36"
+                                onClick={() => setNgModal(true)}  
+                                >
+                                NG日程追加
+                                </div>
+
+                                <div
+                                className="bg-blue-400 hover:bg-blue-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-36 w-36"
+                                onClick={() => setInterModal(true)}
+                                >
+                                予定の確認
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : null}
+                {NgModal ? (
+                    <>
+                        <div
+                            className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                            onClick={() => setNgModal(false)}
+                        ></div>
+
+                        <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                            <CloseButton 
+                                setShowModal={setShowModal}
+                                setNgModal={setNgModal}
+                                setInterModal={setInterModal}
+                            />
+                            <div className="flex justify-between items-start">
+                                <span className="font-bold">NG日程追加</span>
+                            </div>
+
+                            {/* 一括指定ボタン */}
+                            <div className="flex flex-wrap justify-center max-w-3xl my-6">
+                                {timeAll.map((time) => (
+                                    <div
+                                        key={time}
+                                        className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-36 h-12 m-3 font-bold ${
+                                        isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                        }`}
+                                        onClick={() => toggleALL(time)}
+                                    >
+                                        <span>{time}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* 個別指定ボタン */}
+                            <div className="flex flex-wrap justify-center max-w-3xl">
+                                {timeOptions.map((time) => (
+                                    <div
+                                        key={time}
+                                        className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-32 h-11 m-3 font-bold ${
+                                        isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                        }`}
+                                        onClick={() => toggleBgColor(selectedDay,time)}
+                                    >
+                                        <span>{time}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="text-center">
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
+                                    保存
+                                </button>
+                            </div>
+                        </div>
+                    </>
+                ) : null}
+                {InterModal ? (
+                    <>
+                        <div
+                            className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
+                            onClick={() => setInterModal(false)}
+                        ></div>
+
+                        <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                            <CloseButton 
+                                setShowModal={setShowModal}
+                                setNgModal={setNgModal}
+                                setInterModal={setInterModal}
+                            />
+                            <div className="flex flex-col items-center">
+                                <span className="font-bold relative mb-4">面談予定</span>
+                                <div className="flex flex-col p-4">
+                                    {testUsers.map(user => (
+                                    <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row mb-6">
+                                        <div className="w-1/3 px-8 flex items-center justify-center">
+                                            <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                {user.time}
+                                            </div>
+                                        </div>
+                                        <div className="w-1/3 border-x-2 border-gray-200 px-8">
+                                            <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                {user.gakuseki}<br />
+                                                {user.name}
+                                            </div>
+                                        </div>
+                                        <div className="w-1/3 px-4 flex items-center justify-center">
+                                            <div className="text-center font-medium text-sm">
+                                                {user.subject}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : null}
+            </div> 
+
+            {open ? (
+                <>
+                    <div className=" w-3/12 h-full">
+                    </div>
+                    <div className=" w-3/12 h-full border-l-2 border-gray-300 fixed right-0 bg-white">
+                        <CloseButton 
+                            setShowModal={setShowModal}
+                            setNgModal={setNgModal}
+                            setInterModal={setInterModal}
+                            setOpen={setOpen}
+                        />
+                        <div className="text-3xl ml-3 mt-2">{selectedDay.length === 9 ? selectedDay.slice(-2) : selectedDay.slice(-1)}日</div>
+                        <div className="h-auto w-full mt-3">
+                        <ul className="flex flex-wrap">
+                            <li onClick={() => handleTabClick('ng')}className={`w-1/2  p-1 text-center cursor-pointer rounded-l-lg shadow-lg border ${selectedTab === 'ng' ? 'border-sky-700 bg-sky-700 text-white' : 'border-gray-200 bg-gray-50'}`}>
+                            NG日程
+                            </li>
+                            <li  onClick={() => handleTabClick('book')} className={`w-1/2  p-1 text-center cursor-pointer rounded-r-lg shadow-lg border${selectedTab === 'book' ? 'border-sky-700 bg-sky-700 text-white' : 'border-gray-200 bg-gray-50'}`}>
+                            予定一覧
+                            </li>
+                        </ul>
+                        <div className="mt-4 p-4 bg-white">
+                            {selectedTab === 'ng' && 
+                                <div className="fixed p-1 w-auto h-auto bg-white">
+
+                                    {/* 一括指定ボタン */}
+                                    <div className="flex flex-wrap justify-center max-w-xl mb-2">
+                                        {timeAll.map((time) => (
+                                            <div
+                                                key={time}
+                                                className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
+                                                isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                                }`}
+                                                onClick={() => toggleALL(time)}
+                                            >
+                                                <span>{time}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* 個別指定ボタン */}
+                                    <div className="flex flex-wrap justify-center max-w-3xl">
+                                        {timeOptions.map((time) => (
+                                            <div
+                                                key={time}
+                                                className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
+                                                isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                                }`}
+                                                onClick={() => toggleBgColor(selectedDay,time)}
+                                            >
+                                                <span>{time}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="text-center">
+                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
+                                            保存
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                            {selectedTab === 'book' && 
+                                <div className="p-2 w-auto h-auto">
+                                    <div className="flex flex-col items-center">
+                                        {testUsers.map(user => (
+                                            <div className="flex flex-col p-4">
+                                                <div className="mx-4 p-1 pb-5 border-b-2 border-gray-200">
+                                                    <div className="text-center font-medium text-sm">
+                                                            {user.subject}
+                                                    </div>
+                                                    <div className="flex flex-row">
+                                                        <div className="w-1/2 px-8 flex items-center justify-center">
+                                                            <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                                {user.time}
+                                                            </div>
+                                                        </div>
+                                                        <div className="w-1/2 border-l-2 border-gray-200 px-8">
+                                                            <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                                {user.gakuseki}<br />
+                                                                {user.name}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
             
-
-            {/* モーダルウィンドウ */}
-            {showModal ? (
-                <>
-                    <div
-                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
-                        onClick={() => setShowModal(false)}
-                    ></div>
-
-                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl">
-                        <CloseButton 
-                            setShowModal={setShowModal}
-                            setNgModal={setNgModal}
-                            setInterModal={setInterModal}
-                        />
-                        
-                        <div className="flex">
-                            <div 
-                            className="bg-red-400 hover:bg-red-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-36 w-36"
-                            onClick={() => setNgModal(true)}  
-                            >
-                            NG日程追加
-                            </div>
-
-                            <div
-                            className="bg-blue-400 hover:bg-blue-300 text-white font-bold flex items-center justify-center p-5 rounded-lg text-center m-5 h-36 w-36"
-                            onClick={() => setInterModal(true)}
-                            >
-                            予定の確認
-                            </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                         </div>
                     </div>
                 </>
             ) : null}
-            {NgModal ? (
-                <>
-                    <div
-                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
-                        onClick={() => setNgModal(false)}
-                    ></div>
-
-                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
-                        <CloseButton 
-                            setShowModal={setShowModal}
-                            setNgModal={setNgModal}
-                            setInterModal={setInterModal}
-                        />
-                        <div className="flex justify-between items-start">
-                            <span className="font-bold">NG日程追加</span>
-                        </div>
-
-                        {/* 一括指定ボタン */}
-                        <div className="flex flex-wrap justify-center max-w-3xl my-6">
-                            {timeAll.map((time) => (
-                                <div
-                                    key={time}
-                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-36 h-12 m-3 font-bold ${
-                                    isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
-                                    }`}
-                                    onClick={() => toggleALL(time)}
-                                >
-                                    <span>{time}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* 個別指定ボタン */}
-                        <div className="flex flex-wrap justify-center max-w-3xl">
-                            {timeOptions.map((time) => (
-                                <div
-                                    key={time}
-                                    className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-32 h-11 m-3 font-bold ${
-                                    isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
-                                    }`}
-                                    onClick={() => toggleBgColor(selectedDay,time)}
-                                >
-                                    <span>{time}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </>
-            ) : null}
-            {InterModal ? (
-                <>
-                    <div
-                        className="fixed inset-0 bg-gray-300 bg-opacity-75 transition-opacity"
-                        onClick={() => setInterModal(false)}
-                    ></div>
-
-                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
-                        <CloseButton 
-                            setShowModal={setShowModal}
-                            setNgModal={setNgModal}
-                            setInterModal={setInterModal}
-                        />
-                        <div className="flex flex-col items-center">
-                            <span className="font-bold relative mb-4">面談予定</span>
-                            <div className="flex flex-col p-4">
-                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
-                                    <div className="w-1/3 px-8 flex items-center justify-center">
-                                        <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            13:30~14:00
-                                        </div>
-                                    </div>
-                                    <div className="w-1/3 border-x-2 border-gray-200 px-8">
-                                        <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            1298533<br />
-                                            山本弘樹
-                                        </div>
-                                    </div>
-                                    <div className="w-1/3 px-4 flex items-center justify-center">
-                                        <div className="text-center font-medium text-sm">
-                                            エントリーシート
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </>
-            ) : null}
-        </div>    
+        </>  
     );
 
     const MobileCalendar = () => (
@@ -426,6 +564,11 @@ const Home = () => {
                                 </div>
                             ))}
                         </div>
+                        <div className="text-center">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
+                                保存
+                            </button>
+                        </div>
                     </div>
                 </>
             ) : null}
@@ -436,7 +579,7 @@ const Home = () => {
                         onClick={() => setInterModal(false)}
                     ></div>
 
-                    <div className="fixed p-8 w-auto h-auto bg-white shadow-xl rounded-xl ">
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 w-auto h-auto bg-white shadow-xl rounded-xl z-50 ">
                         <CloseButton 
                             setShowModal={setShowModal}
                             setNgModal={setNgModal}
@@ -444,26 +587,28 @@ const Home = () => {
                         />
                         <div className="flex flex-col items-center">
                             <span className="font-bold relative mb-4">面談予定</span>
-                            <div className="flex flex-col p-4">
-                                <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg flex flex-row">
-                                    <div className="w-1/3 px-8 flex items-center justify-center">
-                                        <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            13:30~14:00
-                                        </div>
-                                    </div>
-                                    <div className="w-1/3 border-x-2 border-gray-200 px-8">
-                                        <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
-                                            1298533<br />
-                                            山本弘樹
-                                        </div>
-                                    </div>
-                                    <div className="w-1/3 px-4 flex items-center justify-center">
+                            {testUsers.map(user => (
+                                <div className="flex flex-col p-4">
+                                    <div className="mx-4 p-2 border-2 border-gray-400 rounded-lg">
                                         <div className="text-center font-medium text-sm">
-                                            エントリーシート
+                                                {user.subject}
+                                        </div>
+                                        <div className="flex flex-row">
+                                            <div className="w-1/2 px-8 flex items-center justify-center">
+                                                <div className="text-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                    {user.time}
+                                                </div>
+                                            </div>
+                                            <div className="w-1/2 border-l-2 border-gray-200 px-8">
+                                                <div className="text-center items-center justify-center font-medium text-xs md:text-base lg:text-sm xl:text-base">
+                                                    {user.gakuseki}<br />
+                                                    {user.name}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            ))}
 
                         </div>
                     </div>
@@ -475,10 +620,10 @@ const Home = () => {
     return (
         <>
             {/* モバイル向けナビゲーションバー（mdブレークポイント以下でのみ表示） */}
-            <div className="md:hidden">{MobileCalendar()}</div>
+            <div className="md:hidden h-full">{MobileCalendar()}</div>
         
             {/* デスクトップ向けサイドバー（mdブレークポイント以上でのみ表示） */}
-            <div className="hidden md:flex">{PcCalendar()}</div>
+            <div className="hidden md:flex h-full">{PcCalendar()}</div>
         </>
     );
 }

@@ -165,14 +165,14 @@ const Waiting = () => {
         setIsNominationSelected(true);
     };
 
-    const handleNoNominationClick = () => {
+    const handleNoNominationClick1 = () => {
         setSelectedUser(testUsers2[0]);
         setIsNominationSelected(false);
     };
 
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center h-full">
             <div className="w-1/2">
                 <div className="flex flex-row justify-center">
                     <button
@@ -183,14 +183,14 @@ const Waiting = () => {
                     </button>
                     <button
                         className={`w-1/2 p-3 rounded-r-lg shadow-lg border ${!isNominationSelected ? 'border-sky-700 bg-sky-700 text-white' : 'border-gray-200 bg-gray-50'}`}
-                        onClick={handleNoNominationClick}
+                        onClick={handleNoNominationClick1}
                     >
                         指名なし
                     </button>
                 </div>
             </div>
-            <div className="-m-2 w-1/2 shadow-lg border-2 border-gray-200 bg-gray-100 overflow-y-auto h-3/5">
-                <div className="flex flex-col justify-center items-center">
+            <div className="-m-2 w-1/2 shadow-lg border-2 border-gray-200 bg-gray-100 h-5/6">
+                <div className="flex flex-col items-center overflow-y-auto h-full">
                     {testUsers.map(user => (
                         <div className="mt-2">
                             <Link href="" key={user.id}>
