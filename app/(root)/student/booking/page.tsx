@@ -70,6 +70,12 @@ const InterviewScheduler: React.FC = () => {
     // 他の必要な状態をリセット
   };
 
+  // 週末（土曜日と日曜日）をフィルタリングする関数
+  const isWeekday = (date: Date) => {
+    const day = date.getDay();
+    return day !== 0 && day !== 6; // 0 = 日曜日、6 = 土曜日
+  };
+
   // 開始時間を更新し、終了時間をリセットするハンドラー
   const handleStartTimeChange = (option: OptionType | null) => {
     setStartTime(option);
@@ -170,6 +176,7 @@ const InterviewScheduler: React.FC = () => {
           selectedTag={selectedTag}
           setSelectedTag={setSelectedTag}
         />
+        {/* スタッフリストを取得選択されたメンバーのIDを保持 */}
         <StaffList
           staff={staff}
           onSelect={setSelectedStaffMember}
@@ -181,6 +188,7 @@ const InterviewScheduler: React.FC = () => {
           onChange={(date: Date) => setSelectedDate(date)}
           dateFormat="yyyy-MM-dd"
           locale={ja}
+          filterDate={isWeekday}
           minDate={new Date()}
           excludeDates={excludeDates}
           customInput={<CustomInput />} //デザインはここ
