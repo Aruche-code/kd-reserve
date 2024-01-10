@@ -30,7 +30,7 @@ const Staff = () => {
 
     <div className="flex flex-row items-center justify-center">
 
-      <div className="flex flex-col mt-10 w-full lg:w-1/2  bg-gray-100 rounded-md shadow-md">
+      <div className="flex flex-col mt-4 w-full lg:w-1/2  bg-gray-100 rounded-md shadow-md">
 
         <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
           ■ 本日の予定
