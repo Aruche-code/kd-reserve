@@ -378,9 +378,9 @@ const InterviewScheduler: React.FC = () => {
         <BookingPost
           selectedStaffMember={selectedStaffMember}
           selectedTag={selectedTag}
-          selectedDate={firstPreferenceDate}
-          startTime={firstPreferenceStartTime}
-          endTime={firstPreferenceEndTime}
+          firstPreferenceDate={firstPreferenceDate}
+          firstPreferenceStartTime={firstPreferenceStartTime}
+          firstPreferenceEndTime={firstPreferenceEndTime}
           resetAll={resetAll}
         />
       </div>
