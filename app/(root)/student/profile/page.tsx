@@ -113,11 +113,11 @@ function UserForm() {
     );
 
   return (
-    <div className="flex flex-col flex-1 p-1.5 items-center">
-      <div className="mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-1/2 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
-        <h1 className="mt-8 mb-2 text-xl text-gray-800 font-semibold">
-          プロフィール
-        </h1>
+    <div className="flex flex-col flex-1 items-center">
+      <div className="mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full lg:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
+        <div className="p-3 px-6 w-full rounded-t-lg bg-kd-sub2-cl text-white mb-2">
+          ■ プロフィール
+        </div>
 
         <form onSubmit={handleSubmit} className="w-full mx-auto">
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 py-1 mx-auto">

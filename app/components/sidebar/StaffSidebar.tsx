@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import HomeIcon from "@mui/icons-material/Home";
 import BadgeIcon from "@mui/icons-material/Badge";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -17,19 +18,19 @@ const Sidebar = () => {
     { title: "ホーム", icon: <HomeIcon />, link: "/staff", gap: false },
     {
       title: "カレンダー",
-      icon: <BadgeIcon />, //適切なアイコンに変えてください
+      icon: <CalendarTodaySharpIcon />, //適切なアイコンに変えてください
       link: "/staff/calendar",
       gap: false,
     },
     {
       title: "承認待ちリスト",
-      icon: <CalendarTodaySharpIcon />, //適切なアイコンに変えてください
+      icon: <FormatListBulletedIcon />, //適切なアイコンに変えてください
       link: "/staff/waitinglist",
       gap: false,
     },
     {
       title: "学生カルテ一覧",
-      icon: <CalendarTodaySharpIcon />, //適切なアイコンに変えてください
+      icon: <BadgeIcon />, //適切なアイコンに変えてください
       link: "/staff/students",
       gap: false,
     },

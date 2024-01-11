@@ -47,7 +47,7 @@ const Student = () => {
   return (
     <div className="flex flex-col flex-wrap justify-center items-center">
 
-      <div className="flex flex-col mt-4 w-full lg:w-1/2  bg-gray-100 rounded-md shadow-md">
+      <div className="flex flex-col mt-4 w-full lg:w-1/2  bg-white rounded-md shadow-md">
 
         <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
           ■ 予約確定一覧
@@ -57,7 +57,7 @@ const Student = () => {
           {testUsers.map(user => (
             <div className="flex flex-col p-2" key={user.id}>
 
-              <div className="mx-4 p-2 border-2 border-gray-200 bg-white rounded-lg flex flex-row">
+              <div className="mx-4 p-2 border border-kd-sub2-cl bg-white rounded-lg flex flex-row">
 
                 <div className="w-4/5 flex flex-row text-center items-center justify-center text-xs md:text-base lg:text-sm xl:text-base">
                   <div className="w-1/3 px-3 flex flex-col">
@@ -88,7 +88,7 @@ const Student = () => {
         <div className="mt-5 text-xs md:text-base lg:text-sm xl:text-base mb-5">
           {testUsers2.map(user => (
             <div className="flex flex-col p-2" key={user.id}>
-              <div className="mx-4 p-2 border-2 bg-white border-gray-200 rounded-lg flex flex-row">
+              <div className="mx-4 p-2 border bg-white border-kd-sub2-cl rounded-lg flex flex-row">
                 <div className="w-4/5 flex flex-row text-center items-center justify-center">
                   <div className="w-2/3 px-3 flex flex-col">
                     1.　{user.day1}　{user.time1}<br />

@@ -62,13 +62,14 @@ const Sidebar = () => {
           </div>
         </div>
         {open && (
-          <ul className="pt-2 pb-2">
+          <ul className="pt-2 pb-2 text-white">
             {Menus.map((menu, index) =>
               menu.link ? (
                 <Link href={menu.link} key={index}>
                   <li
-                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${pathname === menu.link ? "bg-white text-kd-button-cl" : ""
-                      }`}
+                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${
+                      pathname === menu.link ? "bg-white text-kd-button-cl" : ""
+                    }`}
                   >
                     {menu.icon}
                     <span>{menu.title}</span>
@@ -107,20 +108,19 @@ const Sidebar = () => {
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
-          <ul className="pt-6">
+          <ul className="pt-6 text-white">
             {Menus.map((menu, index) =>
               menu.link ? (
                 <Link href={menu.link} key={index}>
                   <li
-                    className={`flex rounded-md p-2 cursor-pointer hover:bg-white text-kd-button-cl text-sm items-center gap-x-4
+                    className={`flex rounded-md p-2 cursor-pointe hover:bg-white hover:text-kd-button-cl text-sm items-center gap-x-4 
                   ${menu.gap ? "mt-9" : "mt-2"} 
-                  ${pathname === menu.link && " bg-white"}`}
+                  ${pathname === menu.link && " bg-white text-kd-button-cl "}`}
                     style={{ whiteSpace: "nowrap", overflow: "hidden" }} // 日本語対応
                   >
                     {menu.icon}
                     <span
-                      className={`${!open && "hidden"
-                        } origin-left duration-200`}
+                      className={`${ !open && "hidden" } origin-left duration-200`}
                     >
                       {menu.title}
                     </span>
@@ -130,7 +130,7 @@ const Sidebar = () => {
                 <li
                   key={index}
                   onClick={menu.action} // アクションを追加
-                  className={`flex rounded-md p-2 cursor-pointer hover:bg-white text-kd-button-cl text-sm items-center gap-x-4
+                  className={`flex rounded-md p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm items-center gap-x-4
                   ${menu.gap ? "mt-9" : "mt-2"} 
                   ${pathname === menu.link && " bg-white"}`}
                   style={{ whiteSpace: "nowrap", overflow: "hidden" }} // 日本語対応

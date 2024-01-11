@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import getUserMail from "@/app/actions/getUsermail";
 
 
 const prisma = new PrismaClient();
@@ -17,11 +18,11 @@ export async function main() {
 export const POST = async (req: Request, res: NextResponse) => {
     console.log("create");
     try {
-        // const staffEmail = await getStaffUsers();    // 教員セッション情報を取得
-        // const email = await getUsermail();   // 変数emailにセッション情報から取得したemail情報を格納する
-        const email = "sample3@gmail.com" // emailを格納
+        //const staffEmail = await getStaffUsers();    // 教員セッション情報を取得
+        const email = await getUserMail();   // 変数emailにセッション情報から取得したemail情報を格納する
+        //const email = "yama@master.mail.com" // emailを格納
         await main();
-        const { ymd, time } = await req.json();
+        const { ymd ,time} = await req.json();
 
         const user = await prisma.user.findUnique({
             where: { email },
@@ -51,7 +52,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 
     try {
         // const email = await getUsermail()  // 変数emailにセッション情報から取得したemail情報を格納する
-        const email = "sample3@gmail.com" // emailを格納
+        const email = "yama@master.mail.com" // emailを格納
         await main();
         const getedStaffNgBooking = await prisma.user.findUnique({ // emailと一致するuserのid、名前、emailとstaffNgテーブル、bookingテーブルを表示
             where: { email },

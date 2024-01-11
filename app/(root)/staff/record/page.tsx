@@ -66,7 +66,7 @@ const Record = () => {
     }
 
     return (
-        <div>
+        <div className="mt-6">
             {testUsers.map(user => (
                 <div className="w-full flex justify-center items-center" key={user.id}>
                     <div className="bg-gray-100 w-2/3 rounded-md shadow-md">

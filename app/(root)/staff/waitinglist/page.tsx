@@ -181,24 +181,24 @@ const Waiting = () => {
 
 
     return (
-        <div className="flex flex-col items-center h-kd-90-h mt-10 md:mt-2">
+        <div className="flex flex-col items-center">
             <div className="w-full">
-                <div className="flex flex-row justify-center">
+                <div className="flex flex-row justify-center fixed w-full z-20">
                     <button
-                        className={`w-1/2 p-3 pb-5 rounded-l-lg shadow-lg border ${isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
+                        className={`w-1/2 p-3 pb-5 shadow-lg border ${isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
                         onClick={handleNominationClick}
                     >
                         指名あり
                     </button>
                     <button
-                        className={`w-1/2 p-3 pb-5 rounded-r-lg shadow-lg border ${!isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
+                        className={`w-1/2 p-3 pb-5 shadow-lg border ${!isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
                         onClick={handleNoNominationClick1}
                     >
                         指名なし
                     </button>
                 </div>
             </div>
-            <div className="-m-2 w-full shadow-lg border-2 border-gray-200 bg-gray-100 overflow-auto">
+            <div className="mt-12 w-full shadow-lg border-2 border-gray-200 bg-gray-100">
                 <div className="flex flex-col items-center h-full">
                     {testUsers.map(user => (
                         <div className="mt-2">
@@ -290,7 +290,7 @@ const Waiting = () => {
                                                     </div>
                                                 </div>
                                                 <div className="flex justify-end">
-                                                    <button className="bg-green-300 hover:bg-green-500 hover:text-white rounded-md px-4 py-1 mt-3 text-xs">
+                                                    <button className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs">
                                                         承認
                                                     </button>
                                                 </div>
