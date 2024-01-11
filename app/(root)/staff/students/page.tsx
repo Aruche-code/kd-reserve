@@ -48,9 +48,11 @@ const Students = () => {
     ];
 
     return (
-        <div className="flex flex-col justify-center items-center">
-
+        <div className="flex flex-col justify-center items-center mt-6">
             <div className="bg-gray-100 rounded-lg shadow-md w-4/5 mt-5">
+            <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
+            ■ 学生一覧
+            </div>
                 <div className="mt-3 p-3">
                     <div className="relative flex justify-end">
                         <div className="relative w-20px">
@@ -67,12 +69,12 @@ const Students = () => {
                 </div>
 
                 <div className="flex justify-center items-center">
-                    <div className="mt-5 mb-5 ml-5 mr-5 flex justify-center items-center flex-wrap">
+                    <div className="m-5 flex  flex-wrap justify-center items-center">
                         {testUsers.map(user => (
                             <Link href="../staff/record">
                                 <button
                                     key={user.id}
-                                    className={'my-2 mx-5 px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-blue-300'}
+                                    className={'my-2 mx-5 min-w-max px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-blue-300'}
                                 >
                                     {user.name}<br />
                                     学籍番号：{user.number}

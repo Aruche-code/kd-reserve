@@ -12,6 +12,7 @@ export default function Calendar({
     interview,
     selectedTimes,
     setOpen,
+    clearState,
 }: any) {
 
 const year = date.getFullYear();
@@ -65,7 +66,7 @@ return (
                 <div
                 key={day}
                 className={`text-center border-2 h-20 hover:border-cyan-400 `}
-                onClick={() => { setOpen(true); setselectedDay(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day); }}
+                onClick={() => { setOpen(true); clearState(); setselectedDay(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day); }}
                 >
                     {day}
                     {interview[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
