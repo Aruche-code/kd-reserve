@@ -70,7 +70,6 @@ const InterviewScheduler: React.FC = () => {
     "/api/student/booking",
     fetcher
   );
-  const staff: Staff[] = staffData?.staffUsers || [];
 
   // スタッフNG日時データを取得
   const { data: ngData, error: ngError } = useSWR(
@@ -265,7 +264,6 @@ const InterviewScheduler: React.FC = () => {
         <StaffList
           staffData={staffData}
           staffError={staffError}
-          staff={staff}
           onSelect={setSelectedStaffMember}
           selectedTeacherId={selectedStaffMember}
         />
