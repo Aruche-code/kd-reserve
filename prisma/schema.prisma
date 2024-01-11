@@ -118,7 +118,9 @@ model StaffNg {
 model WaitingList {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
   studentUserId   String? // 予約画面を操作している学生のユーザーモデルのオブジェクトid
+  studentName     String? // 予約画面を操作している学生の名前
   staffUserId     String? // 指定職員のユーザーモデルのオブジェクトid
+  staffName       String? // 指定職員の名前
   details         String? // 面談内容
   firstYmd        String? // 第一希望の日時
   firstStartTime  String? // 第一希望の開始時刻
