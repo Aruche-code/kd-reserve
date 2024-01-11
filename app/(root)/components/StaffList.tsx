@@ -27,7 +27,6 @@ const SkeletonBody = () => {
 interface StaffListProps {
   staffData: any;
   staffError: any;
-  staff: Staff[];
   onSelect: (id: string) => void;
   selectedTeacherId: string | null;
 }
@@ -35,10 +34,12 @@ interface StaffListProps {
 const StaffList: React.FC<StaffListProps> = ({
   staffData,
   staffError,
-  staff,
   onSelect,
   selectedTeacherId,
 }) => {
+  // 職員のデータを取り出す
+  const staff: Staff[] = staffData?.staffUsers || [];
+
   if (staffError) return <div>職員リストの取得に失敗。</div>;
   if (!staffData) return <SkeletonBody />;
   return (
