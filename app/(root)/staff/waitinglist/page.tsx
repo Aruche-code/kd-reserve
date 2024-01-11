@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import CustomInput from "@/app/components/inputs/DatePicker";
+import CustomInput from "@/app/components/styles/DatePicker";
 import ja from "date-fns/locale/ja"; // date-fnsの日本語ロケール
 
 
