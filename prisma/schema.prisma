@@ -139,13 +139,13 @@ model WaitingList {
 // 暫定版 ＊変更される可能性あり
 model Booking {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId // オブジェクトID
-  studentUserId String? // 予約画面を操作している学生のユーザーモデルのオブジェクトid
-  studentName   String? // 学生の名前
-  staffUserId   String? // 指定職員のユーザーモデルのオブジェクトid
-  staffName     String? // 職員の名前
-  ymd           String? // 年月日
-  time          String[] // 時間帯 ＊配列で格納
-  details       String? // 面談内容
+  studentUserId String?   // 予約画面を操作している学生のユーザーモデルのオブジェクトid
+  studentName   String?   // 学生の名前
+  staffUserId   String?   // 指定職員のユーザーモデルのオブジェクトid
+  staffName     String?   // 職員の名前
+  ymd           String?   // 年月日
+  time          String[]  // 時間帯 ＊配列で格納
+  details       String?   // 面談内容
 
   // Userとの逆向きのリレーション
   User          User?    @relation(fields: [userId], references: [id])

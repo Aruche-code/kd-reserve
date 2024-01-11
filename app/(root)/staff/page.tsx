@@ -29,7 +29,6 @@ const Staff = () => {
   return (
 
     <div className="flex flex-row items-center justify-center">
-
       <div className="flex flex-col mt-10 w-full lg:w-1/2  bg-white rounded-md shadow-md">
 
         <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
