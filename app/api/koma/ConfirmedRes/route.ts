@@ -23,7 +23,7 @@ export const GET = async (req: Request, res: NextResponse) => {
   try {
     await main();   // DB接続関数の呼び出し
     // const staffEmail = await getStaffUsers();       // 教員セッション情報を取得
-    // const email = await getUsermail();              // 変数emailにセッション情報から取得したemail情報を格納する
+    // const email = await getUserMail();              // 変数emailにセッション情報から取得したemail情報を格納する
     const email = "sample4@gmail.com"     // 変数emailにダミーのメールアドレスを格納する
     const user = await prisma.user.findMany({         // findManyメソッドを使用して、waitingListテーブルから複数のレコードを取得
       where: { email }, // whereメソッドを使用して、studentEmailが一致するレコードを取得
@@ -53,7 +53,7 @@ export const POST = async (req: Request, res: NextResponse) => {
   try {
     await main();   // DB接続関数の呼び出し
     // const staffEmail = await getStaffUsers();       // 教員セッション情報を取得
-    // const email = await getUsermail();              // 変数emailにセッション情報から取得したemail情報を格納する
+    // const email = await getUserMail();              // 変数emailにセッション情報から取得したemail情報を格納する
     const email = "sample4@gmail.com"     // 変数emailにダミーのメールアドレスを格納する
     const {
       staffUserId,
@@ -94,7 +94,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
   try{
     await main();   // DB接続関数の呼び出し
     // const staffEmail = await getStaffUsers();       // 教員セッション情報を取得
-    // const email = await getUsermail();              // 変数emailにセッション情報から取得したemail情報を格納する
+    // const email = await getUserMail();              // 変数emailにセッション情報から取得したemail情報を格納する
     const email = "sample4@gmail.com"     // 変数emailにダミーのメールアドレスを格納する
     // Userを検索
     const user = await prisma.user.findUnique({

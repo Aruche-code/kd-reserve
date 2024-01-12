@@ -1,3 +1,5 @@
+import { NextApiRequest, NextApiResponse } from "next";   // APIルートのリクエストとレスポンスの型定義
+
 import { NextResponse } from "next/server";               // APIミドルウェアでレスポンスを操作するためのオブジェクト
 import { PrismaClient } from "@prisma/client";            // データベース接続とクエリのためのメインオブジェクト
 import getStaffUsers from "@/app/actions/getStaffUsers";  //教員のセッション情報認証ロジックをインポート
@@ -17,12 +19,14 @@ export async function main() {
 
 
 // 学生一覧を取得するAPI
-export const GET = async (req: Request, res: NextResponse) => {
+// export const GET = async (req: Request, res: NextResponse) => {
+export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log("GET Students");
   try {
     await main(); // DB接続関数の呼び出し
     // const { searchValue } = req.query;  // 検索値をリクエストから取得
-    const searchValue = "1333983";      // 仮の検索値入力
+    const searchValue = "1333";      // 仮の検索値入力
+    // // const searchValue = req.query?.searchValue;
 
     if (searchValue) {
       const user = await prisma.user.findMany({
@@ -35,6 +39,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         },
         select: {
           name: true,
+          email: true,
         },
       });
 
@@ -51,6 +56,7 @@ export const GET = async (req: Request, res: NextResponse) => {
       }
     }
   } catch (err) {
+    console.error("Error:", err);   // エラー時の確認用ログ出力
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {
     await prisma.$disconnect(); // DBへの接続を解除
