@@ -22,7 +22,7 @@ export const GET = async (req: Request, res: NextResponse) => {
   try {
     await main(); // DB接続関数の呼び出し
     // const { searchValue } = req.query;  // 検索値をリクエストから取得
-    const searchValue = "1333983";      // 仮の検索値入力
+    const searchValue = "1";      // 仮の検索値入力
 
     if (searchValue) {
       const user = await prisma.user.findMany({
@@ -35,6 +35,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         },
         select: {
           name: true,
+          email: true,
         },
       });
 
