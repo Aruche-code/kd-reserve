@@ -11,18 +11,21 @@ interface OptionType {
 interface BookingPostProps {
   selectedStaffMember: string | null;
   selectedTag: string | null;
-  selectedDate: Date;
-  startTime: OptionType | null;
-  endTime: OptionType | null;
+  firstPreferenceDate: Date;
+  firstPreferenceStartTime: OptionType | null;
+  firstPreferenceEndTime: OptionType | null;
+  // secondPreferenceDate: Date;
+  // secondPreferenceStartTime: OptionType | null;
+  // secondPreferenceEndTime: OptionType | null;
   resetAll: () => void;
 }
 
 const BookingPost: React.FC<BookingPostProps> = ({
   selectedStaffMember,
   selectedTag,
-  selectedDate,
-  startTime,
-  endTime,
+  firstPreferenceDate,
+  firstPreferenceStartTime,
+  firstPreferenceEndTime,
   resetAll,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,9 +35,9 @@ const BookingPost: React.FC<BookingPostProps> = ({
     return (
       !selectedStaffMember ||
       !selectedTag ||
-      !selectedDate ||
-      !startTime ||
-      !endTime
+      !firstPreferenceDate ||
+      !firstPreferenceStartTime ||
+      !firstPreferenceEndTime
     );
   };
 
@@ -52,9 +55,9 @@ const BookingPost: React.FC<BookingPostProps> = ({
     const data = {
       staffUserId: selectedStaffMember,
       details: selectedTag,
-      firstYmd: format(selectedDate, "yyyy-MM-dd"),
-      firstStartTime: startTime?.value,
-      firstEndTime: endTime?.value,
+      firstYmd: format(firstPreferenceDate, "yyyy-MM-dd"),
+      firstStartTime: firstPreferenceStartTime?.value,
+      firstEndTime: firstPreferenceEndTime?.value,
       secondYmd: null,
       secondStartTime: null,
       secondEndTime: null,
