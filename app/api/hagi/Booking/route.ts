@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "next-auth"
-import getStaffUsers from '../../../actions/getStaffUsers';
-import getUserId from '../../../actions/getStaffUsers';
+import getUserMail from "@/app/actions/getUserMail";
 
 const prisma = new PrismaClient();
 
@@ -59,10 +57,34 @@ export const POST = async (req: Request, res: NextResponse) => {
                 secondStartTime, secondEndTime, thirdYmd, thirdStartTime, thirdEndTime } = await req.json();
         await main();
 
+        // 予約情報に保存するための職員の名前を取得する
+        const staffData : any = await prisma.user.findUnique({
+            where: { id: staffUserId },
+            select: {
+                name: true,                   // 職員の名前
+            },
+        });
+
+        const studentData : any = await prisma.user.findUnique({
+            where: { email: email },
+            select: {
+                id:   true,                   // 学生のID
+                name: true,                   // 学生の名前
+            },
+        });
+
+        const studentUserId: any = studentData.id
+        const studentName: any = studentData.name
+
+        const staffName: any = staffData.name
+
         // 予約情報をUserモデルの中の操作している学生のWaitingListに保存する
         const WaitingListCreate = await prisma.waitingList.create({
             data: {
+                studentUserId,
+                studentName,
                 staffUserId,
+                staffName,
                 details,
                 firstYmd,
                 firstStartTime,
