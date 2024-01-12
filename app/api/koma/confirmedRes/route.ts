@@ -17,9 +17,9 @@ export async function main() {
 }
 
 
-// 予約待ちリスト(WaitingList)を表示するAPI
+// 確定済み予約リスト(Booking)を表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-  console.log("GET WaitingLists");
+  console.log("GET Booking");
   try {
     await main();   // DB接続関数の呼び出し
     // const staffEmail = await getStaffUsers();       // 教員セッション情報を取得
@@ -29,7 +29,7 @@ export const GET = async (req: Request, res: NextResponse) => {
       where: { email }, // whereメソッドを使用して、studentEmailが一致するレコードを取得
       select: {         // selectメソッドを使用して、取得するカラムを指定
         name: true,
-        waitinglist: true,
+        booking: true,
       },
     });
     return NextResponse.json(
@@ -47,9 +47,9 @@ export const GET = async (req: Request, res: NextResponse) => {
 };
 
 
-// 仮の予約待ちリスト(WaitingList)に予約を追加するAPI
+// 仮の確定済み予約リスト(Booking)に予約を追加するAPI
 export const POST = async (req: Request, res: NextResponse) => {
-  console.log("POST WaitingList");
+  console.log("POST Booking");
   try {
     await main();   // DB接続関数の呼び出し
     // const staffEmail = await getStaffUsers();       // 教員セッション情報を取得
@@ -57,38 +57,24 @@ export const POST = async (req: Request, res: NextResponse) => {
     const email = "sample4@gmail.com"     // 変数emailにダミーのメールアドレスを格納する
     const {
       staffUserId,
+      ymd,
+      time,
       details,
-      firstYmd,
-      firstStartTime,
-      firstEndTime,
-      secondYmd,
-      secondStartTime,
-      secondEndTime,
-      thirdYmd,
-      thirdStartTime,
-      thirdEndTime,
     } = await req.json();
-    const waitingList = await prisma.waitingList.create({
+    const booking = await prisma.booking.create({
       data: {
         staffUserId,
+        ymd,
+        time,
         details,
-        firstYmd,
-        firstStartTime,
-        firstEndTime,
-        secondYmd,
-        secondStartTime,
-        secondEndTime,
-        thirdYmd,
-        thirdStartTime,
-        thirdEndTime,
-        user: { connect: { email } },   // 既存のUserとStudentProfileの関連付け
+        User: { connect: { email } },   // 既存のUserとStudentProfileの関連付け
     },
     include: {
-        user: true,             // userテーブルも含めて取得
+        User: true,             // userテーブルも含めて取得
     },
     });
     return NextResponse.json(
-      { message: "Success", waitingList },
+      { message: "Success", booking },
       { status: 200 }           // ステータスコード all OK
     );
   } catch (err) {
@@ -102,9 +88,9 @@ export const POST = async (req: Request, res: NextResponse) => {
 };
 
 
-// 予約待ちリスト(WaitingList)から予約申請をキャンセルするAPI
+// 確定済み予約リスト(Booking)から予約申請をキャンセルするAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
-  console.log("DELETE WaitingList");
+  console.log("DELETE Booking");
   try{
     await main();   // DB接続関数の呼び出し
     // const staffEmail = await getStaffUsers();       // 教員セッション情報を取得
@@ -114,12 +100,12 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     const user = await prisma.user.findUnique({
       where: { email },
       include: {
-          waitinglist: true,
+          booking: true,
       },
   });
   if (user) {
-      // 取得したemailにWaitinglistが存在する場合、削除
-      await prisma.waitingList.deleteMany({
+      // 取得したemailにBookingが存在する場合、削除
+      await prisma.booking.deleteMany({
           where: {
               userId: user.id,
           },
