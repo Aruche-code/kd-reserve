@@ -25,21 +25,24 @@ export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await main(); // DB接続関数の呼び出し
     // const { searchValue } = req.query;  // 検索値をリクエストから取得
-    const searchValue = "1333";      // 仮の検索値入力
+    const searchValue = "1333983";      // 仮の検索値入力
     // // const searchValue = req.query?.searchValue;
 
     if (searchValue) {
       const user = await prisma.user.findMany({
         where: {
-          role: "student",
-          email: {
+          role: "student",  // 学生のみを検索対象とする
+          email: {          // 学籍番号が紐づけられたmailAddressを取得
             endsWith: `@st.kobedenshi.ac.jp`,
             contains: `kd${searchValue}`,
           },
         },
-        select: {
+        select: {           // 表示するフィールドを指定する
           name: true,
           email: true,
+          studentProfile: true, // プロフィール
+          record: true,         // カルテ情報
+          booking: true,        // 面談予約情報
         },
       });
 
