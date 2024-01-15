@@ -66,13 +66,13 @@ return (
                 <div
                 key={day}
                 className={`text-center border-2 h-20 hover:border-cyan-400 `}
-                onClick={() => { setOpen(true); clearState(); setselectedDay(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day); }}
+                onClick={() => { setOpen(true); clearState(); setselectedDay(date.getFullYear()+"-"+(date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)) +"-"+(day < 10 ? '0' + day : day)); }}
                 >
                     {day}
-                    {interview[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
+                    {interview[date.getFullYear()+"-"+(date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1))+"-"+(day < 10 ? '0' + day : day)] ? (
                     <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-xxs my-1">予約あり</div>
                     ):""}
-                    {selectedTimes[date.getFullYear()+"-"+(date.getMonth()+1)+"-"+day] ? (
+                    {selectedTimes[date.getFullYear()+"-"+(date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1))+"-"+(day < 10 ? '0' + day : day)] ? (
                     <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-xxs my-1">NG日程あり</div>
                     ):""}
                 </div>
