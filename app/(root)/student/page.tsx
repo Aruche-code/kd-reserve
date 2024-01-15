@@ -6,6 +6,24 @@ const Home = () => {
   const [homeData, setHomeData] = useState<any>({ message: '', getBookingList: [], getWaitingList: [] });
   const [isLoading, setIsLoading] = useState(true);
 
+  const handleCancelBooking = async () => {
+    try {
+      const response = await axios.delete('/api/student/booking');
+      setHomeData(response.data);
+    } catch (error) {
+      console.error('Error cancelling waiting:', error);
+    }
+  };
+
+  const handleCancelWaiting = async () => {
+    try {
+      const response = await axios.delete('/api/student');
+      setHomeData(response.data);
+    } catch (error) {
+      console.error('Error cancelling waiting:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,7 +68,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="w-1/5 flex items-center justify-center">
-                  <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
+                  <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white" onClick={() => handleCancelBooking()}>キャンセル</button>
                 </div>
               </div>
             </div>
@@ -77,7 +95,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="w-1/5 flex items-center justify-center">
-                  <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white">キャンセル</button>
+                  <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white" onClick={() => handleCancelWaiting()}>キャンセル</button>
                 </div>
               </div>
             </div>
