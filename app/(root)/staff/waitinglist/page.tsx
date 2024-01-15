@@ -1,13 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import CustomInput from "@/app/components/styles/DatePicker";
-import ja from "date-fns/locale/ja"; // date-fnsの日本語ロケール
-
 
 interface selectedUser {
 
@@ -50,11 +44,6 @@ const selectedUser: React.FC<selectedUser> = ({ testUsers, testUsers2 }) => {
         });
     };
 
-    // 選択されたオプションを更新するハンドラ
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedOption(event.target.value);
-    };
-
     // 選択されたオプションに基づいて使用するデータセットを判断
     const selectedData = selectedOption === "firstChoice" ? testUsers : testUsers2;
 
@@ -87,8 +76,24 @@ const Waiting = () => {
         day3: string;
         time3: string;
     }
-    const [nowuser, setNowUser] = useState<User | null>(null);
+    const [nowUser, setNowUser] = useState<User[]>([]);
 
+    //状態の管理
+    const [timeRanges, setTimeRanges] = useState([]);
+
+    // ユーザー選択時のハンドラ
+    const handleSelect = (id: string, index: string) => {
+        setTimeRanges(prev => ({
+        ...prev,
+        [id]: index  
+        }));
+    }
+
+    // useEffect(() => {
+    //     console.log(timeRanges);
+    // }, [timeRanges]);
+
+    //指名ありテストユーザー
     const testUsers: User[] = [
         {
             id: '601b92ee95861639c3e2c44b',
@@ -136,7 +141,8 @@ const Waiting = () => {
         }
 
     ];
-    const testUsers2 = [
+    //指名なしテストユーザー
+    const testUsers2: User[] = [
         {
             id: '601b92ee95861639c3e2c44b',
             kana: 'コウベゴロウ',
@@ -162,45 +168,43 @@ const Waiting = () => {
     ];
 
 
-
-
-    const [selectedUser, setSelectedUser] = useState(testUsers[0]);
     const [isNominationSelected, setIsNominationSelected] = useState(true);
 
 
-    const handleNominationClick = () => {
-        setSelectedUser(testUsers[0]);
+    const setUser = (users: any) => {
+        setNowUser(users);
         setIsNominationSelected(true);
-    };
-
-    const handleNoNominationClick1 = () => {
-        setSelectedUser(testUsers2[0]);
+    }
+    const setUser2 = (users: any) => {
+        setNowUser(users);
         setIsNominationSelected(false);
-    };
+    }
 
-
+    useEffect(() => {
+        setNowUser(testUsers);
+    }, []);
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center min-h-full bg-gray-100">
             <div className="w-full">
                 <div className="flex flex-row justify-center fixed w-full z-20">
                     <button
                         className={`w-1/2 p-3 pb-5 shadow-lg border ${isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
-                        onClick={handleNominationClick}
+                        onClick={() => setUser(testUsers)}
                     >
                         指名あり
                     </button>
                     <button
                         className={`w-1/2 p-3 pb-5 shadow-lg border ${!isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
-                        onClick={handleNoNominationClick1}
+                        onClick={() => setUser2(testUsers2)}
                     >
                         指名なし
                     </button>
                 </div>
             </div>
-            <div className="mt-12 w-full shadow-lg border-2 border-gray-200 bg-gray-100">
+            <div className="mt-12 w-full shadow-lg border-2 border-gray-200 bg-gray-100 h-auto">
                 <div className="flex flex-col items-center h-full">
-                    {testUsers.map(user => (
+                    {nowUser.map((user, index) => (
                         <div className="mt-2">
                             <Link href="" key={user.id}>
                                 <div
@@ -213,28 +217,20 @@ const Waiting = () => {
                                                 {user.name}<br />
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                                                <div className="border-b-2 border-gray-200">
+                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, "0")}>
                                                     1.　{user.day1}　{user.time1}
                                                 </div>
-                                                <div className="border-b-2 border-gray-200">
+                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, "1")}>
                                                     2.　{user.day2}　{user.time2}
                                                 </div>
-                                                <div className="border-b-2 border-gray-200">
+                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, "2")}>
                                                     3.　{user.day3}　{user.time3}
                                                 </div>
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 border-l-2">
                                                 <div className="flex flex-row">
-                                                    <DatePicker
-                                                        selected={selectedDate}
-                                                        onChange={(date: Date) => setSelectedDate(date)}
-                                                        dateFormat="yyyy-MM-dd"
-                                                        locale={ja}
-                                                        minDate={new Date()}
-                                                        excludeDates={excludeDates}
-                                                        customInput={<CustomInput />} //デザインはここ
-                                                        className="m-2"
-                                                    />
+                                                    {timeRanges[index] === false ? "選択されています":"選択されていません"}
+                                                    {console.log(timeRanges[index])}
                                                 </div>
                                                 <div className="flex flex-row">
                                                     <div className="m-2">
