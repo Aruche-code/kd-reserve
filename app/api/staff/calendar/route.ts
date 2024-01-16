@@ -77,8 +77,6 @@ export const GET = async (req: Request, res: NextResponse) => {
             : null,
           booking: getedStaffNgBooking.booking
             ? getedStaffNgBooking.booking.map((booking) => ({
-                studentEmail: booking?.studentEmail,
-                staffEmail: booking?.staffEmail,
                 ymd: booking?.ymd,
                 time: booking?.time,
                 details: booking?.details,
