@@ -8,7 +8,7 @@ const Home = () => {
 
   const handleCancelBooking = async () => {
     try {
-      const response = await axios.delete('/api/student/booking');
+      const response = await axios.delete('/api/hagi/student');
       setHomeData(response.data);
     } catch (error) {
       console.error('Error cancelling waiting:', error);
