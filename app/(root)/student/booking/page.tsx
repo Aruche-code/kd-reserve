@@ -35,7 +35,6 @@ const InterviewScheduler: React.FC = () => {
     null
   );
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  //------------------------------------------------
   const [firstPreferenceDate, setFirstPreferenceDate] = useState(new Date());
   const [firstPreferenceStartTime, setFirstPreferenceStartTime] =
     useState<OptionType | null>(null);
@@ -43,6 +42,25 @@ const InterviewScheduler: React.FC = () => {
     useState<OptionType | null>(null);
   const [firstTimeOptions, setFirstTimeOptions] = useState<OptionType[]>([]);
   const [firstEndTimeOptions, setFirstEndTimeOptions] = useState<OptionType[]>(
+    []
+  );
+  const [secondPreferenceDate, setSecondPreferenceDate] = useState(new Date());
+  const [secondPreferenceStartTime, setSecondPreferenceStartTime] =
+    useState<OptionType | null>(null);
+  const [secondPreferenceEndTime, setSecondPreferenceEndTime] =
+    useState<OptionType | null>(null);
+  const [secondTimeOptions, setSecondTimeOptions] = useState<OptionType[]>([]);
+  const [secondEndTimeOptions, setSecondEndTimeOptions] = useState<
+    OptionType[]
+  >([]);
+
+  const [thirdPreferenceDate, setThirdPreferenceDate] = useState(new Date());
+  const [thirdPreferenceStartTime, setThirdPreferenceStartTime] =
+    useState<OptionType | null>(null);
+  const [thirdPreferenceEndTime, setThirdPreferenceEndTime] =
+    useState<OptionType | null>(null);
+  const [thirdTimeOptions, setThirdTimeOptions] = useState<OptionType[]>([]);
+  const [thirdEndTimeOptions, setThirdEndTimeOptions] = useState<OptionType[]>(
     []
   );
 
@@ -61,6 +79,23 @@ const InterviewScheduler: React.FC = () => {
     fetcher
   );
 
+  // 開始時間を生成する関数
+  const generateTimeOptions = (): OptionType[] => {
+    const options: OptionType[] = [];
+    let time = setHours(setMinutes(new Date(), 0), 9);
+
+    while (time <= setHours(setMinutes(new Date(), 0), 17)) {
+      const timeString = format(time, "HH:mm");
+      options.push({
+        value: timeString,
+        label: timeString,
+      });
+      time = addMinutes(time, 30);
+    }
+
+    return options;
+  };
+
   // NG日を考慮して初期値を設定する関数
   const setInitialDateConsideringNG = (ngDates: any) => {
     let initialDate = new Date();
@@ -68,18 +103,9 @@ const InterviewScheduler: React.FC = () => {
       initialDate = addDays(initialDate, 1);
     }
     setFirstPreferenceDate(initialDate);
+    setSecondPreferenceDate(initialDate);
+    setThirdPreferenceDate(initialDate);
   };
-
-  //  NG日データが更新された時に初期値を設定
-  useEffect(() => {
-    if (ngData && ngData.staffNgData) {
-      const newExcludeDates = ngData.staffNgData[0].staffng
-        .filter((ng: any) => ng.time.includes("allng"))
-        .map((ng: any) => new Date(ng.ymd));
-      setExcludeDates(newExcludeDates);
-      setInitialDateConsideringNG(newExcludeDates);
-    }
-  }, [ngData]);
 
   //送信完了時リセット
   const resetAll = () => {
@@ -97,21 +123,18 @@ const InterviewScheduler: React.FC = () => {
     setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
   };
 
-  // 開始時間を生成する関数
-  const generateTimeOptions = (): OptionType[] => {
-    const options: OptionType[] = [];
-    let time = setHours(setMinutes(new Date(), 0), 9);
+  // 開始時間を更新し、終了時間をリセットするハンドラー2
+  const handleSecondStartTimeChange = (option: OptionType | null) => {
+    setSecondPreferenceStartTime(option);
+    setSecondPreferenceEndTime(null);
+    setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
+  };
 
-    while (time <= setHours(setMinutes(new Date(), 0), 17)) {
-      const timeString = format(time, "HH:mm");
-      options.push({
-        value: timeString,
-        label: timeString,
-      });
-      time = addMinutes(time, 30);
-    }
-
-    return options;
+  // 開始時間を更新し、終了時間をリセットするハンドラー3
+  const handleThirdStartTimeChange = (option: OptionType | null) => {
+    setThirdPreferenceStartTime(option);
+    setThirdPreferenceEndTime(null);
+    setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
   };
 
   // 選択されたスタッフに基づいてNG日を取得し更新
@@ -132,22 +155,45 @@ const InterviewScheduler: React.FC = () => {
     }
   }, [ngData]);
 
-  console.log(ngData);
+  //  NG日データが更新された時に初期値を設定
+  useEffect(() => {
+    if (ngData && ngData.staffNgData) {
+      const newExcludeDates = ngData.staffNgData[0].staffng
+        .filter((ng: any) => ng.time.includes("allng"))
+        .map((ng: any) => new Date(ng.ymd));
+      setExcludeDates(newExcludeDates);
+      setInitialDateConsideringNG(newExcludeDates);
+    }
+  }, [ngData]);
 
   //-------------------------------------1----------------------------------------
   //アンマウント、開始時間を生成
   useEffect(() => {
     setFirstTimeOptions(generateTimeOptions());
+    setSecondTimeOptions(generateTimeOptions());
+    setThirdTimeOptions(generateTimeOptions());
   }, []);
 
-  // 選択された日付が変更された時にリセット
+  // 選択された日付が変更された時にリセット1
   useEffect(() => {
     setFirstPreferenceStartTime(null);
     setFirstPreferenceEndTime(null);
     setLoadingEndTime(false);
   }, [firstPreferenceDate]);
 
-  // 開始時間が選択された時に終了時間のオプションを計算
+  useEffect(() => {
+    setSecondPreferenceStartTime(null);
+    setSecondPreferenceEndTime(null);
+    setLoadingEndTime(false);
+  }, [secondPreferenceDate]);
+
+  useEffect(() => {
+    setThirdPreferenceStartTime(null);
+    setThirdPreferenceEndTime(null);
+    setLoadingEndTime(false);
+  }, [thirdPreferenceDate]);
+
+  // 開始時間が選択された時に終了時間のオプションを計算1
   useEffect(() => {
     if (firstPreferenceStartTime) {
       const generateEndTimeOptions = () => {
@@ -184,12 +230,86 @@ const InterviewScheduler: React.FC = () => {
     setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
   }, [firstPreferenceStartTime, firstPreferenceDate]);
 
+  // 開始時間が選択された時に終了時間のオプションを計算2
+  useEffect(() => {
+    if (secondPreferenceStartTime) {
+      const generateEndTimeOptions = () => {
+        const options: OptionType[] = [];
+        const [hour, minute] = secondPreferenceStartTime.value
+          .split(":")
+          .map(Number);
+        let time = new Date(secondPreferenceDate);
+        time.setHours(hour, minute);
+
+        // 選択された開始時間から30分後の時間を最初のオプションとして設定
+        time = addMinutes(time, 30);
+
+        // 17:00までの時間を30分刻みでオプションとして追加
+        while (
+          time <= setHours(setMinutes(new Date(secondPreferenceDate), 0), 17)
+        ) {
+          const timeString = format(time, "HH:mm");
+          options.push({
+            value: timeString,
+            label: timeString,
+          });
+          time = addMinutes(time, 30);
+        }
+
+        return options;
+      };
+
+      setSecondEndTimeOptions(generateEndTimeOptions());
+    } else {
+      // 開始時間が未選択の場合は終了時間のオプションをクリア
+      setSecondEndTimeOptions([]);
+    }
+    setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
+  }, [secondPreferenceStartTime, secondPreferenceDate]);
+
+  // 開始時間が選択された時に終了時間のオプションを計算3
+  useEffect(() => {
+    if (thirdPreferenceStartTime) {
+      const generateEndTimeOptions = () => {
+        const options: OptionType[] = [];
+        const [hour, minute] = thirdPreferenceStartTime.value
+          .split(":")
+          .map(Number);
+        let time = new Date(thirdPreferenceDate);
+        time.setHours(hour, minute);
+
+        // 選択された開始時間から30分後の時間を最初のオプションとして設定
+        time = addMinutes(time, 30);
+
+        // 17:00までの時間を30分刻みでオプションとして追加
+        while (
+          time <= setHours(setMinutes(new Date(thirdPreferenceDate), 0), 17)
+        ) {
+          const timeString = format(time, "HH:mm");
+          options.push({
+            value: timeString,
+            label: timeString,
+          });
+          time = addMinutes(time, 30);
+        }
+
+        return options;
+      };
+
+      setThirdEndTimeOptions(generateEndTimeOptions());
+    } else {
+      // 開始時間が未選択の場合は終了時間のオプションをクリア
+      setThirdEndTimeOptions([]);
+    }
+    setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
+  }, [thirdPreferenceStartTime, thirdPreferenceDate]);
+
   //-------------------------------------------------------------------------
 
   return (
     <div>
       <div
-        className="p-8 mx-auto bg-c-black_100 rounded-lg shadow-md flex flex-col space-y-3"
+        className="p-8 mx-auto bg-c-black_100 rounded-lg shadow-md flex flex-col space-y-3 justify-center"
         style={{ minWidth: "300px", maxWidth: "100%" }}
       >
         <ReservationTags
@@ -202,59 +322,171 @@ const InterviewScheduler: React.FC = () => {
           onSelect={setSelectedStaffMember}
           selectedTeacherId={selectedStaffMember}
         />
-        {/* 第一希望日時 */}
-        {/* 日付ピッカーコンポーネント */}
-        <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-          <h1 className="m-2">第一希望日を入力</h1>
-          <div>
-            <DatePicker
-              selected={firstPreferenceDate}
-              onChange={(date: Date) => setFirstPreferenceDate(date)}
-              dateFormat="yyyy-MM-dd"
-              locale={ja}
-              minDate={new Date()}
-              excludeDates={excludeDates}
-              customInput={<CustomInput />} //デザインはここ
-            />
-          </div>
-          {/* 開始時間のためのセレクトコンポーネント */}
-          <div>
-            <Select
-              id="startselect1"
-              instanceId="startselect1"
-              options={firstTimeOptions}
-              value={firstPreferenceStartTime}
-              onChange={handleFirstStartTimeChange}
-              placeholder="開始時間を選択..."
-              styles={customSelectStyles}
-            />
-          </div>
-          {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-          {loadingEndTime ? (
-            <p className="text-gray-500 text-xs p-0.5">終了時間を計算中...</p>
-          ) : firstPreferenceStartTime ? (
-            firstEndTimeOptions.length > 0 ? (
+        <div className="grid grid-cols-3 px-4">
+          {/* 第一希望日時 */}
+          {/* 日付ピッカーコンポーネント */}
+          <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
+            <h1 className="m-2">第一希望日を入力</h1>
+            <div>
+              <DatePicker
+                selected={firstPreferenceDate}
+                onChange={(date: Date) => setFirstPreferenceDate(date)}
+                dateFormat="yyyy-MM-dd"
+                locale={ja}
+                minDate={new Date()}
+                excludeDates={excludeDates}
+                customInput={<CustomInput />} //デザインはここ
+              />
+            </div>
+            {/* 開始時間のためのセレクトコンポーネント */}
+            <div>
               <Select
-                id="endselect1"
-                instanceId="endselect1"
-                options={firstEndTimeOptions}
-                value={firstPreferenceEndTime}
-                onChange={(option) => setFirstPreferenceEndTime(option)}
-                placeholder="終了時間を選択..."
+                id="startselect1"
+                instanceId="startselect1"
+                options={firstTimeOptions}
+                value={firstPreferenceStartTime}
+                onChange={handleFirstStartTimeChange}
+                placeholder="開始時間を選択..."
                 styles={customSelectStyles}
               />
+            </div>
+            {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+            {loadingEndTime ? (
+              <p className="text-gray-500 text-xs p-0.5">終了時間を計算中...</p>
+            ) : firstPreferenceStartTime ? (
+              firstEndTimeOptions.length > 0 ? (
+                <Select
+                  id="endselect1"
+                  instanceId="endselect1"
+                  options={firstEndTimeOptions}
+                  value={firstPreferenceEndTime}
+                  onChange={(option) => setFirstPreferenceEndTime(option)}
+                  placeholder="終了時間を選択..."
+                  styles={customSelectStyles}
+                />
+              ) : (
+                <p className="text-red-500  text-xs p-0.5">
+                  選択できる終了時間はありません。
+                  <br />
+                  開始時間を変更してください。
+                </p>
+              )
             ) : (
-              <p className="text-red-500  text-xs p-0.5">
-                選択できる終了時間はありません。
-                <br />
-                開始時間を変更してください。
+              <p className="text-gray-500  text-xs p-0.5">
+                開始時間を先に選択してください。
               </p>
-            )
-          ) : (
-            <p className="text-gray-500  text-xs p-0.5">
-              開始時間を先に選択してください。
-            </p>
-          )}
+            )}
+          </div>
+
+          {/* 第二希望日時 */}
+          {/* 日付ピッカーコンポーネント */}
+          <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
+            <h1 className="m-2">第二希望日を入力</h1>
+            <div>
+              <DatePicker
+                selected={secondPreferenceDate}
+                onChange={(date: Date) => setSecondPreferenceDate(date)}
+                dateFormat="yyyy-MM-dd"
+                locale={ja}
+                minDate={new Date()}
+                excludeDates={excludeDates}
+                customInput={<CustomInput />} //デザインはここ
+              />
+            </div>
+            {/* 開始時間のためのセレクトコンポーネント */}
+            <div>
+              <Select
+                id="startselect2"
+                instanceId="startselect2"
+                options={secondTimeOptions}
+                value={secondPreferenceStartTime}
+                onChange={handleSecondStartTimeChange}
+                placeholder="開始時間を選択..."
+                styles={customSelectStyles}
+              />
+            </div>
+            {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+            {loadingEndTime ? (
+              <p className="text-gray-500 text-xs p-0.5">終了時間を計算中...</p>
+            ) : secondPreferenceStartTime ? (
+              secondEndTimeOptions.length > 0 ? (
+                <Select
+                  id="endselect2"
+                  instanceId="endselect2"
+                  options={secondEndTimeOptions}
+                  value={secondPreferenceEndTime}
+                  onChange={(option) => setSecondPreferenceEndTime(option)}
+                  placeholder="終了時間を選択..."
+                  styles={customSelectStyles}
+                />
+              ) : (
+                <p className="text-red-500  text-xs p-0.5">
+                  選択できる終了時間はありません。
+                  <br />
+                  開始時間を変更してください。
+                </p>
+              )
+            ) : (
+              <p className="text-gray-500  text-xs p-0.5">
+                開始時間を先に選択してください。
+              </p>
+            )}
+          </div>
+
+          {/* 第三希望日時 */}
+          {/* 日付ピッカーコンポーネント */}
+          <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
+            <h1 className="m-2">第三希望日を入力</h1>
+            <div>
+              <DatePicker
+                selected={thirdPreferenceDate}
+                onChange={(date: Date) => setThirdPreferenceDate(date)}
+                dateFormat="yyyy-MM-dd"
+                locale={ja}
+                minDate={new Date()}
+                excludeDates={excludeDates}
+                customInput={<CustomInput />} //デザインはここ
+              />
+            </div>
+            {/* 開始時間のためのセレクトコンポーネント */}
+            <div>
+              <Select
+                id="startselect2"
+                instanceId="startselect2"
+                options={thirdTimeOptions}
+                value={thirdPreferenceStartTime}
+                onChange={handleThirdStartTimeChange}
+                placeholder="開始時間を選択..."
+                styles={customSelectStyles}
+              />
+            </div>
+            {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+            {loadingEndTime ? (
+              <p className="text-gray-500 text-xs p-0.5">終了時間を計算中...</p>
+            ) : thirdPreferenceStartTime ? (
+              thirdEndTimeOptions.length > 0 ? (
+                <Select
+                  id="endselect2"
+                  instanceId="endselect2"
+                  options={thirdEndTimeOptions}
+                  value={thirdPreferenceEndTime}
+                  onChange={(option) => setThirdPreferenceEndTime(option)}
+                  placeholder="終了時間を選択..."
+                  styles={customSelectStyles}
+                />
+              ) : (
+                <p className="text-red-500  text-xs p-0.5">
+                  選択できる終了時間はありません。
+                  <br />
+                  開始時間を変更してください。
+                </p>
+              )
+            ) : (
+              <p className="text-gray-500  text-xs p-0.5">
+                開始時間を先に選択してください。
+              </p>
+            )}
+          </div>
         </div>
 
         <BookingPost
