@@ -38,7 +38,7 @@ export const POST = async (req: Request, res: NextResponse) => {
 
         // テスト用
         const staffUserId = "657a50663dbe46e6c28b95ca"
-        const staffData : any = await prisma.user.findUnique({
+        const staffData: any = await prisma.user.findUnique({
             where: { id: staffUserId },
             select: {
                 name: true,                   // 職員の名前
@@ -69,7 +69,7 @@ export const POST = async (req: Request, res: NextResponse) => {
             const email = "yama@master.mail.com"
 
             // 予約情報に保存するための生徒の名前を取得する
-            const studentData : any = await prisma.user.findUnique({
+            const studentData: any = await prisma.user.findUnique({
                 where: { id: studentUserId },
                 select: {
                     name: true,                   // 生徒の名前
@@ -90,6 +90,15 @@ export const POST = async (req: Request, res: NextResponse) => {
                     time,
                     details,
                     User: { connect: { email } },
+                },
+            });
+
+            const record = await prisma.record.create({
+                data: {
+                    content: details,
+                    ymd: ymd,
+                    // 既存のUserとrecordの関連付け
+                    user: { connect: { id: studentUserId } },
                 },
             });
 
