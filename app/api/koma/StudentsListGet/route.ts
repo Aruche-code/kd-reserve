@@ -25,7 +25,7 @@ export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await main(); // DB接続関数の呼び出し
     // const { searchValue } = req.query;  // 検索値をリクエストから取得
-    const searchValue = "1333983";      // 仮の検索値入力
+    const searchValue = "133398";      // 仮の検索値入力
     // // const searchValue = req.query?.searchValue;
 
     if (searchValue) {
@@ -39,18 +39,25 @@ export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         select: {           // 表示するフィールドを指定する
           name: true,
-          // email: true,
+          email: true,
           // studentProfile: true, // プロフィール
           // record: true,         // カルテ情報
           // booking: true,        // 面談予約情報
         },
       });
 
-      if (user.length > 0) {
+      // emailから数値の部分のみを取り出す
+      const transformedUsers = user.map(user => ({
+        name: user.name,
+        numericPartOfEmail: user.email.replace(/\D/g, ''), // \D: 数字以外を表す正規表現
+      }));
+
+      if (transformedUsers.length > 0) {
         return NextResponse.json(
           { message: "Success",
-            searchValue,        // 学籍番号
-            user                // 学生情報(nameOnly)
+            searchValue,              // 検索値(学籍番号)を返却
+            // user,                     // 学生情報(name, email)
+            users: transformedUsers,  // 学生情報(name, 学籍番号)
           },
           { status: 200 }
         );
