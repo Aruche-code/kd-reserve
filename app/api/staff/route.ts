@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 import { time } from "console";
-
-const prisma = new PrismaClient();
 
 // DB接続関数
 export async function main() {
