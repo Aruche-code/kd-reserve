@@ -1,3 +1,33 @@
+// Control: セレクトボックス全体のコンテナです。通常、ボーダーや背景色などをカスタマイズします。
+
+// ValueContainer: 選択された値または入力されたテキストを表示するコンテナです。
+
+// IndicatorsContainer: セレクタのインジケータ（例えば、ドロップダウンの矢印）を含むコンテナです。
+
+// IndicatorSeparator: インジケータと選択された値を区切るセパレータです。
+
+// DropdownIndicator: ドロップダウンメニューを開くための矢印インジケータです。
+
+// Menu: ドロップダウンメニュー全体のコンテナです。
+
+// MenuList: 実際のオプションが含まれるメニューのリスト部分です。
+
+// Option: 個々のドロップダウンメニューオプションです。
+
+// SingleValue: 選択された単一の値を表示するコンポーネントです。
+
+// Placeholder: プレースホルダーテキストを表示するコンポーネントです。
+
+// Input: ユーザーの入力を受け付けるテキスト入力フィールドです。
+
+// ClearIndicator: 選択をクリアするためのインジケータ（通常は×マーク）です。
+
+// MultiValue: 複数選択モードで選択された各値を表示するコンポーネントです。
+
+// MultiValueLabel: 複数選択された値のラベル部分です。
+
+// MultiValueRemove: 複数選択された値を削除するためのボタンやアイコンです。
+
 export const customSelectStyles = {
   control: (provided: any) => ({
     ...provided,
