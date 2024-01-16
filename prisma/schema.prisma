@@ -71,11 +71,10 @@ model StaffProfile {
 }
 
 model Record {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   content  String? // 面談の内容（ES添削、面談など）
   progress String? // テキスト
   ymd      String? // 日次
-  date     DateTime @default(now())
 
   // Userとのリレーション
   userId String @db.ObjectId
