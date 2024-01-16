@@ -48,16 +48,17 @@ const Home = () => {
     }
 
     //データを送信する(POST)
-    const postdata = async() => {
+    const postdata = async(data:any, value:any) => {
         const body = {
-            ymd: '2023-01-10',
-            time: ['13:00'], 
+            ymd: data,
+            time: value, 
         }
 
         const response = await axios.post("/api/staff/calendar",body)
 
         if (response.status === 201) {
             toast.success("保存できました");
+            getdata();
         } else {
             toast.error("保存できませんでした");
         }
@@ -84,7 +85,7 @@ const Home = () => {
             const response = await axios.get('/api/staff/calendar');
     
             if (response.status === 200) {
-                alert("データの取得に成功しました");
+                //alert("データの取得に成功しました");
     
                 const {staffng} = response.data.responseData;
 
@@ -93,8 +94,23 @@ const Home = () => {
                 staffng.forEach((data: StaffNg) => {
                     ngDays[data.ymd] = data.time;
                 });
-            
-                setSelectedTimes(ngDays);
+
+                const newArray = Object.entries(ngDays).map(([date, times]) => ({
+                    date,
+                    times
+                }));
+
+                const mappedTimes = {};
+
+                newArray.forEach((time) => {
+                    mappedTimes[time.date] = time.times; 
+                });
+
+                console.log(mappedTimes);
+
+                
+                setSelectedTimes(mappedTimes);
+                //console.log(selectedTimes)
 
             } else {
                 alert("データの取得に失敗しました");
@@ -105,28 +121,10 @@ const Home = () => {
         }
     }
 
+    //初回起動時GETをかけてデータを取得
     useEffect(() => {
-        const inter = { "2024-1-10": ["11:30", "12:00", "14:00", "13:30"], "2024-1-1": ["11:30", "13:30"] };
-        setSelectedTimes(inter);
+        getdata();
     }, []); 
-    // //NG日程テストデータ
-    // const asyncFunc = async () => {
-
-    //     await getdata();
-
-    //     useEffect(() => {
-    //         const updatedSelectedTimes = Object.fromEntries(
-    //             Object.entries(selectedTimes).filter(([key, value]) => value.length > 0)
-    //         );
-    
-    //         if (!isObjectEqual(selectedTimes, updatedSelectedTimes)) {
-    //             setSelectedTimes(updatedSelectedTimes);
-    //         }
-    //     }, []);
-        
-    // }
-    
-    //asyncFunc();
 
     //新規に選ばれたデータを管理
     const [sendTimes, setSendTimes] = useState<{ [key: string]: string[] }>({});
@@ -135,18 +133,21 @@ const Home = () => {
         setSendTimes({});
     };
     
-    //ng日程の送信
+    //ng日程の送信（要変更）
     const handleClick = () => {
         const firstKey = Object.keys(sendTimes)[0];
 
         // 最初のキーが存在すれば、そのキーに対応する value を取得して alert で表示
-        if (firstKey) {
+        // if (firstKey) {
+        
+        // alert(JSON.stringify({ [firstKey]: firstValue }));
+        // }
         const firstValue = sendTimes[firstKey];
-        alert(JSON.stringify({ [firstKey]: firstValue }));
-        }
+
+        postdata(firstKey, firstValue);
     };
 
-    //面談の選択状況
+    //面談の選択状況（要変更）
     const [interview, setInterview] = useState<{ [key: string]: string[] }>({});
         useEffect(() => {
             // 空になったキーを検出して削除
@@ -279,13 +280,13 @@ const Home = () => {
     };
 
      //日付のみを取り枝素処理
-    const extraday = (date: string) => {
-        const parts = date.split("-"); // ハイフンで文字列を区切る
-        const lastPart = parts[parts.length - 1]; // 配列の最後の要素を取得
-        return lastPart;
-    }
+    // const extraday = (date: string) => {
+    //     const parts = date.split("-"); // ハイフンで文字列を区切る
+    //     const lastPart = parts[parts.length - 1]; // 配列の最後の要素を取得
+    //     return lastPart;
+    // }
 
-    //テストデータ
+    //面談予約テストデータ
     const testUsers = [
         {
             id: '601b92ee95861639c3e2c44b',
@@ -306,6 +307,7 @@ const Home = () => {
             subject: 'エントリーシート作成'
         },
     ];
+
 
     //モーダルウィンドウ
     const [showModal, setShowModal] = useState(false);      //topモーダル
@@ -354,7 +356,7 @@ const Home = () => {
                             setInterModal={setInterModal}
                             setOpen={setOpen}
                         />
-                        <div className="text-3xl ml-3 mt-2">{selectedDay.length === 9 ? selectedDay.slice(-2) : selectedDay.slice(-1)}日</div>
+                        <div className="text-3xl ml-3 mt-2">{selectedDay.slice(-2)}日</div>
                         <div className="h-auto w-full mt-3">
                         <ul className="flex flex-wrap">
                             <li onClick={() => handleTabClick('ng')}className={`w-1/2  p-1 text-center cursor-pointer rounded-l-lg shadow-lg border ${selectedTab === 'ng' ? 'border-sky-700 bg-sky-700 text-white' : 'border-gray-200 bg-gray-50'}`}>

@@ -21,9 +21,10 @@ export const POST = async (req: Request, res: NextResponse) => {
 
 
         // 職員のユーザーIDを取得する
+        /*
         // 本番用
         const userMail = await getUserMail();
-        const staffData: any = await prisma.user.findUnique({
+        const staffData : any = await prisma.user.findUnique({
             where: { email: userMail },
             select: {
                 id: true,                   // 職員のIDを取得
@@ -33,17 +34,18 @@ export const POST = async (req: Request, res: NextResponse) => {
 
         const staffUserId: any = staffData.id
         const staffName: any = staffData.name
+        */
 
         // テスト用
-        // const staffUserId = "657a50663dbe46e6c28b95ca"
-        // const staffData: any = await prisma.user.findUnique({
-        //     where: { id: staffUserId },
-        //     select: {
-        //         name: true,                   // 職員の名前
-        //     },
-        // });
+        const staffUserId = "657a50663dbe46e6c28b95ca"
+        const staffData: any = await prisma.user.findUnique({
+            where: { id: staffUserId },
+            select: {
+                name: true,                   // 職員の名前
+            },
+        });
 
-        // const staffName: any = staffData.name
+        const staffName: any = staffData.name
 
         // すでに同じ時間帯に予定が存在しているかの判定
         const BookingData = await prisma.booking.findMany({
@@ -103,64 +105,6 @@ export const POST = async (req: Request, res: NextResponse) => {
             return NextResponse.json({ message: "Success" }, { status: 200 });
         }
 
-    } catch (err) {
-        return NextResponse.json({ message: "Error", err }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
-};
-
-
-// 指定したemailをもつUserのWaitinglistを表示するAPI
-export const GET = async (req: Request, res: NextResponse) => {
-    console.log("GET");
-
-    try {
-        // const email = await getUsermail() 本番
-        const email = "sample3@gmail.com" //テスト
-        await main();
-        const wait = await prisma.user.findMany({
-            where: { email },
-            include: {
-                waitinglist: true
-            },
-        });
-
-        return NextResponse.json({ message: "Success", wait }, { status: 200 });
-    } catch (err) {
-        return NextResponse.json({ message: "Error", err }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
-};
-
-// 指定したemailのWatinglistを削除するAPI
-export const DELETE = async (req: Request, res: NextResponse) => {
-    console.log("DELETE");
-
-    try {
-        // const email = await getUsermail() 本番
-        const email = "sample3@gmail.com" //テスト
-        await main();
-
-        // Userを検索
-        const user = await prisma.user.findUnique({
-            where: { email },
-            include: {
-                waitinglist: true,
-            },
-        });
-
-        if (user) {
-            // Waitinglistが存在する場合、削除
-            await prisma.waitingList.deleteMany({
-                where: {
-                    userId: user.id,
-                },
-            });
-
-            return NextResponse.json({ message: "Success" }, { status: 200 });
-        }
     } catch (err) {
         return NextResponse.json({ message: "Error", err }, { status: 500 });
     } finally {
