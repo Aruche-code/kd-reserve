@@ -46,6 +46,7 @@ export const GET = async (req: Request, res: NextResponse) => {
                 ? user.record.map((record) => ({
                     content: record.content,
                     progress: record.progress,
+                    ymd: record.ymd,
                 }))
                 : null,
         }));
@@ -66,13 +67,14 @@ export const POST = async (req: Request, res: NextResponse) => {
 
     try {
         const email = "sample3@gmail.com"; // テスト
-        const { content, progress } = await req.json();
+        const { content, progress, ymd } = await req.json();
         await main();
 
         const record = await prisma.record.create({
             data: {
                 content,
                 progress,
+                ymd,
                 // 既存のUserとrecordの関連付け
                 user: { connect: { email } },
             },
@@ -94,14 +96,15 @@ export const PUT = async (req: Request, res: NextResponse) => {
 
     try {
         const recordId = "658eedaad7973a3b99ca5db0" // staffNgIdに職員のオブジェクトidを格納する
-        const { content, progress } = await req.json();
+        const { content, progress, ymd } = await req.json();
         await main();
 
         const user = await prisma.record.update({
             where: { id: recordId },
             data: {
                 content,
-                progress
+                progress,
+                ymd
             },
         });
 
