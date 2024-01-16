@@ -39,6 +39,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 
             where: { studentUserId: studentId },
             select: {
+                id: true,
                 staffName: true,
                 ymd: true,
                 time: true,

@@ -37,6 +37,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     const getBookingList = await prisma.booking.findMany({
       where: { studentUserId: studentId },
       select: {
+        id: true,
         staffName: true,
         ymd: true,
         time: true,
@@ -47,6 +48,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     const getWaitingList = await prisma.waitingList.findMany({
       where: { studentUserId: studentId },
       select: {
+        id: true,
         staffName: true,
         details: true,
         firstYmd: true,
