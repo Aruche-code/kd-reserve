@@ -39,16 +39,19 @@ export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         select: {           // 表示するフィールドを指定する
           name: true,
-          email: true,
-          studentProfile: true, // プロフィール
-          record: true,         // カルテ情報
-          booking: true,        // 面談予約情報
+          // email: true,
+          // studentProfile: true, // プロフィール
+          // record: true,         // カルテ情報
+          // booking: true,        // 面談予約情報
         },
       });
 
       if (user.length > 0) {
         return NextResponse.json(
-          { message: "Success", user },
+          { message: "Success",
+            searchValue,        // 学籍番号
+            user                // 学生情報(nameOnly)
+          },
           { status: 200 }
         );
       } else {
