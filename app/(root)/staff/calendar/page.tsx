@@ -308,6 +308,7 @@ const Home = () => {
         },
     ];
 
+
     //モーダルウィンドウ
     const [showModal, setShowModal] = useState(false);      //topモーダル
     const [NgModal, setNgModal] = useState(false);  //ngモーダルウィンドウ
