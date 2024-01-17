@@ -44,6 +44,7 @@ export const GET = async (req: Request, res: NextResponse) => {
                 : null,
             records: user.record
                 ? user.record.map((record) => ({
+                    recordId: record.id,
                     content: record.content,
                     progress: record.progress,
                     ymd: record.ymd,
@@ -95,8 +96,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
     console.log("PUT");
 
     try {
-        const recordId = "658eedaad7973a3b99ca5db0" // staffNgIdに職員のオブジェクトidを格納する
-        const { content, progress, ymd } = await req.json();
+        const { recordId, content, progress, ymd } = await req.json();
         await main();
 
         const user = await prisma.record.update({
