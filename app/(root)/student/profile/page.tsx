@@ -18,6 +18,7 @@ function UserForm() {
     workLocation: "",
   });
 
+  // {refreshInterval: 1000,}
   const { data, error } = useSWR("/api/student/profile", fetcher);
   const userData = data ? data.user[0] : null;
   const isEditing = userData && userData.studentProfile;
@@ -94,7 +95,16 @@ function UserForm() {
           <div className="animate-pulse bg-gray-300 h-6 p-4 w-1/3 mt-8 mb-3"></div>
 
           <div className="animate-pulse w-3/4 sm:w-8/12 mx-auto">
-            {["名前", "メールアドレス", "電話番号", "学科", "学年", "卒業予定年", "希望勤務地", "資格"].map((label, index) => (
+            {[
+              "名前",
+              "メールアドレス",
+              "電話番号",
+              "学科",
+              "学年",
+              "卒業予定年",
+              "希望勤務地",
+              "資格",
+            ].map((label, index) => (
               <div className="flex items-center mt-3" key={index}>
                 <label className="text-gray-900 w-1/3 bg-gray-300 p-3 mt-1 mx-2"></label>
                 <div className="ms-2 bg-gray-300 w-2/3 p-3 mt-1 mx-1"></div>

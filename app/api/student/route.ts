@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-
-const prisma = new PrismaClient();
 
 // DB接続関数
 export async function main() {
@@ -29,7 +27,6 @@ export const GET = async (req: Request, res: NextResponse) => {
     // });
 
     // const studentId: any = student.id
-
 
     // テスト用
     const studentId = "657babf0d296390e67a452ef";
