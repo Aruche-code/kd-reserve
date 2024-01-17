@@ -146,7 +146,7 @@ const Record = () => {
             {/* {users.map(user => ( */}
             {users && (
                 <div className="w-full flex justify-center items-center" key={users.id}>
-                    <div className="bg-gray-100 w-2/3 rounded-md shadow-md mt-5">
+                    <div className="bg-gray-200 md:bg-gray-100 w-full md:w-2/3 rounded-md md:shadow-md mt-5">
                         <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
                             ■ 学生カルテ
                         </div>
@@ -160,7 +160,7 @@ const Record = () => {
                         </div>
 
                         <div className="flex flex-wrap flex-col justify-center items-center">
-                            <div className="flex flex-col w-full lg:w-4/5 bg-white rounded-md ">
+                            <div className="flex flex-col w-4/5 bg-white rounded-md ">
                                 <div className="bg-kd-button-cl p-2 border-4 border-kd-button-cl rounded-lg text-white font-medium flex justify-between items-center" onClick={toggleProfile}>
                                     プロフィール
                                     <span>{profileOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
@@ -193,13 +193,13 @@ const Record = () => {
                                 )}
                             </div>
 
-                            <div className="flex flex-col w-full lg:w-4/5 bg-white rounded-md mt-5 mb-5">
+                            <div className="flex flex-col w-4/5 bg-white rounded-md mt-5 mb-5">
 
                                 <div className="flex bg-kd-button-cl p-2 border-4 border-kd-button-cl rounded-lg text-white font-medium flex-row justify-between">
                                     <div className=''>話し合いメモ</div>
                                 </div>
 
-                                <div className="mx-5 p-2 mt-2 pt-3 pb-3 text-gray-700 px-2 text-sm md:text-base">
+                                <div className="mx-5 p-2 mt-2 pt-3 pb-3 text-gray-700 px-2 text-sm sm:text-base">
                                     {users.records.map((record: any, accordionIndex) => (
                                         <div key={accordionIndex}>
                                             <div className="wrapper">
@@ -207,12 +207,12 @@ const Record = () => {
                                                     {selectedDay.map((item, itemIndex) =>
                                                         <div className="item" key={itemIndex}>
                                                             <div className='title'>
-                                                                <div className="pl-3">{record.ymd}</div>
+                                                                <div className="text-xs sm:text-base md:pl-3 w-1/3">{record.ymd}</div>
                                                                 <input
                                                                     type="text"
                                                                     value={record.content}
                                                                     onChange={(e) => handleInputChange(accordionIndex, 'content', e.target.value)}
-                                                                    className="border-black"
+                                                                    className="border-black w-2/3"
                                                                 />
                                                                 <span onClick={() => toggle(accordionIndex, itemIndex)}>{selected === accordionIndex ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</span>
                                                             </div>

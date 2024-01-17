@@ -124,19 +124,21 @@ function UserForm() {
 
   return (
     <div className="flex flex-col flex-1 items-center">
-      <div className="mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full lg:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
+      <div className="mt-20 md:mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full lg:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
         <div className="p-3 px-6 w-full rounded-t-lg bg-kd-sub2-cl text-white mb-2">
           ■ プロフィール
         </div>
 
         <form onSubmit={handleSubmit} className="w-full mx-auto">
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 py-1 mx-auto">
+          <div className="flex items-center mt-5 w-3/4 sm:w-8/12 py-1 mx-auto">
             <label className="text-gray-900 w-1/3">名前</label> {userData?.name}
           </div>
+          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300" ></div>
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 py-1 mx-auto">
             <label className="text-gray-900 w-1/3">メールアドレス</label>{" "}
             {userData?.email}
           </div>
+          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300" ></div>
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
             <label className=" text-gray-900 w-1/3">電話番号</label>
             <input
@@ -148,6 +150,7 @@ function UserForm() {
             />
           </div>
           {/* 各フォームフィールド */}
+          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300" ></div>
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
             <label className="text-gray-900 w-1/3">学科</label>
             <input
@@ -158,6 +161,7 @@ function UserForm() {
               onChange={handleChange}
             />
           </div>
+          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300" ></div>
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
             <label className=" text-gray-900 w-1/3">学年</label>
             <select
@@ -174,6 +178,7 @@ function UserForm() {
             </select>
             <label className="ms-2 text-gray-900">年</label>
           </div>
+          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300" ></div>
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
             <label className=" text-gray-900 w-1/3">卒業予定</label>
             <select
@@ -190,7 +195,7 @@ function UserForm() {
             </select>
             <label className="ms-2 text-gray-900">年</label>
           </div>
-
+          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300" ></div>
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
             <label className=" text-gray-900 w-1/3">希望勤務地</label>
             <input
@@ -201,6 +206,7 @@ function UserForm() {
               onChange={handleChange}
             />
           </div>
+          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300" ></div>
           <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
             <label className=" text-gray-900 w-1/3">資格</label>
             <textarea
@@ -214,7 +220,7 @@ function UserForm() {
           </div>
 
           <button
-            className="flex items-center px-20 py-2 text-center text-white bg-kd-button-cl rounded-xl hover:bg-blue-500 mt-7 mb-7 mx-auto"
+            className="flex items-center px-20 py-2 text-center text-white bg-kd-button-cl rounded-xl hover:bg-blue-500 mt-5 mb-5 mx-auto"
             type="submit"
           >
             {isEditing ? "保存" : "新規作成"}
