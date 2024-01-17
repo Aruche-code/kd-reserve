@@ -113,9 +113,15 @@ const InterviewScheduler: React.FC = () => {
   const resetAll = () => {
     setSelectedStaffMember(null);
     setSelectedTag(null);
-    setFirstPreferenceDate(new Date());
+    setFirstPreferenceDate(null);
     setFirstPreferenceStartTime(null);
     setFirstPreferenceEndTime(null);
+    setSecondPreferenceDate(null);
+    setSecondPreferenceStartTime(null);
+    setSecondPreferenceEndTime(null);
+    setThirdPreferenceDate(null);
+    setThirdPreferenceStartTime(null);
+    setThirdPreferenceEndTime(null);
   };
 
   // 開始時間を更新し、終了時間をリセットするハンドラー1
@@ -124,12 +130,12 @@ const InterviewScheduler: React.FC = () => {
     setFirstPreferenceEndTime(null);
   };
 
-  // 開始時間を更新し、終了時間をリセットするハンドラー1
+  // 開始時間を更新し、終了時間をリセットするハンドラー2
   const handleSecondStartTimeChange = (option: OptionType | null) => {
     setSecondPreferenceStartTime(option);
     setSecondPreferenceEndTime(null);
   };
-  // 開始時間を更新し、終了時間をリセットするハンドラー1
+  // 開始時間を更新し、終了時間をリセットするハンドラー3
   const handleThirdStartTimeChange = (option: OptionType | null) => {
     setThirdPreferenceStartTime(option);
     setThirdPreferenceEndTime(null);
@@ -233,7 +239,7 @@ const InterviewScheduler: React.FC = () => {
     }
   }, [secondPreferenceStartTime]);
 
-  // 開始時間が選択された時に終了時間のオプションを計算1
+  // 開始時間が選択された時に終了時間のオプションを計算3
   useEffect(() => {
     if (thirdPreferenceStartTime) {
       const generateEndTimeOptions = () => {
