@@ -66,7 +66,6 @@ const InterviewScheduler: React.FC = () => {
     []
   );
 
-  const [loadingEndTime, setLoadingEndTime] = useState(false);
   const [excludeDates, setExcludeDates] = useState<Date[]>([]);
 
   // スタッフデータを取得
@@ -117,30 +116,33 @@ const InterviewScheduler: React.FC = () => {
   const resetAll = () => {
     setSelectedStaffMember(null);
     setSelectedTag(null);
-    setFirstPreferenceDate(new Date()); // 現在の日付または適当な初期日付
+    setFirstPreferenceDate(new Date());
     setFirstPreferenceStartTime(null);
     setFirstPreferenceEndTime(null);
+    setSecondPreferenceDate(new Date());
+    setSecondPreferenceStartTime(null);
+    setSecondPreferenceEndTime(null);
+    setThirdPreferenceDate(new Date());
+    setThirdPreferenceStartTime(null);
+    setThirdPreferenceEndTime(null);
   };
 
   // 開始時間を更新し、終了時間をリセットするハンドラー1
   const handleFirstStartTimeChange = (option: OptionType | null) => {
     setFirstPreferenceStartTime(option);
     setFirstPreferenceEndTime(null);
-    setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
   };
 
   // 開始時間を更新し、終了時間をリセットするハンドラー2
   const handleSecondStartTimeChange = (option: OptionType | null) => {
     setSecondPreferenceStartTime(option);
     setSecondPreferenceEndTime(null);
-    setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
   };
 
   // 開始時間を更新し、終了時間をリセットするハンドラー3
   const handleThirdStartTimeChange = (option: OptionType | null) => {
     setThirdPreferenceStartTime(option);
     setThirdPreferenceEndTime(null);
-    setLoadingEndTime(true); // 開始時間が選択されたらローディングを開始
   };
 
   // 選択されたスタッフに基づいてNG日を取得し更新
@@ -184,19 +186,16 @@ const InterviewScheduler: React.FC = () => {
   useEffect(() => {
     setFirstPreferenceStartTime(null);
     setFirstPreferenceEndTime(null);
-    setLoadingEndTime(false);
   }, [firstPreferenceDate]);
 
   useEffect(() => {
     setSecondPreferenceStartTime(null);
     setSecondPreferenceEndTime(null);
-    setLoadingEndTime(false);
   }, [secondPreferenceDate]);
 
   useEffect(() => {
     setThirdPreferenceStartTime(null);
     setThirdPreferenceEndTime(null);
-    setLoadingEndTime(false);
   }, [thirdPreferenceDate]);
 
   // 開始時間が選択された時に終了時間のオプションを計算1
@@ -233,7 +232,6 @@ const InterviewScheduler: React.FC = () => {
       // 開始時間が未選択の場合は終了時間のオプションをクリア
       setFirstEndTimeOptions([]);
     }
-    setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
   }, [firstPreferenceStartTime, firstPreferenceDate]);
 
   // 開始時間が選択された時に終了時間のオプションを計算2
@@ -270,7 +268,6 @@ const InterviewScheduler: React.FC = () => {
       // 開始時間が未選択の場合は終了時間のオプションをクリア
       setSecondEndTimeOptions([]);
     }
-    setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
   }, [secondPreferenceStartTime, secondPreferenceDate]);
 
   // 開始時間が選択された時に終了時間のオプションを計算3
@@ -307,7 +304,6 @@ const InterviewScheduler: React.FC = () => {
       // 開始時間が未選択の場合は終了時間のオプションをクリア
       setThirdEndTimeOptions([]);
     }
-    setLoadingEndTime(false); // 終了時間のオプションが設定されたらローディングを終了
   }, [thirdPreferenceStartTime, thirdPreferenceDate]);
 
   //-------------------------------------------------------------------------
@@ -358,29 +354,21 @@ const InterviewScheduler: React.FC = () => {
               />
             </div>
             {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-            {loadingEndTime ? (
-              <p className="text-gray-500 text-xs p-0.5">終了時間を計算中...</p>
-            ) : firstPreferenceStartTime ? (
-              firstEndTimeOptions.length > 0 ? (
-                <Select
-                  id="endselect1"
-                  instanceId="endselect1"
-                  options={firstEndTimeOptions}
-                  value={firstPreferenceEndTime}
-                  onChange={(option) => setFirstPreferenceEndTime(option)}
-                  placeholder="終了時間を選択..."
-                  styles={customSelectStyles}
-                />
-              ) : (
-                <p className="text-red-500  text-xs p-0.5">
-                  選択できる終了時間はありません。
-                  <br />
-                  開始時間を変更してください。
-                </p>
-              )
+            {firstEndTimeOptions.length > 0 ? (
+              <Select
+                id="endselect0"
+                instanceId="endselect0"
+                options={firstEndTimeOptions}
+                value={firstPreferenceEndTime}
+                onChange={(option) => setFirstPreferenceEndTime(option)}
+                placeholder="終了時間を選択..."
+                styles={customSelectStyles}
+              />
             ) : (
-              <p className="text-gray-500  text-xs p-0.5">
-                開始時間を先に選択してください。
+              <p className="text-red-500 text-xs p-0.5">
+                選択できる終了時間はありません。
+                <br />
+                開始時間を変更してください。
               </p>
             )}
           </div>
@@ -414,29 +402,21 @@ const InterviewScheduler: React.FC = () => {
               />
             </div>
             {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-            {loadingEndTime ? (
-              <p className="text-gray-500 text-xs p-0.5">終了時間を計算中...</p>
-            ) : secondPreferenceStartTime ? (
-              secondEndTimeOptions.length > 0 ? (
-                <Select
-                  id="endselect2"
-                  instanceId="endselect2"
-                  options={secondEndTimeOptions}
-                  value={secondPreferenceEndTime}
-                  onChange={(option) => setSecondPreferenceEndTime(option)}
-                  placeholder="終了時間を選択..."
-                  styles={customSelectStyles}
-                />
-              ) : (
-                <p className="text-red-500  text-xs p-0.5">
-                  選択できる終了時間はありません。
-                  <br />
-                  開始時間を変更してください。
-                </p>
-              )
+            {secondEndTimeOptions.length > 0 ? (
+              <Select
+                id="endselect1"
+                instanceId="endselect1"
+                options={secondEndTimeOptions}
+                value={secondPreferenceEndTime}
+                onChange={(option) => setSecondPreferenceEndTime(option)}
+                placeholder="終了時間を選択..."
+                styles={customSelectStyles}
+              />
             ) : (
-              <p className="text-gray-500  text-xs p-0.5">
-                開始時間を先に選択してください。
+              <p className="text-red-500 text-xs p-0.5">
+                選択できる終了時間はありません。
+                <br />
+                開始時間を変更してください。
               </p>
             )}
           </div>
@@ -470,29 +450,21 @@ const InterviewScheduler: React.FC = () => {
               />
             </div>
             {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-            {loadingEndTime ? (
-              <p className="text-gray-500 text-xs p-0.5">終了時間を計算中...</p>
-            ) : thirdPreferenceStartTime ? (
-              thirdEndTimeOptions.length > 0 ? (
-                <Select
-                  id="endselect2"
-                  instanceId="endselect2"
-                  options={thirdEndTimeOptions}
-                  value={thirdPreferenceEndTime}
-                  onChange={(option) => setThirdPreferenceEndTime(option)}
-                  placeholder="終了時間を選択..."
-                  styles={customSelectStyles}
-                />
-              ) : (
-                <p className="text-red-500  text-xs p-0.5">
-                  選択できる終了時間はありません。
-                  <br />
-                  開始時間を変更してください。
-                </p>
-              )
+            {thirdEndTimeOptions.length > 0 ? (
+              <Select
+                id="endselect2"
+                instanceId="endselect2"
+                options={thirdEndTimeOptions}
+                value={thirdPreferenceEndTime}
+                onChange={(option) => setThirdPreferenceEndTime(option)}
+                placeholder="終了時間を選択..."
+                styles={customSelectStyles}
+              />
             ) : (
-              <p className="text-gray-500  text-xs p-0.5">
-                開始時間を先に選択してください。
+              <p className="text-red-500 text-xs p-0.5">
+                選択できる終了時間はありません。
+                <br />
+                開始時間を変更してください。
               </p>
             )}
           </div>
@@ -504,6 +476,12 @@ const InterviewScheduler: React.FC = () => {
           firstPreferenceDate={firstPreferenceDate}
           firstPreferenceStartTime={firstPreferenceStartTime}
           firstPreferenceEndTime={firstPreferenceEndTime}
+          secondPreferenceDate={secondPreferenceDate}
+          secondPreferenceStartTime={secondPreferenceStartTime}
+          secondPreferenceEndTime={secondPreferenceEndTime}
+          thirdPreferenceDate={thirdPreferenceDate}
+          thirdPreferenceStartTime={thirdPreferenceStartTime}
+          thirdPreferenceEndTime={thirdPreferenceEndTime}
           resetAll={resetAll}
         />
       </div>
