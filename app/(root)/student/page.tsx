@@ -1,47 +1,58 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import useSWR from "swr";
+
+interface Booking {
+  id: string;
+  // その他の予約関連のフィールド
+}
+
+interface Waiting {
+  id: string;
+  // その他の待機関連のフィールド
+}
+
+interface HomeData {
+  message: string;
+  getBookingList: Booking[];
+  getWaitingList: Waiting[];
+}
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Home = () => {
-  const [homeData, setHomeData] = useState<any>({ message: '', getBookingList: [], getWaitingList: [] });
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    data: homeData,
+    error,
+    mutate,
+  } = useSWR<HomeData>("/api/student", fetcher);
+
+  if (error) return <div>Failed to load</div>;
+  if (!homeData) return <div>Loading...</div>;
 
   const handleCancelBooking = async (id: string) => {
     try {
-      const response = await axios.delete('/api/student', { data: { scheduleId: id } });
-      location.reload();
+      await fetch("/api/student", {
+        method: "DELETE",
+        body: JSON.stringify({ scheduleId: id }),
+      });
+      mutate(); // データを再検証し、更新します
     } catch (error) {
-      console.error('Error cancelling waiting:', error);
+      console.error("Error cancelling booking:", error);
     }
   };
 
   const handleCancelWaiting = async (id: string) => {
     try {
-      const response = await axios.delete('/api/student', { data: { scheduleId: id } } );
-      location.reload();
+      await fetch("/api/student", {
+        method: "DELETE",
+        body: JSON.stringify({ scheduleId: id }),
+      });
+      mutate(); // データを再検証し、更新します
     } catch (error) {
-      console.error('Error cancelling waiting:', error);
+      console.error("Error cancelling waiting:", error);
     }
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/student'); // 仮のAPIエンドポイント
-        setHomeData(response.data);
-      } catch (error) {
-        console.error('Error fetching home data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   console.log(homeData);
 
@@ -63,15 +74,17 @@ const Home = () => {
                       <div>{booking.ymd}</div>
                       <div className="">{booking.time}</div>
                     </div>
-                    <div className="w-1/3 px-3">
-                      {booking.staffName}
-                    </div>
-                    <div className="w-1/3 px-3">
-                      {booking.details}
-                    </div>
+                    <div className="w-1/3 px-3">{booking.staffName}</div>
+                    <div className="w-1/3 px-3">{booking.details}</div>
                   </div>
                   <div className="w-1/5 flex items-center justify-center">
-                    <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white" onClick={() => handleCancelBooking(booking.id)}>キャンセル</button>
+                    <button
+                      type="button"
+                      className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white"
+                      onClick={() => handleCancelBooking(booking.id)}
+                    >
+                      キャンセル
+                    </button>
                   </div>
                 </div>
               </div>
@@ -90,9 +103,15 @@ const Home = () => {
                 <div className="mx-4 p-2 border bg-white border-kd-sub2-cl rounded-lg flex flex-row">
                   <div className="w-4/5 flex flex-row text-center items-center justify-center">
                     <div className="w-2/3 px-3 flex flex-col">
-                      1. {waiting.firstYmd}<br /> {waiting.firstStartTime}～{waiting.firstEndTime}<br />
-                      2. {waiting.secondYmd}<br /> {waiting.secondStartTime}～{waiting.secondEndTime}<br />
-                      3. {waiting.thirdYmd}<br /> {waiting.thirdStartTime}～{waiting.thirdEndTime}<br />
+                      1. {waiting.firstYmd}
+                      <br /> {waiting.firstStartTime}～{waiting.firstEndTime}
+                      <br />
+                      2. {waiting.secondYmd}
+                      <br /> {waiting.secondStartTime}～{waiting.secondEndTime}
+                      <br />
+                      3. {waiting.thirdYmd}
+                      <br /> {waiting.thirdStartTime}～{waiting.thirdEndTime}
+                      <br />
                     </div>
                     <div className="w-1/3 border-left-2 border-gray-200 px-3">
                       {waiting.staffName}
@@ -102,11 +121,18 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="w-1/5 flex items-center justify-center">
-                    <button type="button" className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white" onClick={() => handleCancelWaiting(waiting.id)}>キャンセル</button>
+                    <button
+                      type="button"
+                      className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white"
+                      onClick={() => handleCancelWaiting(waiting.id)}
+                    >
+                      キャンセル
+                    </button>
                   </div>
                 </div>
               </div>
-            )))}
+            ))
+          )}
         </div>
       </div>
     </div>
