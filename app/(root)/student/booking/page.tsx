@@ -239,7 +239,7 @@ const InterviewScheduler: React.FC = () => {
     }
   }, [secondPreferenceStartTime]);
 
-  // 開始時間が選択された時に終了時間のオプションを計算1
+  // 開始時間が選択された時に終了時間のオプションを計算3
   useEffect(() => {
     if (thirdPreferenceStartTime) {
       const generateEndTimeOptions = () => {
