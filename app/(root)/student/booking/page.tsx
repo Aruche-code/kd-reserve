@@ -113,9 +113,15 @@ const InterviewScheduler: React.FC = () => {
   const resetAll = () => {
     setSelectedStaffMember(null);
     setSelectedTag(null);
-    setFirstPreferenceDate(new Date());
+    setFirstPreferenceDate(null);
     setFirstPreferenceStartTime(null);
     setFirstPreferenceEndTime(null);
+    setSecondPreferenceDate(null);
+    setSecondPreferenceStartTime(null);
+    setSecondPreferenceEndTime(null);
+    setThirdPreferenceDate(null);
+    setThirdPreferenceStartTime(null);
+    setThirdPreferenceEndTime(null);
   };
 
   // 開始時間を更新し、終了時間をリセットするハンドラー1
