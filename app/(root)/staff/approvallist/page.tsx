@@ -290,6 +290,13 @@ const Approval = () => {
         "/api/student/booking",
         fetcher
     );
+
+    const { data: staffDat, error: staffEr } = useSWR(
+        "/api/staff/approvallist",
+        fetcher
+    );
+
+    console.log(staffDat)
     const staff: Staff[] = staffData?.staffUsers || [];
 
     //bookingに追加
