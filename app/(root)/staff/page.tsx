@@ -60,30 +60,33 @@ const Home = () => {
         </div>
         {/* <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div> */}
         <div className="mt-5 mb-5">
-          {homeData.getBookingList.map((booking: any) => (
-            <div className="flex flex-col p-2" key={booking.id}>
+          {homeData.getBookingList.length === 0 ? (
+            <div className="text-center">本日の予定はありません</div>
+          ) : (
+            homeData.getBookingList.map((booking: any) => (
+              <div className="flex flex-col p-2" key={booking.id}>
 
-              <Link href="../staff/record">
-                <div className="mx-4 p-2 border-2 border-gray-200 bg-white rounded-lg flex flex-row">
+                <Link href="../staff/record">
+                  <div className="mx-4 p-2 border-2 border-gray-200 bg-white rounded-lg flex flex-row">
 
-                  <div className="w-full flex flex-row text-center items-center justify-center text-xs md:text-base lg:text-sm xl:text-base">
+                    <div className="w-full flex flex-row text-center items-center justify-center text-xs md:text-base lg:text-sm xl:text-base">
 
-                    <div className="w-1/3 px-3">
-                      {booking.studentName}
-                    </div>
-                    <div className="w-1/3 px-3">
-                      {booking.ymd}<br />
-                      {booking.time}
-                    </div>
-                    <div className="w-1/3 px-3">
-                      {booking.details}
+                      <div className="w-1/3 px-3">
+                        {booking.studentName}
+                      </div>
+                      <div className="w-1/3 px-3">
+                        {booking.ymd}<br />
+                        {booking.time}
+                      </div>
+                      <div className="w-1/3 px-3">
+                        {booking.details}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-              </Link>
-            </div>
-          ))}
+                </Link>
+              </div>
+            )))}
         </div>
       </div>
 
