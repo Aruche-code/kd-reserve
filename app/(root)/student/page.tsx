@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import useSWR from "swr";
+import axios from "axios";
 
 interface Booking {
   id: string;
@@ -18,7 +19,7 @@ interface HomeData {
   getWaitingList: Waiting[];
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Home = () => {
   const {
@@ -32,11 +33,8 @@ const Home = () => {
 
   const handleCancelBooking = async (id: string) => {
     try {
-      await fetch("/api/student", {
-        method: "DELETE",
-        body: JSON.stringify({ scheduleId: id }),
-      });
-      mutate(); // データを再検証し、更新します
+      await axios.delete("/api/student", { data: { scheduleId: id } });
+      mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }
@@ -44,11 +42,8 @@ const Home = () => {
 
   const handleCancelWaiting = async (id: string) => {
     try {
-      await fetch("/api/student", {
-        method: "DELETE",
-        body: JSON.stringify({ scheduleId: id }),
-      });
-      mutate(); // データを再検証し、更新します
+      await axios.delete("/api/student", { data: { scheduleId: id } });
+      mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling waiting:", error);
     }
