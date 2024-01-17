@@ -300,10 +300,11 @@ const Approval = () => {
     const staff: Staff[] = staffData?.staffUsers || [];
 
     //bookingに追加
-    const addBooking = async(data:any, value:any) => {
+    const addBooking = async(data:string, time1:string, time2:string) => {
         const body = {
             ymd: data,
-            time: value, 
+            starttime: time1, 
+            endtime: time2
         }
 
         const response = await axios.post("/api/staff/calendar",body)
@@ -349,7 +350,7 @@ const Approval = () => {
                                 >
                                     <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
                                         <div className="flex flex-row ">
-                                            <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
+                                            <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center" key={user.id}>
                                                 {user.name}<br />
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
