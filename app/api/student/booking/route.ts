@@ -49,21 +49,13 @@ export const GET = async (req: Request, res: NextResponse) => {
 export const POST = async (req: Request, res: NextResponse) => {
   try {
       // Userコレクションに紐づけるために、予約画面を操作している学生のメールアドレスを取得
-      // const email = getUserMail() // 本番用
-      const email = "giwa@mail.com" // テスト用 予約画面を操作している学生のメールアドレスを取得
+      const email: any = getUserMail() // 本番用
+      // const email = "giwa@mail.com" // テスト用 予約画面を操作している学生のメールアドレスを取得
 
       // 2.指定する教員のuserIdをPOSTで送信してもらう
       const { staffUserId, details, firstYmd, firstStartTime, firstEndTime, secondYmd,
               secondStartTime, secondEndTime, thirdYmd, thirdStartTime, thirdEndTime } = await req.json();
       await main();
-
-      // 予約情報に保存するための職員の名前を取得する
-      // const staffData : any = await prisma.user.findUnique({
-      //     where: { id: staffUserId },
-      //     select: {
-      //         name: true,                   // 職員の名前
-      //     },
-      // });
 
       // 予約情報に保存するための学生の名前とIDを取得する
       const studentData : any = await prisma.user.findUnique({
