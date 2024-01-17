@@ -18,18 +18,18 @@ export const GET = async (req: Request, res: NextResponse) => {
     await main(); // dbに接続
 
     // 操作している学生のidを取得
-    // const usermail = await getUserMail();
-    // const student: any = await prisma.user.findUnique({
-    //   where: { email: usermail },
-    //   select: {
-    //     id: true,                   // 学生のid
-    //   },
-    // });
+    const usermail = await getUserMail();
+    const student: any = await prisma.user.findUnique({
+      where: { email: usermail },
+      select: {
+        id: true,                   // 学生のid
+      },
+    });
 
-    // const studentId: any = student.id
+    const studentId: any = student.id
 
     // テスト用
-    const studentId = "657babf0d296390e67a452ef";
+    // const studentId = "657babf0d296390e67a452ef";
 
     const getBookingList = await prisma.booking.findMany({
       where: { studentUserId: studentId },
