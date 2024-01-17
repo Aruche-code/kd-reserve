@@ -19,20 +19,19 @@ export const GET = async (req: Request, res: NextResponse) => {
     await main(); // dbに接続
 
     // 操作している職員のidを取得
-    /*  本番用
-        const usermail = await getUserMail();
-        const staff : any = await prisma.user.findUnique({
-            where: { email: usermail },
-            select: {
-                id: true,                   // 学生のid
-            },
-        });
+    // 本番用
+    const userMail = await getUserMail();
+    const staff : any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+          id: true,                   // 職員のid
+      },
+    });
 
-        const staffId: any = staff.id
-        */
+    const staffId: any = staff.id
 
     // テスト用
-    const staffId = "657a50663dbe46e6c28b95ca";
+    // const staffId = "657a50663dbe46e6c28b95ca";
 
     const getBookingList = await prisma.booking.findMany({
       where: { staffUserId: staffId },
