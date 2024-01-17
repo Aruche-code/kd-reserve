@@ -15,6 +15,8 @@ import {
   setMinutes,
   addMinutes,
   isSameDay,
+  isSaturday,
+  isSunday,
   addDays,
   format,
 } from "date-fns";
@@ -94,6 +96,10 @@ const InterviewScheduler: React.FC = () => {
     }
 
     return options;
+  };
+
+  const isWeekday = (date: Date) => {
+    return !isSaturday(date) && !isSunday(date);
   };
 
   // NG日を考慮して初期値を設定する関数
@@ -335,6 +341,7 @@ const InterviewScheduler: React.FC = () => {
                 locale={ja}
                 minDate={new Date()}
                 excludeDates={excludeDates}
+                filterDate={isWeekday}
                 customInput={<CustomInput />} //デザインはここ
               />
             </div>
@@ -390,6 +397,7 @@ const InterviewScheduler: React.FC = () => {
                 locale={ja}
                 minDate={new Date()}
                 excludeDates={excludeDates}
+                filterDate={isWeekday}
                 customInput={<CustomInput />} //デザインはここ
               />
             </div>
@@ -445,6 +453,7 @@ const InterviewScheduler: React.FC = () => {
                 locale={ja}
                 minDate={new Date()}
                 excludeDates={excludeDates}
+                filterDate={isWeekday}
                 customInput={<CustomInput />} //デザインはここ
               />
             </div>
