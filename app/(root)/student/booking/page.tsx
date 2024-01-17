@@ -14,10 +14,8 @@ import {
   setHours,
   setMinutes,
   addMinutes,
-  isSameDay,
   isSaturday,
   isSunday,
-  addDays,
   format,
 } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
@@ -32,41 +30,50 @@ interface OptionType {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const InterviewScheduler: React.FC = () => {
+  const [startTimeOptions, setStartTimeOptions] = useState<OptionType[]>([]);
   // 選択された予約内容、職員、日付、時間、オプションの状態管理
   const [selectedStaffMember, setSelectedStaffMember] = useState<string | null>(
     null
   );
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [firstPreferenceDate, setFirstPreferenceDate] = useState(new Date());
+  const [firstPreferenceDate, setFirstPreferenceDate] = useState<Date | null>(
+    null
+  );
   const [firstPreferenceStartTime, setFirstPreferenceStartTime] =
     useState<OptionType | null>(null);
   const [firstPreferenceEndTime, setFirstPreferenceEndTime] =
     useState<OptionType | null>(null);
-  const [firstTimeOptions, setFirstTimeOptions] = useState<OptionType[]>([]);
   const [firstEndTimeOptions, setFirstEndTimeOptions] = useState<OptionType[]>(
     []
   );
-  const [secondPreferenceDate, setSecondPreferenceDate] = useState(new Date());
+
+  const [secondPreferenceDate, setSecondPreferenceDate] = useState<Date | null>(
+    null
+  );
   const [secondPreferenceStartTime, setSecondPreferenceStartTime] =
     useState<OptionType | null>(null);
   const [secondPreferenceEndTime, setSecondPreferenceEndTime] =
     useState<OptionType | null>(null);
-  const [secondTimeOptions, setSecondTimeOptions] = useState<OptionType[]>([]);
   const [secondEndTimeOptions, setSecondEndTimeOptions] = useState<
     OptionType[]
   >([]);
 
-  const [thirdPreferenceDate, setThirdPreferenceDate] = useState(new Date());
+  const [thirdPreferenceDate, setThirdPreferenceDate] = useState<Date | null>(
+    null
+  );
   const [thirdPreferenceStartTime, setThirdPreferenceStartTime] =
     useState<OptionType | null>(null);
   const [thirdPreferenceEndTime, setThirdPreferenceEndTime] =
     useState<OptionType | null>(null);
-  const [thirdTimeOptions, setThirdTimeOptions] = useState<OptionType[]>([]);
   const [thirdEndTimeOptions, setThirdEndTimeOptions] = useState<OptionType[]>(
     []
   );
 
   const [excludeDates, setExcludeDates] = useState<Date[]>([]);
+
+  //
+  //--------------------------------------------------関数エリア-------------------------------------------------------------------------
+  //
 
   // スタッフデータを取得
   const { data: staffData, error: staffError } = useSWR(
@@ -79,6 +86,11 @@ const InterviewScheduler: React.FC = () => {
     selectedStaffMember ? `/api/student/booking/${selectedStaffMember}` : null,
     fetcher
   );
+
+  // 土日を除外する関数
+  const isWeekday = (date: Date) => {
+    return !isSaturday(date) && !isSunday(date);
+  };
 
   // 開始時間を生成する関数
   const generateTimeOptions = (): OptionType[] => {
@@ -97,34 +109,13 @@ const InterviewScheduler: React.FC = () => {
     return options;
   };
 
-  const isWeekday = (date: Date) => {
-    return !isSaturday(date) && !isSunday(date);
-  };
-
-  // NG日を考慮して初期値を設定する関数
-  const setInitialDateConsideringNG = (ngDates: any) => {
-    let initialDate = new Date();
-    while (ngDates.some((ngDate: any) => isSameDay(ngDate, initialDate))) {
-      initialDate = addDays(initialDate, 1);
-    }
-    setFirstPreferenceDate(initialDate);
-    setSecondPreferenceDate(initialDate);
-    setThirdPreferenceDate(initialDate);
-  };
-
-  //送信完了時リセット
+  // 送信完了時リセット関数
   const resetAll = () => {
     setSelectedStaffMember(null);
     setSelectedTag(null);
     setFirstPreferenceDate(new Date());
     setFirstPreferenceStartTime(null);
     setFirstPreferenceEndTime(null);
-    setSecondPreferenceDate(new Date());
-    setSecondPreferenceStartTime(null);
-    setSecondPreferenceEndTime(null);
-    setThirdPreferenceDate(new Date());
-    setThirdPreferenceStartTime(null);
-    setThirdPreferenceEndTime(null);
   };
 
   // 開始時間を更新し、終了時間をリセットするハンドラー1
@@ -133,13 +124,12 @@ const InterviewScheduler: React.FC = () => {
     setFirstPreferenceEndTime(null);
   };
 
-  // 開始時間を更新し、終了時間をリセットするハンドラー2
+  // 開始時間を更新し、終了時間をリセットするハンドラー1
   const handleSecondStartTimeChange = (option: OptionType | null) => {
     setSecondPreferenceStartTime(option);
     setSecondPreferenceEndTime(null);
   };
-
-  // 開始時間を更新し、終了時間をリセットするハンドラー3
+  // 開始時間を更新し、終了時間をリセットするハンドラー1
   const handleThirdStartTimeChange = (option: OptionType | null) => {
     setThirdPreferenceStartTime(option);
     setThirdPreferenceEndTime(null);
@@ -163,40 +153,17 @@ const InterviewScheduler: React.FC = () => {
     }
   }, [ngData]);
 
-  //  NG日データが更新された時に初期値を設定
-  useEffect(() => {
-    if (ngData && ngData.staffNgData) {
-      const newExcludeDates = ngData.staffNgData[0].staffng
-        .filter((ng: any) => ng.time.includes("allng"))
-        .map((ng: any) => new Date(ng.ymd));
-      setExcludeDates(newExcludeDates);
-      setInitialDateConsideringNG(newExcludeDates);
-    }
-  }, [ngData]);
-
   //-------------------------------------1----------------------------------------
   //アンマウント、開始時間を生成
   useEffect(() => {
-    setFirstTimeOptions(generateTimeOptions());
-    setSecondTimeOptions(generateTimeOptions());
-    setThirdTimeOptions(generateTimeOptions());
+    setStartTimeOptions(generateTimeOptions());
   }, []);
 
-  // 選択された日付が変更された時にリセット1
   useEffect(() => {
-    setFirstPreferenceStartTime(null);
-    setFirstPreferenceEndTime(null);
-  }, [firstPreferenceDate]);
-
-  useEffect(() => {
-    setSecondPreferenceStartTime(null);
-    setSecondPreferenceEndTime(null);
-  }, [secondPreferenceDate]);
-
-  useEffect(() => {
-    setThirdPreferenceStartTime(null);
-    setThirdPreferenceEndTime(null);
-  }, [thirdPreferenceDate]);
+    setFirstPreferenceDate(null);
+    setSecondPreferenceDate(null);
+    setThirdPreferenceDate(null);
+  }, [selectedStaffMember]);
 
   // 開始時間が選択された時に終了時間のオプションを計算1
   useEffect(() => {
@@ -206,16 +173,14 @@ const InterviewScheduler: React.FC = () => {
         const [hour, minute] = firstPreferenceStartTime.value
           .split(":")
           .map(Number);
-        let time = new Date(firstPreferenceDate);
+        let time = new Date();
         time.setHours(hour, minute);
 
         // 選択された開始時間から30分後の時間を最初のオプションとして設定
         time = addMinutes(time, 30);
 
         // 17:00までの時間を30分刻みでオプションとして追加
-        while (
-          time <= setHours(setMinutes(new Date(firstPreferenceDate), 0), 17)
-        ) {
+        while (time <= setHours(setMinutes(new Date(), 0), 17)) {
           const timeString = format(time, "HH:mm");
           options.push({
             value: timeString,
@@ -232,7 +197,7 @@ const InterviewScheduler: React.FC = () => {
       // 開始時間が未選択の場合は終了時間のオプションをクリア
       setFirstEndTimeOptions([]);
     }
-  }, [firstPreferenceStartTime, firstPreferenceDate]);
+  }, [firstPreferenceStartTime]);
 
   // 開始時間が選択された時に終了時間のオプションを計算2
   useEffect(() => {
@@ -242,16 +207,14 @@ const InterviewScheduler: React.FC = () => {
         const [hour, minute] = secondPreferenceStartTime.value
           .split(":")
           .map(Number);
-        let time = new Date(secondPreferenceDate);
+        let time = new Date();
         time.setHours(hour, minute);
 
         // 選択された開始時間から30分後の時間を最初のオプションとして設定
         time = addMinutes(time, 30);
 
         // 17:00までの時間を30分刻みでオプションとして追加
-        while (
-          time <= setHours(setMinutes(new Date(secondPreferenceDate), 0), 17)
-        ) {
+        while (time <= setHours(setMinutes(new Date(), 0), 17)) {
           const timeString = format(time, "HH:mm");
           options.push({
             value: timeString,
@@ -268,9 +231,9 @@ const InterviewScheduler: React.FC = () => {
       // 開始時間が未選択の場合は終了時間のオプションをクリア
       setSecondEndTimeOptions([]);
     }
-  }, [secondPreferenceStartTime, secondPreferenceDate]);
+  }, [secondPreferenceStartTime]);
 
-  // 開始時間が選択された時に終了時間のオプションを計算3
+  // 開始時間が選択された時に終了時間のオプションを計算1
   useEffect(() => {
     if (thirdPreferenceStartTime) {
       const generateEndTimeOptions = () => {
@@ -278,16 +241,14 @@ const InterviewScheduler: React.FC = () => {
         const [hour, minute] = thirdPreferenceStartTime.value
           .split(":")
           .map(Number);
-        let time = new Date(thirdPreferenceDate);
+        let time = new Date();
         time.setHours(hour, minute);
 
         // 選択された開始時間から30分後の時間を最初のオプションとして設定
         time = addMinutes(time, 30);
 
         // 17:00までの時間を30分刻みでオプションとして追加
-        while (
-          time <= setHours(setMinutes(new Date(thirdPreferenceDate), 0), 17)
-        ) {
+        while (time <= setHours(setMinutes(new Date(), 0), 17)) {
           const timeString = format(time, "HH:mm");
           options.push({
             value: timeString,
@@ -304,7 +265,7 @@ const InterviewScheduler: React.FC = () => {
       // 開始時間が未選択の場合は終了時間のオプションをクリア
       setThirdEndTimeOptions([]);
     }
-  }, [thirdPreferenceStartTime, thirdPreferenceDate]);
+  }, [thirdPreferenceStartTime]);
 
   //-------------------------------------------------------------------------
 
@@ -332,7 +293,12 @@ const InterviewScheduler: React.FC = () => {
             <div>
               <DatePicker
                 selected={firstPreferenceDate}
-                onChange={(date: Date) => setFirstPreferenceDate(date)}
+                onChange={(date: Date | null) => {
+                  // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
+                  if (date) {
+                    setFirstPreferenceDate(date);
+                  }
+                }}
                 dateFormat="yyyy-MM-dd"
                 locale={ja}
                 minDate={new Date()}
@@ -346,7 +312,7 @@ const InterviewScheduler: React.FC = () => {
               <Select
                 id="startselect1"
                 instanceId="startselect1"
-                options={firstTimeOptions}
+                options={startTimeOptions}
                 value={firstPreferenceStartTime}
                 onChange={handleFirstStartTimeChange}
                 placeholder="開始時間を選択..."
@@ -376,11 +342,16 @@ const InterviewScheduler: React.FC = () => {
           {/* 第二希望日時 */}
           {/* 日付ピッカーコンポーネント */}
           <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-            <h1 className="m-2">第二希望日を入力</h1>
+            <h1 className="m-2">第一希望日を入力</h1>
             <div>
               <DatePicker
                 selected={secondPreferenceDate}
-                onChange={(date: Date) => setSecondPreferenceDate(date)}
+                onChange={(date: Date | null) => {
+                  // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
+                  if (date) {
+                    setSecondPreferenceDate(date);
+                  }
+                }}
                 dateFormat="yyyy-MM-dd"
                 locale={ja}
                 minDate={new Date()}
@@ -392,9 +363,9 @@ const InterviewScheduler: React.FC = () => {
             {/* 開始時間のためのセレクトコンポーネント */}
             <div>
               <Select
-                id="startselect2"
-                instanceId="startselect2"
-                options={secondTimeOptions}
+                id="startselect1"
+                instanceId="startselect1"
+                options={startTimeOptions}
                 value={secondPreferenceStartTime}
                 onChange={handleSecondStartTimeChange}
                 placeholder="開始時間を選択..."
@@ -420,15 +391,19 @@ const InterviewScheduler: React.FC = () => {
               </p>
             )}
           </div>
-
           {/* 第三希望日時 */}
           {/* 日付ピッカーコンポーネント */}
           <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-            <h1 className="m-2">第三希望日を入力</h1>
+            <h1 className="m-2">第一希望日を入力</h1>
             <div>
               <DatePicker
                 selected={thirdPreferenceDate}
-                onChange={(date: Date) => setThirdPreferenceDate(date)}
+                onChange={(date: Date | null) => {
+                  // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
+                  if (date) {
+                    setThirdPreferenceDate(date);
+                  }
+                }}
                 dateFormat="yyyy-MM-dd"
                 locale={ja}
                 minDate={new Date()}
@@ -442,7 +417,7 @@ const InterviewScheduler: React.FC = () => {
               <Select
                 id="startselect2"
                 instanceId="startselect2"
-                options={thirdTimeOptions}
+                options={startTimeOptions}
                 value={thirdPreferenceStartTime}
                 onChange={handleThirdStartTimeChange}
                 placeholder="開始時間を選択..."
@@ -469,7 +444,6 @@ const InterviewScheduler: React.FC = () => {
             )}
           </div>
         </div>
-
         <BookingPost
           selectedStaffMember={selectedStaffMember}
           selectedTag={selectedTag}
