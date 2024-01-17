@@ -30,11 +30,11 @@ export const GET = async (req: Request, res: NextResponse) => {
 
     // emailから数値の部分(学籍番号)のみを取り出す部品
     const transformedUsers = user.map(user => ({
-      numericPartOfEmail:
+      studentIdNumber:
         user.email ?                          // nullチェックを行い、以下のreplaceメソッドを安全に呼び出す
         user.email.replace(/\D/g, '') : "",   // \D: 数字以外を表す正規表現
       name: user.name,
-      email: user.email,
+      // email: user.email,
     }));
 
     // 成功時のレスポンス
