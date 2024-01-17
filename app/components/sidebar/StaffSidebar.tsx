@@ -25,7 +25,7 @@ const Sidebar = () => {
     {
       title: "承認待ちリスト",
       icon: <FormatListBulletedIcon />, //適切なアイコンに変えてください
-      link: "/staff/waitinglist",
+      link: "/staff/approvallist",
       gap: false,
     },
     {
