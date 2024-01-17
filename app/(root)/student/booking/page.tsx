@@ -130,12 +130,12 @@ const InterviewScheduler: React.FC = () => {
     setFirstPreferenceEndTime(null);
   };
 
-  // 開始時間を更新し、終了時間をリセットするハンドラー1
+  // 開始時間を更新し、終了時間をリセットするハンドラー2
   const handleSecondStartTimeChange = (option: OptionType | null) => {
     setSecondPreferenceStartTime(option);
     setSecondPreferenceEndTime(null);
   };
-  // 開始時間を更新し、終了時間をリセットするハンドラー1
+  // 開始時間を更新し、終了時間をリセットするハンドラー3
   const handleThirdStartTimeChange = (option: OptionType | null) => {
     setThirdPreferenceStartTime(option);
     setThirdPreferenceEndTime(null);
