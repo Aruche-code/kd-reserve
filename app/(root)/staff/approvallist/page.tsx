@@ -62,7 +62,7 @@ const selectedUser: React.FC<selectedUser> = ({ testUsers, testUsers2 }) => {
 };
 
 
-const Waiting = () => {
+const Approval = () => {
 
     //モーダルウィンドウ
     // const [showModal, setShowModal] = useState(false);
@@ -290,6 +290,13 @@ const Waiting = () => {
         "/api/student/booking",
         fetcher
     );
+
+    const { data: staffDat, error: staffEr } = useSWR(
+        "/api/staff/approvallist",
+        fetcher
+    );
+
+    console.log(staffDat)
     const staff: Staff[] = staffData?.staffUsers || [];
 
     //bookingに追加
@@ -336,7 +343,6 @@ const Waiting = () => {
                 {isNominationSelected ?
                     nowUser.map((user, index) => (
                         <div className="mt-2">
-                            <Link href="" key={user.id}>
                                 <div
                                     // onClick={() => [setShowModal(true), setNowUser(user)]}
                                     className=""
@@ -347,13 +353,13 @@ const Waiting = () => {
                                                 {user.name}<br />
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, user.day1, user.firsttime1, user.endtime1)}>
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.day1, user.firsttime1, user.endtime1)}>
                                                     1.　{user.day1}　{user.firsttime1}~{user.endtime1}
                                                 </div>
-                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, user.day2, user.firsttime2, user.endtime2)}>
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.day2, user.firsttime2, user.endtime2)}>
                                                     2.　{user.day2}　{user.firsttime2}~{user.endtime2}
                                                 </div>
-                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, user.day3, user.firsttime3, user.endtime3)}>
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.day3, user.firsttime3, user.endtime3)}>
                                                     3.　{user.day3}　{user.firsttime3}~{user.endtime3}
                                                 </div>
                                             </div>
@@ -392,9 +398,6 @@ const Waiting = () => {
                                     </div>
 
                                 </div>
-
-                            </Link >
-
                         </div >
 
 
@@ -575,4 +578,4 @@ const Waiting = () => {
 
 };
 
-export default Waiting;
+export default Approval;
