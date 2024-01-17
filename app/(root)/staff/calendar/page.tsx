@@ -6,6 +6,8 @@ import MbCalendar from './MobileCalendar';
 import CloseButton from './CloseButton';
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import Loading from "@/app/components/loading/Loading";
+import useSWR, { mutate } from "swr";
 interface StaffNg {
     ymd: string;
     time: string[]; 
@@ -79,52 +81,68 @@ const Home = () => {
         }
     }, [selectedTimes]); // selectedTimes が変化したときに実行
 
+
+    //ローディングフラグ
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetcher = (url: string) =>
+        axios.get(url).then((res) => res.data);
+    const { data: response, error } = useSWR('/api/staff/calendar', fetcher);
+    console.log(response)
     //データを取得する(GET)
-    const getdata = async () => { 
-        try {
-            const response = await axios.get('/api/staff/calendar');
-    
-            if (response.status === 200) {
-                //alert("データの取得に成功しました");
-    
-                const {staffng} = response.data.responseData;
+    const getdata = () => { 
+        if(!response) {
+            alert("データが取得できませんでした")
+        } else {
+            const {staffng} = response.responseData;
 
-                const ngDays: {[key: string]: string[]} = {};
+            const ngDays: {[key: string]: string[]} = {};
 
-                staffng.forEach((data: StaffNg) => {
-                    ngDays[data.ymd] = data.time;
-                });
+            staffng.forEach((data: StaffNg) => {
+                ngDays[data.ymd] = data.time;
+            });
 
-                const newArray = Object.entries(ngDays).map(([date, times]) => ({
-                    date,
-                    times
-                }));
+            const newArray = Object.entries(ngDays).map(([date, times]) => ({
+                date,
+                times
+            }));
 
-                const mappedTimes = {};
+            const mappedTimes: { [key: string]: string[] } = {};
 
-                newArray.forEach((time) => {
+            newArray.forEach((time) => {
+                if (time.times.includes("allng")) {
+                    mappedTimes[time.date] = [
+                        "09:00", "09:30", "10:00", "10:30",
+                        "11:00", "11:30", "12:00", "12:30",
+                        "13:00", "13:30", "14:00", "14:30",
+                        "15:00", "15:30", "16:00",
+                    ];
+                }else{
                     mappedTimes[time.date] = time.times; 
-                });
+                }
+            });
 
-                console.log(mappedTimes);
+            //console.log(mappedTimes);
 
-                
-                setSelectedTimes(mappedTimes);
+            
+            setSelectedTimes(mappedTimes);
                 //console.log(selectedTimes)
-
-            } else {
-                alert("データの取得に失敗しました");
-            }
-        } catch (error) {
-            console.error('エラー:', error);
-            alert("データの取得中にエラーが発生しました");
+            setIsLoading(false);
         }
     }
 
-    //初回起動時GETをかけてデータを取得
     useEffect(() => {
-        getdata();
-    }, []); 
+        if (response) {
+          getdata(); 
+        }
+    }, [response]);
+    
+    
+
+    //初回起動時GETをかけてデータを取得
+    if(!response) {
+        // responseが未定義の場合の処理 
+    }
 
     //新規に選ばれたデータを管理
     const [sendTimes, setSendTimes] = useState<{ [key: string]: string[] }>({});
@@ -133,7 +151,7 @@ const Home = () => {
         setSendTimes({});
     };
     
-    //ng日程の送信（要変更）
+    //ng日程の送信
     const handleClick = () => {
         const firstKey = Object.keys(sendTimes)[0];
 
@@ -142,7 +160,11 @@ const Home = () => {
         
         // alert(JSON.stringify({ [firstKey]: firstValue }));
         // }
-        const firstValue = sendTimes[firstKey];
+        let firstValue = sendTimes[firstKey]; 
+
+        if (firstValue.includes("全日")) {
+            firstValue = ["allng"]
+        }
 
         postdata(firstKey, firstValue);
     };
@@ -324,6 +346,11 @@ const Home = () => {
 
     const PcCalendar = () => (
         <>
+            {isLoading ? (
+                    <Loading />
+                ) : (
+                    null
+                )}
             {/* カレンダー部分 */}
             <div className="flex h-auto w-full justify-center items-center bg-white">
                 <div className="px-4 mt-0 w-11/12">
