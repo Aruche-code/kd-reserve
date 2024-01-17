@@ -116,8 +116,8 @@ export const GET = async (req: Request, res: NextResponse) => {
     console.log("GET");
 
     try {
-        // const email = await getUsermail() 本番
-        const email = "sample3@gmail.com" //テスト
+        //const email = await getUserMail() 
+        const email = "higa@mail.com" //テスト
         await main();
         const wait = await prisma.user.findMany({
             where: { email },
