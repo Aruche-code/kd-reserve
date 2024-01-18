@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";   // APIルートのリ�
 
 import { NextResponse } from "next/server";               // APIミドルウェアでレスポンスを操作するためのオブジェクト
 import { PrismaClient } from "@prisma/client";            // データベース接続とクエリのためのメインオブジェクト
-import getStaffUsers from "@/app/actions/getStaffUsers";  //教員のセッション情報認証ロジックをインポート
-import getUserMail from "@/app/actions/getUserMail";      //ユーザーのセッション情報認証ロジックをインポート
+// import getStaffUsers from "@/app/actions/getStaffUsers";  //教員のセッション情報認証ロジックをインポート
+// import getUserMail from "@/app/actions/getUserMail";      //ユーザーのセッション情報認証ロジックをインポート
 
 const prisma = new PrismaClient();                        // prisma clientのインスタンス生成
 
