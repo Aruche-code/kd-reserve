@@ -3,16 +3,16 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 export default function Calendar({
     date, 
-    setDate,
     daysInMonth,
     prevMonth,
     nextMonth,
-    setShowModal,
     setselectedDay,
-    interview,
     selectedTimes,
     setOpen,
     clearState,
+    bookings,
+    bookingreload,
+    handleTabClick
 }: any) {
 
 const year = date.getFullYear();
@@ -54,30 +54,39 @@ return (
             <div key={`empty-${i}`} className="text-center text-gray-400 border-2 h-20">{''}</div>
         ))}
         
-        {dayArray.map((day:any, index:any) => (
-            ((index + lastday.getDay()) % 7 === 0 || (index + lastday.getDay()) % 7 === 6) ? (
-                <div
+        {dayArray.map((day:any, index:any) => {
+        const selectedDate = `${date.getFullYear()}-${(date.getMonth() < 9 ? '0' : '')}${date.getMonth() + 1}-${(day < 10 ? '0' : '')}${day}`;
+        const hasBookingForDate = bookings.some((booking: { detail: string; name: string; time: string[]; ymd: string }) => booking.ymd === selectedDate);
+
+        return ((index + lastday.getDay()) % 7 === 0 || (index + lastday.getDay()) % 7 === 6) ? (
+            <div
                 key={day}
                 className={`text-center border-2 h-20 bg-gray-100`}
-                >
+            >
                 {day}
-                </div>
+            </div>
             ) : (
-                <div
+            <div
                 key={day}
                 className={`text-center border-2 h-20 hover:border-cyan-400 `}
-                onClick={() => { setOpen(true); clearState(); setselectedDay(date.getFullYear()+"-"+(date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)) +"-"+(day < 10 ? '0' + day : day)); }}
-                >
-                    {day}
-                    {interview[date.getFullYear()+"-"+(date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1))+"-"+(day < 10 ? '0' + day : day)] ? (
-                    <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-xxs my-1">予約あり</div>
-                    ):""}
-                    {selectedTimes[date.getFullYear()+"-"+(date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1))+"-"+(day < 10 ? '0' + day : day)] ? (
-                    <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-xxs my-1">NG日程あり</div>
-                    ):""}
-                </div>
-            )
-        ))}
+                onClick={() => { 
+                setOpen(true); 
+                clearState(); 
+                setselectedDay(selectedDate);
+                bookingreload();
+                handleTabClick("ng")
+                }}
+            >
+                {day}
+                {hasBookingForDate ? (
+                <div className="w-9/12 h-auto mx-auto rounded bg-blue-300 text-xxs my-1">予約あり</div>
+                ) : ""}
+                {selectedTimes[selectedDate] ? (
+                <div className="w-9/12 h-auto mx-auto rounded bg-red-300 text-xxs my-1">NG日程あり</div>
+                ) : ""}
+            </div>
+            );
+        })}
 
     </div>
     </>
