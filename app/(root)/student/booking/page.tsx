@@ -348,7 +348,7 @@ const InterviewScheduler: React.FC = () => {
           {/* 第二希望日時 */}
           {/* 日付ピッカーコンポーネント */}
           <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-            <h1 className="m-2">第一希望日を入力</h1>
+            <h1 className="m-2">第二希望日を入力</h1>
             <div>
               <DatePicker
                 selected={secondPreferenceDate}
@@ -400,7 +400,7 @@ const InterviewScheduler: React.FC = () => {
           {/* 第三希望日時 */}
           {/* 日付ピッカーコンポーネント */}
           <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-            <h1 className="m-2">第一希望日を入力</h1>
+            <h1 className="m-2">第三希望日を入力</h1>
             <div>
               <DatePicker
                 selected={thirdPreferenceDate}

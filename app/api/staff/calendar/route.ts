@@ -80,6 +80,7 @@ export const GET = async (req: Request, res: NextResponse) => {
                 ymd: booking?.ymd,
                 time: booking?.time,
                 details: booking?.details,
+                studentName: booking?.studentName,
               }))
             : null,
         }
