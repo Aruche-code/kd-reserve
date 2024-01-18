@@ -54,7 +54,7 @@ const BookingPost: React.FC<BookingPostProps> = ({
 
   const handleWaitingSubmit = async () => {
     if (isAnyFieldNull()) {
-      toast.error("職員、予約内容\n第一希望日時\n第二希望日時は必須です。");
+      toast.error("予約内容\n第一希望日時\n第二希望日時は必須です。");
       return;
     }
 
