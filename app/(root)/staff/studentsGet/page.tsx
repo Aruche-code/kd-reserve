@@ -12,7 +12,7 @@ interface User {
 
 const Students = () => {
   const [user, setStudents] = useState<User[]>([]);
-  console.log(user);
+  // console.log(user);
   useEffect(() => {
     // 学生一覧を取得するAPIのエンドポイント
     const apiEndpoint = '/api/koma/StudentsListGet';
@@ -21,7 +21,7 @@ const Students = () => {
     const fetchStudents = async () => {
       try {
         const response = await axios.get(apiEndpoint);
-        console.log(response);
+        // console.log(response);
         setStudents(response.data.users);
       } catch (error) {
         console.error('学生データの取得エラー:', error);
@@ -31,18 +31,6 @@ const Students = () => {
     fetchStudents();
   }, []);
 
-  // return (
-  //   <div>
-  //     <h1>学生一覧</h1>
-  //     <ul>
-  //       {user.map((user) => (
-  //         <li key={user.id}>
-  //           {user.name} - {user.studentIdNumber}
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   </div>
-  // );
 
   return (
     <div className="flex flex-col justify-center items-center mt-6">
@@ -68,9 +56,6 @@ const Students = () => {
         <div className="flex justify-center items-center">
           <div className="m-5 flex  flex-wrap justify-center items-center">
             {user.map((user) => (
-              // <li key={user.id}>
-              //   {user.name} - {user.studentIdNumber}
-              // </li>
               <button
                 key={user.id}
                 className={'my-2 mx-5 min-w-[24ch] px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl overflow-hidden'}
