@@ -82,7 +82,7 @@ const CustomInput = React.forwardRef<HTMLInputElement, CustomInputProps>(
           InputProps={{
             startAdornment: (
               <CustomIconButton onClick={onClick}>
-                <CalendarTodayIcon sx={{ color: "#1facf3" }} />
+                <CalendarTodayIcon sx={{ color: "#1b4c6a" }} />
               </CustomIconButton>
             ),
             readOnly: true,

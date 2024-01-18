@@ -27,7 +27,7 @@ const SkeletonBody = () => {
 interface StaffListProps {
   staffData: any;
   staffError: any;
-  onSelect: (id: string) => void;
+  onSelect: (id: string | null) => void;
   selectedTeacherId: string | null;
 }
 
@@ -45,6 +45,16 @@ const StaffList: React.FC<StaffListProps> = ({
   return (
     <div className="flex flex-wrap">
       <h1 className="w-full">先生一覧</h1>
+      {/* 「指定なし」オプションを追加 */}
+      <div
+        onClick={() => onSelect(null)} // onSelectをnullで呼び出す
+        className={`p-2 m-1 border rounded cursor-pointer ${
+          selectedTeacherId === null ? "bg-blue-200" : "bg-white"
+        }`}
+      >
+        <h2>指定なし</h2>
+      </div>
+      {/* 既存の職員リスト表示 */}
       {staff.map((staffMember) => (
         <div
           key={staffMember.id}

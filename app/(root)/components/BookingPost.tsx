@@ -42,7 +42,6 @@ const BookingPost: React.FC<BookingPostProps> = ({
 
   const isAnyFieldNull = () => {
     return (
-      !selectedStaffMember || //職員
       !selectedTag || //予約内容
       !firstPreferenceDate ||
       !firstPreferenceStartTime ||
