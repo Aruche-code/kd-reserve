@@ -33,7 +33,9 @@ const Home = () => {
 
   const handleCancelBooking = async (id: string) => {
     try {
-      await axios.delete("/api/student", { data: { scheduleId: id } });
+      await axios.delete("/api/student/bookingdelete", {
+        data: { scheduleId: id },
+      });
       mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling booking:", error);
@@ -42,7 +44,9 @@ const Home = () => {
 
   const handleCancelWaiting = async (id: string) => {
     try {
-      await axios.delete("/api/student", { data: { scheduleId: id } });
+      await axios.delete("/api/student/waitdelete", {
+        data: { scheduleId: id },
+      });
       mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling waiting:", error);
@@ -62,7 +66,7 @@ const Home = () => {
             <div className="text-center">現在確定した予約はありません</div>
           ) : (
             homeData.getBookingList.map((booking: any) => (
-              <div className="flex flex-col p-2" key={booking.ymd}>
+              <div className="flex flex-col p-2" key={booking.id}>
                 <div className="mx-4 p-2 border border-kd-sub2-cl bg-white rounded-lg flex flex-row">
                   <div className="w-4/5 flex flex-row text-center items-center justify-center text-xs md:text-base lg:text-sm xl:text-base">
                     <div className="w-1/3 px-3 flex flex-col">
@@ -94,7 +98,7 @@ const Home = () => {
             <div className="text-center">現在承認待ちの予定はありません</div>
           ) : (
             homeData.getWaitingList.map((waiting: any) => (
-              <div className="flex flex-col p-2" key={waiting.ymd}>
+              <div className="flex flex-col p-2" key={waiting.id}>
                 <div className="mx-4 p-2 border bg-white border-kd-sub2-cl rounded-lg flex flex-row">
                   <div className="w-4/5 flex flex-row text-center items-center justify-center">
                     <div className="w-2/3 px-3 flex flex-col">

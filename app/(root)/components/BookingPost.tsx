@@ -42,7 +42,6 @@ const BookingPost: React.FC<BookingPostProps> = ({
 
   const isAnyFieldNull = () => {
     return (
-      !selectedStaffMember || //職員
       !selectedTag || //予約内容
       !firstPreferenceDate ||
       !firstPreferenceStartTime ||
@@ -55,7 +54,14 @@ const BookingPost: React.FC<BookingPostProps> = ({
 
   const handleWaitingSubmit = async () => {
     if (isAnyFieldNull()) {
-      toast.error("職員、予約内容\n第一希望日時\n第二希望日時は必須です。");
+      toast.error("予約内容、第一希望日時、\n第二希望日時は必須です。", {
+        style: {
+          textAlign: "center",
+          color: "#ef4444",
+          lineHeight: "1.5",
+          fontSize: "14px",
+        },
+      });
       return;
     }
 
@@ -86,14 +92,32 @@ const BookingPost: React.FC<BookingPostProps> = ({
       const response = await axios.post("/api/student/booking", data);
       // ステータスコードに応じたメッセージを設定
       if (response.status === 200) {
-        toast.success("予約を送信しました");
+        toast.success("予約を送信しました", {
+          style: {
+            textAlign: "center",
+            lineHeight: "1.5",
+            fontSize: "14px",
+          },
+        });
         resetAll();
       } else {
-        toast.error("予約が送信できませんでした");
+        toast.error("予約が送信できませんでした", {
+          style: {
+            textAlign: "center",
+            lineHeight: "1.5",
+            fontSize: "14px",
+          },
+        });
       }
     } catch (error) {
       console.error("Error sending data: ", error);
-      toast.error("エラーが発生しました");
+      toast.error("エラーが発生しました", {
+        style: {
+          textAlign: "center",
+          lineHeight: "1.5",
+          fontSize: "14px",
+        },
+      });
     } finally {
       setIsLoading(false); // 送信処理終了
     }
