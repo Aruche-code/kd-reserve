@@ -11,12 +11,15 @@ interface OptionType {
 interface BookingPostProps {
   selectedStaffMember: string | null;
   selectedTag: string | null;
-  firstPreferenceDate: Date;
+  firstPreferenceDate: Date | null;
   firstPreferenceStartTime: OptionType | null;
   firstPreferenceEndTime: OptionType | null;
-  // secondPreferenceDate: Date;
-  // secondPreferenceStartTime: OptionType | null;
-  // secondPreferenceEndTime: OptionType | null;
+  secondPreferenceDate: Date | null;
+  secondPreferenceStartTime: OptionType | null;
+  secondPreferenceEndTime: OptionType | null;
+  thirdPreferenceDate: Date | null;
+  thirdPreferenceStartTime: OptionType | null;
+  thirdPreferenceEndTime: OptionType | null;
   resetAll: () => void;
 }
 
@@ -26,6 +29,12 @@ const BookingPost: React.FC<BookingPostProps> = ({
   firstPreferenceDate,
   firstPreferenceStartTime,
   firstPreferenceEndTime,
+  secondPreferenceDate,
+  secondPreferenceStartTime,
+  secondPreferenceEndTime,
+  thirdPreferenceDate,
+  thirdPreferenceStartTime,
+  thirdPreferenceEndTime,
   resetAll,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,19 +42,20 @@ const BookingPost: React.FC<BookingPostProps> = ({
 
   const isAnyFieldNull = () => {
     return (
-      !selectedStaffMember ||
-      !selectedTag ||
+      !selectedStaffMember || //職員
+      !selectedTag || //予約内容
       !firstPreferenceDate ||
       !firstPreferenceStartTime ||
-      !firstPreferenceEndTime
+      !firstPreferenceEndTime ||
+      !secondPreferenceDate ||
+      !secondPreferenceStartTime ||
+      !secondPreferenceEndTime
     );
   };
 
   const handleWaitingSubmit = async () => {
     if (isAnyFieldNull()) {
-      toast.error(
-        "予約内容、職員、日付、開始時間、\n終了時間を選択してください"
-      );
+      toast.error("職員、予約内容\n第一希望日時\n第二希望日時は必須です。");
       return;
     }
 
@@ -55,15 +65,21 @@ const BookingPost: React.FC<BookingPostProps> = ({
     const data = {
       staffUserId: selectedStaffMember,
       details: selectedTag,
-      firstYmd: format(firstPreferenceDate, "yyyy-MM-dd"),
+      firstYmd: firstPreferenceDate
+        ? format(firstPreferenceDate, "yyyy-MM-dd")
+        : null,
       firstStartTime: firstPreferenceStartTime?.value,
       firstEndTime: firstPreferenceEndTime?.value,
-      secondYmd: null,
-      secondStartTime: null,
-      secondEndTime: null,
-      thirdYmd: null,
-      thirdStartTime: null,
-      thirdEndTime: null,
+      secondYmd: secondPreferenceDate
+        ? format(secondPreferenceDate, "yyyy-MM-dd")
+        : null,
+      secondStartTime: secondPreferenceStartTime?.value,
+      secondEndTime: secondPreferenceEndTime?.value,
+      thirdYmd: thirdPreferenceDate
+        ? format(thirdPreferenceDate, "yyyy-MM-dd")
+        : null,
+      thirdStartTime: thirdPreferenceStartTime?.value,
+      thirdEndTime: thirdPreferenceEndTime?.value,
     };
 
     try {
