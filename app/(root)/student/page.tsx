@@ -33,7 +33,9 @@ const Home = () => {
 
   const handleCancelBooking = async (id: string) => {
     try {
-      await axios.delete("/api/student", { data: { scheduleId: id } });
+      await axios.delete("/api/student/bookingdelete", {
+        data: { scheduleId: id },
+      });
       mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling booking:", error);
@@ -42,7 +44,9 @@ const Home = () => {
 
   const handleCancelWaiting = async (id: string) => {
     try {
-      await axios.delete("/api/student", { data: { scheduleId: id } });
+      await axios.delete("/api/student/waitdelete", {
+        data: { scheduleId: id },
+      });
       mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling waiting:", error);
