@@ -156,6 +156,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         thirdYmd: true,
         thirdStartTime: true,
         thirdEndTime: true,
+        studentName: true,
       },
     });
 
