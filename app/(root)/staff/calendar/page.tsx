@@ -65,7 +65,7 @@ const Home = () => {
     const [selectedTimes, setSelectedTimes] = useState<{ [key: string]: string[] }>({}); //GETで取得したものを管理する
     const [bookings, setBookings] = useState<{ detail: string; name: string; time: string[]; ymd: string }[]>([]);
     useEffect(() => {
-        console.log(bookings);
+        //console.log(bookings);
         // bookings が更新された後に行いたい処理をここに書く
     }, [bookings]); 
     const fetcher = (url: string) => axios.get(url).then((res) => res.data);
@@ -73,8 +73,8 @@ const Home = () => {
     //console.log(response)
     //データを取得する(GET)
     const getdata = () => { 
-        if(!response) {
-            //alert("データが取得できませんでした")
+        if(!response.responseData) {
+            setIsLoading(false);
         } else {
             const {staffng} = response.responseData;
             const {booking} = response.responseData;
@@ -313,28 +313,6 @@ const Home = () => {
     //     const lastPart = parts[parts.length - 1]; // 配列の最後の要素を取得
     //     return lastPart;
     // }
-
-    //面談予約テストデータ
-    const testUsers = [
-        {
-            id: '601b92ee95861639c3e2c44b',
-            kana: 'コウベタロウ',
-            name: '神戸太郎',
-            gakuseki: '1111111',
-            day: '2023/12/3',
-            time: '10:00~12:00',
-            subject: '面接練習'
-        },
-        {
-            id: '601b95a595861639c3e2c44c',
-            kana: 'コウベジロウ',
-            name: '神戸次郎',
-            gakuseki: '2222222',
-            day: '2023/12/3',
-            time: '13:00~14:00',
-            subject: 'エントリーシート作成'
-        },
-    ];
 
 
     //モーダルウィンドウ
