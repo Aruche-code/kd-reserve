@@ -125,7 +125,7 @@ export const GET = async (req: Request, res: NextResponse) => {
       }
     })
 
-    /*
+
     // 操作している職員のidを取得
     //  本番用
     const usermail = await getUserMail();
@@ -136,11 +136,11 @@ export const GET = async (req: Request, res: NextResponse) => {
         },
     });
     const staffId: any = staff.id
-    */
+
 
 
     // テスト用
-    const staffId = "65a7dd6e1c561cd88218477d";
+    // const staffId = "65a7dd6e1c561cd88218477d";
 
     // 操作している職員が指定されている承認待ちリストの取得
     const waitingList = await prisma.waitingList.findMany({
