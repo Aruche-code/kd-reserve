@@ -116,9 +116,8 @@ export const GET = async (req: Request, res: NextResponse) => {
   console.log("GET");
 
   try {
-    const email = await getUserMail();
-    //const email = "sample3@gmail.com"; //テスト
     await main();
+    // すべての職員の名前のリストを取得
     const staffUserList = await prisma.user.findMany({
       where: { role: "staff" },
       select: {
@@ -126,26 +125,29 @@ export const GET = async (req: Request, res: NextResponse) => {
       }
     })
 
+    /*
     // 操作している職員のidを取得
     //  本番用
     const usermail = await getUserMail();
     const staff : any = await prisma.user.findUnique({
         where: { email: usermail },
         select: {
-            id: true,                   // 学生のid
+            id: true,                   // 職員のid
         },
     });
     const staffId: any = staff.id
+    */
 
 
     // テスト用
-    // const staffId = "657a50663dbe46e6c28b95ca";
+    const staffId = "65a7dd6e1c561cd88218477d";
 
+    // 操作している職員が指定されている承認待ちリストの取得
     const waitingList = await prisma.waitingList.findMany({
       where: { staffUserId: staffId },
       select: {
         id: true,
-        staffName: true,
+        studentName: true,
         details: true,
         firstYmd: true,
         firstStartTime: true,
@@ -156,13 +158,33 @@ export const GET = async (req: Request, res: NextResponse) => {
         thirdYmd: true,
         thirdStartTime: true,
         thirdEndTime: true,
-        studentName: true,
       },
     });
 
+
+    const noNominationList = await prisma.waitingList.findMany({
+      where: { staffUserId: null },
+      select: {
+        id: true,
+        studentName: true,
+        details: true,
+        firstYmd: true,
+        firstStartTime: true,
+        firstEndTime: true,
+        secondYmd: true,
+        secondStartTime: true,
+        secondEndTime: true,
+        thirdYmd: true,
+        thirdStartTime: true,
+        thirdEndTime: true,
+      },
+    });
+
+
     const wait = {
       staffList: staffUserList,
-      waitingList: waitingList
+      waitingList: waitingList,
+      noNominationList: noNominationList
     }
 
     return NextResponse.json({ message: "Success", wait }, { status: 200 });
