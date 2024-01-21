@@ -278,8 +278,8 @@ const InterviewScheduler: React.FC = () => {
   return (
     <div>
       <div
-        className="p-8 mx-auto bg-c-black_100 rounded-lg shadow-md flex flex-col space-y-3 justify-center"
-        style={{ minWidth: "300px", maxWidth: "100%" }}
+        className="p-8 mx-auto bg-c-black_200 rounded-xl shadow-md flex flex-col space-y-3 justify-center"
+        // style={{ minWidth: "300px", maxWidth: "100%" }}
       >
         <ReservationTags
           selectedTag={selectedTag}

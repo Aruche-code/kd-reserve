@@ -53,82 +53,118 @@ const Home = () => {
     }
   };
 
-  console.log(homeData);
-
   return (
-    <div className="flex flex-col flex-wrap justify-center items-center">
-      <div className="flex flex-col mt-4 w-full lg:w-1/2  bg-white rounded-md shadow-md">
-        <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
+    <div className="flex flex-col justify-center items-center">
+      <div className="mt-4 w-full lg:w-4/5 bg-white rounded-md shadow-md">
+        {/* 確定予約セクション */}
+        <div className="p-3 px-6 rounded-t-lg bg-blue-500 text-white">
           ■ 予約確定一覧
         </div>
-        <div className="mt-5 mb-5">
+        <div className="p-4">
           {homeData.getBookingList && homeData.getBookingList.length === 0 ? (
             <div className="text-center">現在確定した予約はありません</div>
           ) : (
             homeData.getBookingList.map((booking: any) => (
-              <div className="flex flex-col p-2" key={booking.id}>
-                <div className="mx-4 p-2 border border-kd-sub2-cl bg-white rounded-lg flex flex-row">
-                  <div className="w-4/5 flex flex-row text-center items-center justify-center text-xs md:text-base lg:text-sm xl:text-base">
-                    <div className="w-1/3 px-3 flex flex-col">
-                      <div>{booking.ymd}</div>
-                      <div className="">{booking.time}</div>
-                    </div>
-                    <div className="w-1/3 px-3">{booking.staffName}</div>
-                    <div className="w-1/3 px-3">{booking.details}</div>
-                  </div>
-                  <div className="w-1/5 flex items-center justify-center">
-                    <button
-                      type="button"
-                      className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white"
-                      onClick={() => handleCancelBooking(booking.id)}
-                    >
-                      キャンセル
-                    </button>
-                  </div>
+              <div
+                className="mb-3 grid grid-cols-1 sm:grid-cols-5 gap-4 bg-gray-100 rounded-lg shadow-sm p-4 items-center"
+                key={booking.id}
+              >
+                {/* 日付 */}
+                <div className="flex flex-col">
+                  <span className="font-bold text-xs md:text-sm">日付</span>
+                  <span className="text-sm md:text-base">{booking.ymd}</span>
                 </div>
+
+                {/* 時間帯 */}
+                <div className="flex flex-col">
+                  <span className="font-bold text-xs md:text-sm">時間帯</span>
+                  <span className="text-sm md:text-base">{booking.time}</span>
+                </div>
+
+                {/* 職員名 */}
+                <div className="flex flex-col">
+                  <span className="font-bold text-xs md:text-sm">職員</span>
+                  <span className="text-sm md:text-base">
+                    {booking.staffName}
+                  </span>
+                </div>
+
+                {/* 詳細 */}
+                <div className="flex flex-col">
+                  <span className="font-bold text-xs md:text-sm">詳細</span>
+                  <span className="text-sm md:text-base">
+                    {booking.details}
+                  </span>
+                </div>
+
+                {/* キャンセルボタン */}
+                <button
+                  type="button"
+                  className="bg-red-500 text-white text-xs px-2 py-1 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
+                  onClick={() => handleCancelBooking(booking.id)}
+                >
+                  キャンセル
+                </button>
               </div>
             ))
           )}
         </div>
-        <div className="p-3 px-6 rounded-t bg-kd-sub2-cl text-white">
-          ■ 承認待ち
-        </div>
-        <div className="mt-5 text-xs md:text-base lg:text-sm xl:text-base mb-5">
-          {homeData.getBookingList && homeData.getWaitingList.length === 0 ? (
+
+        {/* 承認待ちセクション */}
+        <div className="p-3 px-6 bg-blue-500 text-white">■ 承認待ち</div>
+        <div className="p-4">
+          {homeData.getWaitingList && homeData.getWaitingList.length === 0 ? (
             <div className="text-center">現在承認待ちの予定はありません</div>
           ) : (
             homeData.getWaitingList.map((waiting: any) => (
-              <div className="flex flex-col p-2" key={waiting.id}>
-                <div className="mx-4 p-2 border bg-white border-kd-sub2-cl rounded-lg flex flex-row">
-                  <div className="w-4/5 flex flex-row text-center items-center justify-center">
-                    <div className="w-2/3 px-3 flex flex-col">
-                      1. {waiting.firstYmd}
-                      <br /> {waiting.firstStartTime}～{waiting.firstEndTime}
-                      <br />
-                      2. {waiting.secondYmd}
-                      <br /> {waiting.secondStartTime}～{waiting.secondEndTime}
-                      <br />
-                      3. {waiting.thirdYmd}
-                      <br /> {waiting.thirdStartTime}～{waiting.thirdEndTime}
-                      <br />
-                    </div>
-                    <div className="w-1/3 border-left-2 border-gray-200 px-3">
-                      {waiting.staffName}
-                    </div>
-                    <div className="w-1/3 border-left-2 border-gray-200 px-3">
-                      {waiting.details}
-                    </div>
+              <div
+                className="mb-3 grid grid-cols-1 sm:grid-cols-4 gap-4 bg-gray-100 rounded-lg shadow-sm p-4 items-center"
+                key={waiting.id}
+              >
+                {/* 日時カード */}
+                <div className="flex flex-col space-y-1">
+                  <div className="flex justify-start items-center space-x-2">
+                    <span className="text-xs md:text-sm font-bold">
+                      {waiting.firstYmd}
+                    </span>
+                    <span className="text-xs md:text-sm">
+                      {waiting.firstStartTime}～{waiting.firstEndTime}
+                    </span>
                   </div>
-                  <div className="w-1/5 flex items-center justify-center">
-                    <button
-                      type="button"
-                      className="rounded-lg bg-red-300 px-2 p-1 text-[8px] md:text-xs font-medium hover:bg-red-500 hover:text-white"
-                      onClick={() => handleCancelWaiting(waiting.id)}
-                    >
-                      キャンセル
-                    </button>
+                  <div className="flex justify-start items-center space-x-2">
+                    <span className="text-xs md:text-sm font-bold">
+                      {waiting.secondYmd}
+                    </span>
+                    <span className="text-xs md:text-sm">
+                      {waiting.secondStartTime}～{waiting.secondEndTime}
+                    </span>
                   </div>
+                  {/* その他の日時データ */}
                 </div>
+                {/* 職員名カード */}
+                <div className="flex flex-col">
+                  <span className="font-bold text-xs md:text-sm">職員名</span>
+                  <span className="text-sm md:text-base">
+                    {waiting.staffName}
+                  </span>
+                </div>
+
+                {/* 詳細カード */}
+                <div className="flex flex-col">
+                  <span className="font-bold text-xs md:text-sm">詳細</span>
+                  <span className="text-sm md:text-base">
+                    {waiting.details}
+                  </span>
+                </div>
+
+                {/* キャンセルボタン */}
+                <button
+                  type="button"
+                  className="bg-red-500 text-white text-xs px-2 py-1 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
+                  onClick={() => handleCancelWaiting(waiting.id)}
+                >
+                  キャンセル
+                </button>
               </div>
             ))
           )}
