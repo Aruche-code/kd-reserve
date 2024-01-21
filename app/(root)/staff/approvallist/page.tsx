@@ -7,85 +7,46 @@ import axios from "axios";
 import { Staff, StaffNgData } from "@/app/components/types";
 import { toast } from "react-hot-toast";
 
-interface selectedUser {
-
-    testUsers: {
-        id: string;
-        kana: string;
-        name: string;
-        day1: string;
-        time1: string;
-        day2: string;
-        time2: string;
-        day3: string;
-        time3: string;
-
-    };
-    testUsers2: {
-        id: string;
-        kana: string;
-        name: string;
-        day1: string;
-        time1: string;
-        day2: string;
-        time2: string;
-        day3: string;
-        time3: string;
-    };
-}
-
 interface TimeSelectMenuProps {
     firsttime: string;
     endtime: string;
+}
+interface WaitingList {
+    details: string;
+    firstEndTime: string;
+    firstStartTime: string;
+    firstYmd: string;
+    id: string;
+    secondEndTime: string;
+    secondStartTime: string;
+    secondYmd: string;
+    staffName: string;
+    thirdEndTime: string;
+    thirdStartTime: string;
+    thirdYmd: string;
+    studentName: string,
+}
+interface User {
+    id: string;
+    kana: string;
+    name: string;
+    details: string;
+    day1: string;
+    firsttime1: string;
+    endtime1: string;
+    day2: string;
+    firsttime2: string;
+    endtime2: string;
+    day3: string;
+    firsttime3: string;
+    endtime3: string;
 }
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 
-const selectedUser: React.FC<selectedUser> = ({ testUsers, testUsers2 }) => {
-
-    // 選択されたオプションと時間を管理するためのState
-    const [selectedOption, setSelectedOption] = useState("");
-    const [selectedTimes, setSelectedTimes] = useState<string[]>(["", "", ""]);
-
-
-    // 選択されたオプションに基づいて使用するデータセットを判断
-    const selectedData = selectedOption === "firstChoice" ? testUsers : testUsers2;
-
-
-
-    return (
-        <div className="">
-
-        </div >
-    );
-};
-
-
 const Approval = () => {
-
-    //モーダルウィンドウ
-    // const [showModal, setShowModal] = useState(false);
-    // const [showModal2, setShowModal2] = useState(false);
-
-
-    // ユーザーの型を定義
-    interface User {
-        id: string;
-        kana: string;
-        name: string;
-        details: string;
-        day1: string;
-        firsttime1: string;
-        endtime1: string;
-        day2: string;
-        firsttime2: string;
-        endtime2: string;
-        day3: string;
-        firsttime3: string;
-        endtime3: string;
-    }
-    const [nowUser, setNowUser] = useState<User[]>([]);
+    const [nowUser, setNowUser] = useState<WaitingList[]>([]);
 
     //状態の管理
     const [timeRanges, setTimeRanges] = useState<Record<number, string[]>>({});
@@ -97,7 +58,7 @@ const Approval = () => {
     // stateでtimeRangesを保持
     const [selectedTimes, setSelectedTimes] = useState(timeRanges); 
 
-    // timeRangesが変化時にstateを更新
+    //timeRangesが変化時にstateを更新
     useEffect(() => {
         setSelectedTimes(timeRanges);
     }, [timeRanges]);
@@ -108,7 +69,7 @@ const Approval = () => {
         ...prev,
         [id]: [index, firsttime, endtime]
         }));
-        console.log(selectedTimes);
+        //console.log(selectedTimes);
     }
 
     const getIndex = (id: number): string => {
@@ -228,7 +189,6 @@ const Approval = () => {
         }
     ];
 
-
     const [isNominationSelected, setIsNominationSelected] = useState(true);
 
     const setUser = (users: any) => {
@@ -240,11 +200,8 @@ const Approval = () => {
         setIsNominationSelected(false);
     }
 
-    useEffect(() => {
-        setNowUser(testUsers);
-    }, []);
 
-    //プルダウンのコンポーネント
+    //選択時間のプルダウンのコンポーネント
     const TimeSelectMenu: React.FC<TimeSelectMenuProps> = ({ firsttime, endtime }) => {
 
         const startParts = firsttime.split(':');
@@ -285,19 +242,31 @@ const Approval = () => {
       
     };
 
-    // スタッフデータを取得
-    const { data: staffData, error: staffError } = useSWR(
-        "/api/student/booking",
-        fetcher
-    );
+    // データを取得(GET){
+        const { data: staffDat, error: staffEr } = useSWR(
+            "/api/staff/approvallist",
+            fetcher
+        );
 
-    const { data: staffDat, error: staffEr } = useSWR(
-        "/api/staff/approvallist",
-        fetcher
-    );
+        //staffデータの取得
+        const staff: Staff[] = staffDat?.wait.staffList || [];
+        //console.log(staffDat)
 
-    console.log(staffDat)
-    const staff: Staff[] = staffData?.staffUsers || [];
+        //waitinglistの取得
+        const waitinglist: WaitingList[] = staffDat?.wait.waitingList || [];
+        const waitingnull: WaitingList[] = waitinglist.filter(user => user.staffName === "指名なし");
+
+        // staffName が "指名なし" ではない場合の処理を記述する
+        const waitingnomi: WaitingList[] = waitinglist.filter(user => user.staffName !== "指名なし");
+        console.log(waitinglist)
+
+        useEffect(() => {
+            setNowUser(waitinglist); 
+            //console.log("変更しました")
+        }, [staffDat]);
+
+    //}
+    
 
     //bookingに追加
     const addBooking = async(data:string, time1:string, time2:string) => {
@@ -327,13 +296,13 @@ const Approval = () => {
                 <div className="flex flex-row justify-center fixed w-9/12 z-20 rounded-r-lg">
                     <button
                         className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
-                        onClick={() => (setUser(testUsers),clearTimeRanges())}
+                        onClick={() => (setUser(waitingnomi),clearTimeRanges())}
                     >
                         指名あり
                     </button>
                     <button
                         className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
-                        onClick={() => (setUser2(testUsers2), clearTimeRanges())}
+                        onClick={() => (setUser2(waitingnull), clearTimeRanges())}
                     >
                         指名なし
                     </button>
@@ -343,7 +312,7 @@ const Approval = () => {
                 <div className="flex flex-col items-center h-full">
                 {isNominationSelected ?
                     nowUser.map((user, index) => (
-                        <div className="mt-2">
+                        <div className="mt-2" key={user.id}>
                                 <div
                                     // onClick={() => [setShowModal(true), setNowUser(user)]}
                                     className=""
@@ -351,18 +320,19 @@ const Approval = () => {
                                     <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
                                         <div className="flex flex-row ">
                                             <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center" key={user.id}>
-                                                {user.name}<br />
+                                                {user.studentName}<br />
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.day1, user.firsttime1, user.endtime1)}>
-                                                    1.　{user.day1}　{user.firsttime1}~{user.endtime1}
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.firstYmd, user.firstStartTime, user.firstEndTime)}>
+                                                    1. {user.firstYmd} {user.firstStartTime}~{user.firstEndTime}
                                                 </div>
-                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.day2, user.firsttime2, user.endtime2)}>
-                                                    2.　{user.day2}　{user.firsttime2}~{user.endtime2}
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.secondYmd, user.secondStartTime, user.secondEndTime)}>
+                                                    2. {user.secondYmd} {user.secondStartTime}~{user.secondEndTime}
                                                 </div>
-                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.day3, user.firsttime3, user.endtime3)}>
-                                                    3.　{user.day3}　{user.firsttime3}~{user.endtime3}
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.thirdYmd, user.thirdStartTime, user.thirdEndTime)}>
+                                                    3. {user.thirdYmd} {user.thirdStartTime}~{user.thirdEndTime}
                                                 </div>
+
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 border-l-2">
                                                 <div className="flex flex-row">
@@ -403,29 +373,27 @@ const Approval = () => {
 
 
                     ))
-                    :
+                :
                     nowUser.map((user, index) => (
                         <div className="mt-2">
                             <Link href="" key={user.id}>
-                                <div
-                                    // onClick={() => [setShowModal(true), setNowUser(user)]}
-                                    className=""
-                                >
+                                <div className="">
                                     <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
                                         <div className="flex flex-row ">
                                             <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
-                                                {user.name}<br />
+                                                {user.studentName}<br />
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, user.day1, user.firsttime1, user.endtime1)}>
-                                                    1.　{user.day1}　{user.firsttime1}~{user.endtime1}
-                                                </div>
-                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, user.day2, user.firsttime2, user.endtime2)}>
-                                                    2.　{user.day2}　{user.firsttime2}~{user.endtime2}
-                                                </div>
-                                                <div className="border-b-2 border-gray-200" onClick={() => handleSelect(index, user.day3, user.firsttime3, user.endtime3)}>
-                                                    3.　{user.day3}　{user.firsttime3}~{user.endtime3}
-                                                </div>
+                                            <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.firstYmd, user.firstStartTime, user.firstEndTime)}>
+                                                . {user.firstYmd} {user.firstStartTime}{" "}~{" "}{user.firstEndTime}
+                                            </div>
+                                            <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.secondYmd, user.secondStartTime, user.secondEndTime)}>
+                                                2. {user.secondYmd} {user.secondStartTime}~{user.secondEndTime}
+                                            </div>
+                                            <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.thirdYmd, user.thirdStartTime, user.thirdEndTime)}>
+                                                3. {user.thirdYmd} {user.thirdStartTime}~{user.thirdEndTime}
+                                            </div>
+
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 border-l-2">
                                                 <div className="flex flex-row">
@@ -478,100 +446,6 @@ const Approval = () => {
                     ))
                 
                 }
-                    {/* {
-                        showModal && (
-                            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-                                <div className="" key={nowuser!.id}>
-                                    <div className="flex justify-center items-center">
-                                        <div
-                                            className="fixed inset-0 bg-gray-600 bg-opacity-70 transition-opacity"
-                                            onClick={() => setShowModal(false)}
-                                        />
-                                        <div className="fixed px-10 py-2 w-auto h-auto bg-white shadow-xl rounded-xl">
-                                            <button onClick={() => setShowModal(false)} className="absolute top-3 right-3">
-                                                <svg
-                                                    className="w-6 h-6 text-4xl"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                            </button>
-                                            <div className="flex flex-col">
-                                                <div className="mb-5 text-xl text-gray-500">予約確定申請</div>
-                                                {nowuser && (
-                                                    <div>
-                                                        <div>{nowuser.name}</div>
-                                                        {[1, 2, 3].map((num) => (
-                                                            <label key={num} className="text-gray-700 flex items-start">
-                                                                <input type="radio" name="radio-example" className="mr-5 w-4 h-4" />
-                                                                <div className={`px-5 mb-3 border-2 border-gray-300 rounded-lg hover:border-sky-700 shadow-sm ${num !== 3 && 'mb-2'}`}>
-                                                                    <span className="flex flex-col p-2 text-xs text-gray-500">{`第${num}希望`}</span>
-                                                                    <div className="flex flex-col">
-                                                                        <div className="m-1 mb-2 text-gray-500"></div>
-                                                                        <div className="flex flex-row flex-wrap w-full">
-                                                                            <div>
-                                                                                <div className="flex flex-row justify-center">
-                                                                                    {[1, 2].map((part) => (
-                                                                                        <React.Fragment key={part}>
-                                                                                            <div className="mb-2 w-full">
-                                                                                                <select
-                                                                                                    className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"
-                                                                                                    defaultValue=""
-                                                                                                >
-                                                                                                    <option value="" disabled>
-                                                                                                        選択する
-                                                                                                    </option>
-                                                                                                    {Array.from({ length: 18 }, (_, hour) => {
-                                                                                                        const timeValue = new Date(0, 0, 0, 9 + Math.floor(hour / 2), (hour % 2) * 30);
-                                                                                                        const formattedTime = timeValue.toLocaleTimeString('ja-JP', {
-                                                                                                            hour12: false,
-                                                                                                            hour: '2-digit',
-                                                                                                            minute: '2-digit',
-                                                                                                        });
-
-                                                                                                        return (
-                                                                                                            <option key={hour} value={formattedTime}>
-                                                                                                                {formattedTime}
-                                                                                                            </option>
-                                                                                                        );
-                                                                                                    })}
-                                                                                                </select>
-                                                                                            </div>
-                                                                                            {part === 1 && num !== 4 && (
-                                                                                                <div className="text-center w-full md:w-1/6 lg:w-1/9 text-xs p-1 mx-3 flex justify-center">
-                                                                                                    <p>～</p>
-                                                                                                </div>
-                                                                                            )}
-                                                                                        </React.Fragment>
-                                                                                    ))}
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                                <div className="flex justify-end">
-                                                    <button
-                                                        type="button"
-                                                        className="rounded-lg bg-green-300 my-2 px-3 py-1 text-center text-sm text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white"
-                                                    >
-                                                        申請
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    } */}
-
                 </div >
             </div >
         </div >
