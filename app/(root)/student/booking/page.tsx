@@ -276,191 +276,203 @@ const InterviewScheduler: React.FC = () => {
   //-------------------------------------------------------------------------
 
   return (
-    <div>
-      <div className="p-8 mx-auto bg-c-black_200 rounded-xl shadow-md flex flex-col space-y-3 justify-center">
+    <div className="flex flex-col justify-center items-center">
+      <div className="mt-4 w-full lg:w-4/5 bg-white rounded-md shadow-md">
+        {/* 詳細エリア */}
+        <h2 className="text-lg text-kd-a_100 font-bold p-4">予約内容</h2>
         <ReservationTags
           selectedTag={selectedTag}
           setSelectedTag={setSelectedTag}
         />
+        {/* 職員表示エリア */}
+        <h2 className="text-lg text-kd-a_100 font-bold p-4">先生一覧</h2>
         <StaffList
           staffData={staffData}
           staffError={staffError}
           onSelect={setSelectedStaffMember}
           selectedTeacherId={selectedStaffMember}
         />
-        <div className="grid grid-cols-3 px-4">
-          {/* 第一希望日時 */}
-          {/* 日付ピッカーコンポーネント */}
-          <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-            <h1 className="m-2">第一希望日を入力</h1>
-            <div>
-              <DatePicker
-                selected={firstPreferenceDate}
-                onChange={(date: Date | null) => {
-                  // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
-                  if (date) {
-                    setFirstPreferenceDate(date);
-                  }
-                }}
-                dateFormat="yyyy-MM-dd"
-                locale={ja}
-                minDate={new Date()}
-                excludeDates={excludeDates}
-                filterDate={isWeekday}
-                customInput={<CustomInput />} //デザインはここ
-              />
-            </div>
-            {/* 開始時間のためのセレクトコンポーネント */}
-            <div>
-              <Select
-                id="startselect1"
-                instanceId="startselect1"
-                options={startTimeOptions}
-                value={firstPreferenceStartTime}
-                onChange={handleFirstStartTimeChange}
-                placeholder="開始時間を選択..."
-                styles={customSelectStyles}
-              />
-            </div>
-            {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-            {firstEndTimeOptions.length > 0 ? (
-              <Select
-                id="endselect0"
-                instanceId="endselect0"
-                options={firstEndTimeOptions}
-                value={firstPreferenceEndTime}
-                onChange={(option) => setFirstPreferenceEndTime(option)}
-                placeholder="終了時間を選択..."
-                styles={customSelectStyles}
-              />
-            ) : (
-              <p className="text-red-500 text-xs p-0.5">
-                選択できる終了時間はありません。
-                <br />
-                開始時間を変更してください。
-              </p>
-            )}
-          </div>
 
-          {/* 第二希望日時 */}
-          {/* 日付ピッカーコンポーネント */}
-          <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-            <h1 className="m-2">第二希望日を入力</h1>
-            <div>
-              <DatePicker
-                selected={secondPreferenceDate}
-                onChange={(date: Date | null) => {
-                  // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
-                  if (date) {
-                    setSecondPreferenceDate(date);
-                  }
-                }}
-                dateFormat="yyyy-MM-dd"
-                locale={ja}
-                minDate={new Date()}
-                excludeDates={excludeDates}
-                filterDate={isWeekday}
-                customInput={<CustomInput />} //デザインはここ
-              />
+        {/* 各希望日時選択 エリア*/}
+        <div className="p-4 bg-gray-100 rounded-md shadow-inner">
+          <h3 className="text-lg text-kd-a_100 font-bold mb-4">
+            希望日時の選択
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* 第一希望日時 */}
+            {/* 日付ピッカーコンポーネント */}
+            <div className=" bg-white rounded p-2 shadow-lg border border-c-black_200">
+              <h1 className="m-2">第一希望日を入力</h1>
+              <div>
+                <DatePicker
+                  selected={firstPreferenceDate}
+                  onChange={(date: Date | null) => {
+                    // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
+                    if (date) {
+                      setFirstPreferenceDate(date);
+                    }
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  locale={ja}
+                  minDate={new Date()}
+                  excludeDates={excludeDates}
+                  filterDate={isWeekday}
+                  customInput={<CustomInput />} //デザインはここ
+                />
+              </div>
+              {/* 開始時間のためのセレクトコンポーネント */}
+              <div>
+                <Select
+                  id="startselect1"
+                  instanceId="startselect1"
+                  options={startTimeOptions}
+                  value={firstPreferenceStartTime}
+                  onChange={handleFirstStartTimeChange}
+                  placeholder="開始時間を選択..."
+                  styles={customSelectStyles}
+                />
+              </div>
+              {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+              {firstEndTimeOptions.length > 0 ? (
+                <Select
+                  id="endselect0"
+                  instanceId="endselect0"
+                  options={firstEndTimeOptions}
+                  value={firstPreferenceEndTime}
+                  onChange={(option) => setFirstPreferenceEndTime(option)}
+                  placeholder="終了時間を選択..."
+                  styles={customSelectStyles}
+                />
+              ) : (
+                <p className="text-red-500 text-xs p-0.5">
+                  選択できる終了時間はありません。
+                  <br />
+                  開始時間を変更してください。
+                </p>
+              )}
             </div>
-            {/* 開始時間のためのセレクトコンポーネント */}
-            <div>
-              <Select
-                id="startselect1"
-                instanceId="startselect1"
-                options={startTimeOptions}
-                value={secondPreferenceStartTime}
-                onChange={handleSecondStartTimeChange}
-                placeholder="開始時間を選択..."
-                styles={customSelectStyles}
-              />
+
+            {/* 第二希望日時 */}
+            {/* 日付ピッカーコンポーネント */}
+            <div className=" bg-white rounded p-2 shadow-lg border border-c-black_200">
+              <h1 className="m-2">第二希望日を入力</h1>
+              <div>
+                <DatePicker
+                  selected={secondPreferenceDate}
+                  onChange={(date: Date | null) => {
+                    // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
+                    if (date) {
+                      setSecondPreferenceDate(date);
+                    }
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  locale={ja}
+                  minDate={new Date()}
+                  excludeDates={excludeDates}
+                  filterDate={isWeekday}
+                  customInput={<CustomInput />} //デザインはここ
+                />
+              </div>
+              {/* 開始時間のためのセレクトコンポーネント */}
+              <div>
+                <Select
+                  id="startselect1"
+                  instanceId="startselect1"
+                  options={startTimeOptions}
+                  value={secondPreferenceStartTime}
+                  onChange={handleSecondStartTimeChange}
+                  placeholder="開始時間を選択..."
+                  styles={customSelectStyles}
+                />
+              </div>
+              {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+              {secondEndTimeOptions.length > 0 ? (
+                <Select
+                  id="endselect1"
+                  instanceId="endselect1"
+                  options={secondEndTimeOptions}
+                  value={secondPreferenceEndTime}
+                  onChange={(option) => setSecondPreferenceEndTime(option)}
+                  placeholder="終了時間を選択..."
+                  styles={customSelectStyles}
+                />
+              ) : (
+                <p className="text-red-500 text-xs p-0.5">
+                  選択できる終了時間はありません。
+                  <br />
+                  開始時間を変更してください。
+                </p>
+              )}
             </div>
-            {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-            {secondEndTimeOptions.length > 0 ? (
-              <Select
-                id="endselect1"
-                instanceId="endselect1"
-                options={secondEndTimeOptions}
-                value={secondPreferenceEndTime}
-                onChange={(option) => setSecondPreferenceEndTime(option)}
-                placeholder="終了時間を選択..."
-                styles={customSelectStyles}
-              />
-            ) : (
-              <p className="text-red-500 text-xs p-0.5">
-                選択できる終了時間はありません。
-                <br />
-                開始時間を変更してください。
-              </p>
-            )}
+            {/* 第三希望日時 */}
+            {/* 日付ピッカーコンポーネント */}
+            <div className=" bg-white rounded p-2 shadow-lg border border-c-black_200">
+              <h1 className="m-2">第三希望日を入力</h1>
+              <div>
+                <DatePicker
+                  selected={thirdPreferenceDate}
+                  onChange={(date: Date | null) => {
+                    // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
+                    if (date) {
+                      setThirdPreferenceDate(date);
+                    }
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  locale={ja}
+                  minDate={new Date()}
+                  excludeDates={excludeDates}
+                  filterDate={isWeekday}
+                  customInput={<CustomInput />} //デザインはここ
+                />
+              </div>
+              {/* 開始時間のためのセレクトコンポーネント */}
+              <div>
+                <Select
+                  id="startselect2"
+                  instanceId="startselect2"
+                  options={startTimeOptions}
+                  value={thirdPreferenceStartTime}
+                  onChange={handleThirdStartTimeChange}
+                  placeholder="開始時間を選択..."
+                  styles={customSelectStyles}
+                />
+              </div>
+              {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
+              {thirdEndTimeOptions.length > 0 ? (
+                <Select
+                  id="endselect2"
+                  instanceId="endselect2"
+                  options={thirdEndTimeOptions}
+                  value={thirdPreferenceEndTime}
+                  onChange={(option) => setThirdPreferenceEndTime(option)}
+                  placeholder="終了時間を選択..."
+                  styles={customSelectStyles}
+                />
+              ) : (
+                <p className="text-red-500 text-xs p-0.5">
+                  選択できる終了時間はありません。
+                  <br />
+                  開始時間を変更してください。
+                </p>
+              )}
+            </div>
           </div>
-          {/* 第三希望日時 */}
-          {/* 日付ピッカーコンポーネント */}
-          <div className="w-60 bg-white rounded p-2 shadow-lg border border-c-black_200">
-            <h1 className="m-2">第三希望日を入力</h1>
-            <div>
-              <DatePicker
-                selected={thirdPreferenceDate}
-                onChange={(date: Date | null) => {
-                  // onChange ハンドラーで選択された日付が null でない場合のみ状態を更新
-                  if (date) {
-                    setThirdPreferenceDate(date);
-                  }
-                }}
-                dateFormat="yyyy-MM-dd"
-                locale={ja}
-                minDate={new Date()}
-                excludeDates={excludeDates}
-                filterDate={isWeekday}
-                customInput={<CustomInput />} //デザインはここ
-              />
-            </div>
-            {/* 開始時間のためのセレクトコンポーネント */}
-            <div>
-              <Select
-                id="startselect2"
-                instanceId="startselect2"
-                options={startTimeOptions}
-                value={thirdPreferenceStartTime}
-                onChange={handleThirdStartTimeChange}
-                placeholder="開始時間を選択..."
-                styles={customSelectStyles}
-              />
-            </div>
-            {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
-            {thirdEndTimeOptions.length > 0 ? (
-              <Select
-                id="endselect2"
-                instanceId="endselect2"
-                options={thirdEndTimeOptions}
-                value={thirdPreferenceEndTime}
-                onChange={(option) => setThirdPreferenceEndTime(option)}
-                placeholder="終了時間を選択..."
-                styles={customSelectStyles}
-              />
-            ) : (
-              <p className="text-red-500 text-xs p-0.5">
-                選択できる終了時間はありません。
-                <br />
-                開始時間を変更してください。
-              </p>
-            )}
-          </div>
+          {/* 送信ボタン */}
+          <BookingPost
+            selectedStaffMember={selectedStaffMember}
+            selectedTag={selectedTag}
+            firstPreferenceDate={firstPreferenceDate}
+            firstPreferenceStartTime={firstPreferenceStartTime}
+            firstPreferenceEndTime={firstPreferenceEndTime}
+            secondPreferenceDate={secondPreferenceDate}
+            secondPreferenceStartTime={secondPreferenceStartTime}
+            secondPreferenceEndTime={secondPreferenceEndTime}
+            thirdPreferenceDate={thirdPreferenceDate}
+            thirdPreferenceStartTime={thirdPreferenceStartTime}
+            thirdPreferenceEndTime={thirdPreferenceEndTime}
+            resetAll={resetAll}
+          />
         </div>
-        <BookingPost
-          selectedStaffMember={selectedStaffMember}
-          selectedTag={selectedTag}
-          firstPreferenceDate={firstPreferenceDate}
-          firstPreferenceStartTime={firstPreferenceStartTime}
-          firstPreferenceEndTime={firstPreferenceEndTime}
-          secondPreferenceDate={secondPreferenceDate}
-          secondPreferenceStartTime={secondPreferenceStartTime}
-          secondPreferenceEndTime={secondPreferenceEndTime}
-          thirdPreferenceDate={thirdPreferenceDate}
-          thirdPreferenceStartTime={thirdPreferenceStartTime}
-          thirdPreferenceEndTime={thirdPreferenceEndTime}
-          resetAll={resetAll}
-        />
       </div>
     </div>
   );
