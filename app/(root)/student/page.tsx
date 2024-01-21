@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
-import StudentHomeSkeleton from "@/app/components/skeletonbody/StudentHome";
 
 interface Booking {
   id: string;
