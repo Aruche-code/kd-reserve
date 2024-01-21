@@ -30,18 +30,21 @@ const config: Config = {
         "kd-b": "#fefefe",
         "kd-m": "#f1f5f7",
         "kd-s": "#3a5f74",
-        "kd-a": "#38aac9",
+        "kd-a_100": "#38aac9",
+        "kd-a_200": "#4dB8e8",
       },
       //カスタムワイド
       width: {
         "46": "11.5rem",
       },
+      height: {
+        "kd-90-h": "98%",
+      },
       fontSize: {
         xxs: ".7rem",
       },
-
-      height: {
-        "kd-90-h": "98%",
+      spacing: {
+        "100px": "100px",
       },
     },
   },
