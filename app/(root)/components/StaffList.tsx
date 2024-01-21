@@ -11,16 +11,6 @@ import { Staff } from "@/app/components/types";
  */
 
 // スケルトンボディコンポーネント
-// const SkeletonBody = () => {
-//   return (
-//     <div className="animate-pulse m-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2">
-//       {Array.from({ length: 6 }).map((_, index) => (
-//         <div key={index} className="m-1 p-1 border rounded bg-gray-400"></div>
-//       ))}
-//     </div>
-//   );
-// };
-
 const SkeletonBody = () => {
   return (
     <div className="animate-pulse m-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2">
