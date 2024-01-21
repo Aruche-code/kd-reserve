@@ -9,10 +9,7 @@ export default function StudentLayout({
     <div className="flex flex-col h-screen">
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <div
-          className="flex flex-col flex-1 px-4 overflow-auto py-4 bg-kd-m"
-          // style={{ paddingLeft: "150px" }}
-        >
+        <div className="flex flex-col flex-1 px-4 overflow-auto py-4 bg-kd-m md:pl-100px lg:pl-100px">
           {children}
         </div>
       </div>
