@@ -28,7 +28,6 @@ const Home = () => {
     mutate,
   } = useSWR<HomeData>("/api/student", fetcher);
 
-  const [isLoading, setIsLoading] = useState(false);
   if (error) return <div>エラーが発生しました</div>;
   // if (!homeData) return setIsLoading(true);
 
