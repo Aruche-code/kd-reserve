@@ -24,17 +24,27 @@ const config: Config = {
         "c-black_700": "#4d4d4d",
         "c-black_800": "#333",
         "c-black_900": "#1a1a1a",
+        "n-gravemarker": "#b1c7d4",
+        "n-breakeingdown": "#6cb2d3",
+        "n-midnight": "#1d4b69",
+        "kd-b": "#fefefe",
+        "kd-m": "#f1f5f7",
+        "kd-s": "#3a5f74",
+        "kd-a_100": "#38aac9",
+        "kd-a_200": "#4dB8e8",
       },
       //カスタムワイド
       width: {
         "46": "11.5rem",
       },
+      height: {
+        "kd-90-h": "98%",
+      },
       fontSize: {
         xxs: ".7rem",
       },
-
-      height: {
-        "kd-90-h": "98%",
+      spacing: {
+        "100px": "100px",
       },
     },
   },

@@ -64,10 +64,10 @@ export const POST = async (req: Request, res: NextResponse) => {
       // データが存在しない場合の処理
       // Userコレクションに紐づけるために、予約確定画面を操作している職員のメールアドレスを取得
       // 本番用
-      // const email = getUserMail()
+      const email = await getUserMail();
 
       // テスト用 予約確定画面を操作している職員のメールアドレスを取得
-      const email = "yama@master.mail.com";
+      // const email = "yama@master.mail.com";
 
       // 予約情報に保存するための生徒の名前を取得する
       const studentData: any = await prisma.user.findUnique({

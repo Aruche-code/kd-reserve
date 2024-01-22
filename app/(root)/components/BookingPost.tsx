@@ -128,13 +128,20 @@ const BookingPost: React.FC<BookingPostProps> = ({
       <button
         onClick={handleWaitingSubmit}
         disabled={isLoading}
-        className={`max-w-xs px-6 py-2 rounded text-white font-bold transition duration-300 ease-in-out transform ${
+        className={`px-4 py-1.5 text-sm text-white rounded transition duration-300 ease-in-out transform ${
           isLoading
             ? "bg-gray-400 cursor-not-allowed"
-            : "bg-kd-button-cl hover:bg-blue-500 hover:scale-110"
-        }max-w-xs`}
+            : "bg-kd-a_100 hover:bg-blue-400 hover:scale-105"
+        }`}
+        style={{ minWidth: "100px" }} // 最小幅を設定
       >
-        {isLoading ? "送信中..." : "送信"}
+        <div
+          className="flex justify-center items-center"
+          style={{ minWidth: "80px" }}
+        >
+          {/* テキストの幅を固定 */}
+          {isLoading ? "送信中..." : "送信"}
+        </div>
       </button>
 
       {/* <p>{message}</p> メッセージの表示 */}
