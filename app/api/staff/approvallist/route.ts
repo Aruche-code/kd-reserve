@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-
+import getUserId from "@/app/actions/getUserId";
 import getUserMail from "@/app/actions/getUserMail";
 
 // DB接続関数
@@ -115,14 +115,8 @@ export const GET = async (req: Request, res: NextResponse) => {
 
 
     // 操作している職員のidを取得
-    const usermail = await getUserMail();
-    const staff : any = await prisma.user.findUnique({
-        where: { email: usermail },
-        select: {
-            id: true,                   // 職員のid
-        },
-    });
-    const staffId: any = staff.id
+    const userMail = await getUserMail();
+    const staffId = await getUserId(userMail);
 
     // 操作している職員が指定されている承認待ちリストの取得
     const waitingList = await prisma.waitingList.findMany({
