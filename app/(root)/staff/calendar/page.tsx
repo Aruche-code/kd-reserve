@@ -49,15 +49,6 @@ const Home = () => {
         setDate(new Date(date.getFullYear(), date.getMonth() + 1));
     };
 
-    //選ばれている日
-    const [selectedDay, setselectedDay] = useState<string>("1");
-    const getDay = () => {
-        return selectedDay.slice(-2);
-    }
-
-
-
-
     //---------------------------------------------------------------------------------------------//
     //データの管理(GET,POST)------------------------------------------------------------------------//
 
@@ -193,6 +184,13 @@ const Home = () => {
     
     
 
+
+
+    //選ばれている日
+    const [selectedDay, setselectedDay] = useState<string>("1");
+    const getDay = () => {
+        return selectedDay.slice(-2);
+    }
 
     
     // バックグラウンドカラーを切り替える関数

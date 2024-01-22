@@ -169,7 +169,7 @@ const Approval = () => {
     const addBooking = async(studentId:string, ymd:string, firsttime:string, endtime:string, detail:string) => {
         var time = [firsttime + "-" + endtime];
         const body = {
-            studentId: studentId,
+            studentUserId: studentId,
             ymd: ymd, 
             time: time,
             details: detail,
