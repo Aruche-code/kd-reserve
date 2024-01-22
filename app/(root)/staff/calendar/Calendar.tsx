@@ -18,7 +18,6 @@ export default function Calendar({
 const year = date.getFullYear();
 const month = date.getMonth();
 const lastday = new Date(year, month)
-// console.log(lastday);
 
 const dayArray = daysInMonth();
 
