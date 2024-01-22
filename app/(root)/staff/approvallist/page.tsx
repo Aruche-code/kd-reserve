@@ -25,6 +25,7 @@ interface WaitingList {
     thirdStartTime: string;
     thirdYmd: string;
     studentName: string,
+    studentUserId: string
 }
 interface User {
     id: string;
@@ -88,106 +89,6 @@ const Approval = () => {
     //     console.log(timeRanges);
     // }, [timeRanges]);
 
-    //指名ありテストユーザー
-    const testUsers = [
-        {
-        id: '601b92ee95861639c3e2c44b', 
-        kana: 'コウベタロウ',
-        name: '神戸太郎',
-        details: "ES相談",
-        day1: '2023/12/3',
-        firsttime1: '10:00',
-        endtime1: '12:00',
-        day2: '2023/12/4',
-        firsttime2: '10:00',
-        endtime2: '12:00',  
-        day3: '2023/12/5',
-        firsttime3: '10:00',
-        endtime3: '13:00'
-        },
-    
-        {
-        id: '601b95a595861639c3e2c44c',
-        kana: 'コウベジロウ', 
-        name: '神戸次郎',
-        details: "面接練習",
-        day1: '2023/12/5', 
-        firsttime1: '10:00',
-        endtime1: '12:00',
-        day2: '2023/12/6',
-        firsttime2: '10:00',
-        endtime2: '12:00',
-        day3: '2023/12/7',
-        firsttime3: '10:00',
-        endtime3: '13:00'
-        },
-    
-        {
-        id: '601b95a595861639c3e2c44c',
-        kana: 'コウベサブロウ',
-        name: '神戸三郎',
-        details: "ES相談",
-        day1: '2023/12/8',
-        firsttime1: '10:00', 
-        endtime1: '12:00',
-        day2: '2023/12/9',
-        firsttime2: '10:00',
-        endtime2: '12:00',
-        day3: '2023/12/10',
-        firsttime3: '10:00',
-        endtime3: '13:00'
-        },
-    
-        {
-        id: '601b95a595861639c3e2c44c',
-        kana: 'コウベシロウ',
-        name: '神戸四郎',
-        details: "ES相談",
-        day1: '2023/12/11',
-        firsttime1: '10:00',
-        endtime1: '12:00',
-        day2: '2023/12/12', 
-        firsttime2: '10:00',
-        endtime2: '12:00',
-        day3: '2023/12/13',
-        firsttime3: '10:00', 
-        endtime3: '13:00'
-        }
-    ];
-    //指名なしテストユーザー
-    const testUsers2 = [
-        {
-        id: '601b92ee95861639c3e2c44b',
-        kana: 'コウベゴロウ',
-        name: '神戸五郎',
-        details: "ES相談",
-        day1: '2023/12/14',
-        firsttime1: '10:00',
-        endtime1: '12:00',
-        day2: '2023/12/15',
-        firsttime2: '10:00',
-        endtime2: '12:00',
-        day3: '2023/12/16',
-        firsttime3: '10:00',
-        endtime3: '13:00'
-        },
-    
-        {
-        id: '601b92ee95861639c3e2c44b',
-        kana: 'コウベロクロウ',
-        name: '神戸六郎', 
-        details: "ES相談",
-        day1: '2023/12/17',
-        firsttime1: '10:00',
-        endtime1: '12:00',
-        day2: '2023/12/18',
-        firsttime2: '10:00',
-        endtime2: '12:00',
-        day3: '2023/12/19',
-        firsttime3: '10:00',
-        endtime3: '13:00'
-        }
-    ];
 
     const [isNominationSelected, setIsNominationSelected] = useState(true);
 
@@ -254,11 +155,7 @@ const Approval = () => {
 
         //waitinglistの取得
         const waitinglist: WaitingList[] = staffDat?.wait.waitingList || [];
-        const waitingnull: WaitingList[] = waitinglist.filter(user => user.staffName === "指名なし");
-
-        // staffName が "指名なし" ではない場合の処理を記述する
-        const waitingnomi: WaitingList[] = waitinglist.filter(user => user.staffName !== "指名なし");
-        console.log(waitinglist)
+        const noNominationList: WaitingList[] = staffDat?.wait.noNominationList || [];
 
         useEffect(() => {
             setNowUser(waitinglist); 
@@ -269,14 +166,18 @@ const Approval = () => {
     
 
     //bookingに追加
-    const addBooking = async(data:string, time1:string, time2:string) => {
+    const addBooking = async(studentId:string, ymd:string, firsttime:string, endtime:string, detail:string) => {
+        var time = [firsttime + "-" + endtime];
         const body = {
-            ymd: data,
-            starttime: time1, 
-            endtime: time2
+            studentId: studentId,
+            ymd: ymd, 
+            time: time,
+            details: detail,
         }
+        console.log(body)
 
-        const response = await axios.post("/api/staff/calendar",body)
+        const response = await axios.post("/api/staff/approvallist",body)
+        console.log(response)
 
         if (response.status === 201) {
             toast.success("保存できました");
@@ -296,13 +197,13 @@ const Approval = () => {
                 <div className="flex flex-row justify-center fixed w-9/12 z-20 rounded-r-lg">
                     <button
                         className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
-                        onClick={() => (setUser(waitingnomi),clearTimeRanges())}
+                        onClick={() => (setUser(waitinglist),clearTimeRanges())}
                     >
                         指名あり
                     </button>
                     <button
                         className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected ? 'border-kd-sub2-cl bg-kd-sub2-cl text-white' : 'border-gray-200 bg-gray-50'}`}
-                        onClick={() => (setUser2(waitingnull), clearTimeRanges())}
+                        onClick={() => (setUser2(noNominationList), clearTimeRanges())}
                     >
                         指名なし
                     </button>
@@ -324,15 +225,37 @@ const Approval = () => {
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
                                                 <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.firstYmd, user.firstStartTime, user.firstEndTime)}>
-                                                    1. {user.firstYmd} {user.firstStartTime}~{user.firstEndTime}
+                                                    1.{" "}{user.firstYmd}{"　"}{user.firstStartTime}{" "}~{" "}{user.firstEndTime}
                                                 </div>
-                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.secondYmd, user.secondStartTime, user.secondEndTime)}>
-                                                    2. {user.secondYmd} {user.secondStartTime}~{user.secondEndTime}
-                                                </div>
-                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.thirdYmd, user.thirdStartTime, user.thirdEndTime)}>
-                                                    3. {user.thirdYmd} {user.thirdStartTime}~{user.thirdEndTime}
+                                                {/* 2. */}
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => {
+                                                    if (user.secondYmd) {
+                                                        handleSelect(index, user.secondYmd, user.secondStartTime, user.secondEndTime);
+                                                    } else {
+                                                    }
+                                                }}>
+                                                    2.{" "}
+                                                    {user.secondYmd ? 
+                                                        `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                                                        :
+                                                        "希望日がありません"
+                                                    }
                                                 </div>
 
+                                                {/* 3. */}
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => {
+                                                    if (user.thirdYmd) {
+                                                        handleSelect(index, user.thirdYmd, user.thirdStartTime, user.thirdEndTime);
+                                                    } else {
+                                                    }
+                                                }}>
+                                                    3.{" "}
+                                                    {user.thirdYmd ? 
+                                                        `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                                                        :
+                                                        "希望日がありません"
+                                                    }
+                                                </div>
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 border-l-2">
                                                 <div className="flex flex-row">
@@ -360,7 +283,7 @@ const Approval = () => {
                                                 </div>
                                                 {/* endtimeselect */}
                                                 <div className="flex justify-end">
-                                                    <button className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs">
+                                                    <button className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs" onClick={() =>{addBooking(user.studentUserId, getIndex(index), getFirstTime(index), getEndTime(index), user.details)}}>
                                                         承認
                                                     </button>
                                                 </div>
@@ -384,16 +307,38 @@ const Approval = () => {
                                                 {user.studentName}<br />
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                                            <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.firstYmd, user.firstStartTime, user.firstEndTime)}>
-                                                . {user.firstYmd} {user.firstStartTime}{" "}~{" "}{user.firstEndTime}
-                                            </div>
-                                            <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.secondYmd, user.secondStartTime, user.secondEndTime)}>
-                                                2. {user.secondYmd} {user.secondStartTime}~{user.secondEndTime}
-                                            </div>
-                                            <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.thirdYmd, user.thirdStartTime, user.thirdEndTime)}>
-                                                3. {user.thirdYmd} {user.thirdStartTime}~{user.thirdEndTime}
-                                            </div>
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => handleSelect(index, user.firstYmd, user.firstStartTime, user.firstEndTime)}>
+                                                    1.{" "}{user.firstYmd}{"　"}{user.firstStartTime}{" "}~{" "}{user.firstEndTime}
+                                                </div>
+                                                {/* 2. */}
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => {
+                                                    if (user.secondYmd) {
+                                                        handleSelect(index, user.secondYmd, user.secondStartTime, user.secondEndTime);
+                                                    } else {
+                                                    }
+                                                }}>
+                                                    2.{" "}
+                                                    {user.secondYmd ? 
+                                                        `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                                                        :
+                                                        "希望日がありません"
+                                                    }
+                                                </div>
 
+                                                {/* 3. */}
+                                                <div className="border-b-2 cursor-pointer border-gray-200" onClick={() => {
+                                                    if (user.thirdYmd) {
+                                                        handleSelect(index, user.thirdYmd, user.thirdStartTime, user.thirdEndTime);
+                                                    } else {
+                                                    }
+                                                }}>
+                                                    3.{" "}
+                                                    {user.thirdYmd ? 
+                                                        `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                                                        :
+                                                        "希望日がありません"
+                                                    }
+                                                </div>
                                             </div>
                                             <div className="p-3 px-5 mx-2 my-2 border-l-2">
                                                 <div className="flex flex-row">
