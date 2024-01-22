@@ -70,7 +70,7 @@ const Home = () => {
     }, [bookings]); 
     const fetcher = (url: string) => axios.get(url).then((res) => res.data);
     const { data: response, error } = useSWR('/api/staff/calendar', fetcher);
-    //console.log(response)
+    console.log(response)
     //データを取得する(GET)
     const getdata = () => { 
         if(!response.responseData) {
