@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface User {
   id: number | string;
@@ -55,31 +56,16 @@ const Students = () => {
         </div>
         <div className="mt-3 p-3">
           <div className="relative flex justify-end">
-            <div className="relative w-20px">
-              <div className="relative flex justify-end">
+            <div className="flex justify-center w-full px-4">
+              <div className="relative w-full max-w-sm">
+                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
-                  className="w-full rounded-full hover:shadow-lg focus:shadow-lg focus:outline-0 p-2 px-10 border pl-18 mr-6 ml-6"
+                  className="pl-10 pr-3 py-2 border rounded-full w-full hover:shadow-lg focus:shadow-lg focus:outline-0"
                   type="text"
                   placeholder="検索"
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
-              </div>
-              <div className="absolute left-10 top-3 text-gray-400">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  ></path>
-                </svg>
               </div>
             </div>
           </div>
