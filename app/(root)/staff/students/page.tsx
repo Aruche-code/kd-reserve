@@ -2,6 +2,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 interface User {
   id: number | string;
@@ -15,9 +16,11 @@ const Students = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   // console.log(user);
+
   useEffect(() => {
     // 学生一覧を取得するAPIのエンドポイント
-    const apiEndpoint = '/api/koma/StudentsListGet';
+    // const apiEndpoint = '/api/koma/StudentsListGet';
+    const apiEndpoint = '/api/staff/students';
 
     // APIから学生一覧を取得
     const fetchStudents = async () => {
@@ -41,6 +44,8 @@ const Students = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, user]);
 
+
+  // 検索欄の入力値が変更された時に画面に更新結果を反映するコンポーネント
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -76,14 +81,17 @@ const Students = () => {
 
         <div className="m-5 flex flex-wrap justify-center items-center">
           {filteredUsers.map((user) => (
+          // <Link key={user.id} href={`../staff/record/${user.id}`}>
+          <Link key={user.id} href={`../staff/record/`}>
             <button
-              key={user.id}
+              // key={user.id}
               className={'my-2 mx-5 min-w-[24ch] px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl overflow-hidden'}
               title={user.name}
             >
               {user.name.length > 8 ? user.name.slice(0, 8) + '...' : user.name}<br />
               学籍番号：{user.studentIdNumber}
             </button>
+          </Link>
           ))}
         </div>
       </div>
