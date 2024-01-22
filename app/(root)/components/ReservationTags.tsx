@@ -27,15 +27,14 @@ const ReservationTags: React.FC<ReservationTagsProps> = ({
   setSelectedTag,
 }) => {
   return (
-    <div className="flex flex-wrap">
-      <h1 className="w-full">予約内容</h1>
+    <div className="m-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-2">
       {tags.map((tag) => (
         <div
           key={tag}
-          className={`m-1 p-2 border rounded cursor-pointer ${
+          onClick={() => setSelectedTag(tag)}
+          className={`m-1 p-1 border rounded cursor-pointer shadow hover:shadow-md transition-all text-center ${
             tag === selectedTag ? "bg-blue-200" : "bg-white"
           }`}
-          onClick={() => setSelectedTag(tag)}
         >
           {tag}
         </div>
