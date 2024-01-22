@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
+import getUserId from "@/app/actions/getUserId";
+import { User } from '../../../components/types';
 
 // DB接続関数
 export async function main() {
@@ -16,7 +18,7 @@ export const POST = async (req: Request, res: NextResponse) => {
   try {
     //const staffEmail = await getStaffUsers();    // 教員セッション情報を取得
     const email = await getUserMail(); // 変数emailにセッション情報から取得したemail情報を格納する
-    //const email = "yama@master.mail.com" // emailを格納
+
     await main();
     const { ymd, time } = await req.json();
 
@@ -56,7 +58,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     const staffData: any = await prisma.user.findUnique({
       where: { email: email },
       select: {
-        id: true, // 職員のIDを取得
+        id: true, // 職員のidを取得
       },
     });
 
@@ -106,7 +108,9 @@ export const GET = async (req: Request, res: NextResponse) => {
 export const PUT = async (req: Request, res: NextResponse) => {
 
   try {
-    const staffNgId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
+    const email = await getUserMail()  // 変数emailに操作している職員のメールアドレスを挿入
+    const staffNgId = await getUserId(email); // staffNgIdに職員のオブジェクトidを格納する
+
     await main();
     const { ymd, time } = await req.json();
 
