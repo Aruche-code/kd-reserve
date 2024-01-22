@@ -13,7 +13,6 @@ export async function main() {
 
 // NG日程の作成
 export const POST = async (req: Request, res: NextResponse) => {
-  console.log("create");
   try {
     //const staffEmail = await getStaffUsers();    // 教員セッション情報を取得
     const email = await getUserMail(); // 変数emailにセッション情報から取得したemail情報を格納する
@@ -49,7 +48,6 @@ export const POST = async (req: Request, res: NextResponse) => {
 
 // NG日程と予約確定日時の表示
 export const GET = async (req: Request, res: NextResponse) => {
-  console.log("GET");
 
   try {
     // const email = await getUsermail()  // 変数emailにセッション情報から取得したemail情報を格納する
@@ -99,7 +97,6 @@ export const GET = async (req: Request, res: NextResponse) => {
 
 // 指定したidのNG日程を編集
 export const PUT = async (req: Request, res: NextResponse) => {
-  console.log("PUT");
 
   try {
     const staffNgId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
@@ -128,7 +125,6 @@ export const PUT = async (req: Request, res: NextResponse) => {
 
 // 指定したidのNG日程を削除
 export const DELETE = async (req: Request, res: NextResponse) => {
-  console.log("DELETE");
 
   try {
     const staffNgId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
