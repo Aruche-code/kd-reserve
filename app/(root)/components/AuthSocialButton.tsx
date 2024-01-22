@@ -2,14 +2,14 @@ import { IconType } from "react-icons";
 
 // AuthSocialButtonコンポーネントのプロパティを定義します。
 interface AuthSocialButtonProps {
-  icon: IconType; // 'react-icons'からのIconTypeで、ボタンに使用されるアイコンを表します
-  onClick: () => void; // ボタンクリックイベントを処理するonClick関数
+  icon: IconType;
+  onClick: () => void;
 }
 
 // AuthSocialButton: ソーシャルメディアアイコンを持つ認証用ボタンのためのReact関数コンポーネント
 const AuthSocialButton: React.FC<AuthSocialButtonProps> = ({
-  icon: Icon, // iconプロパティを分解し、JSXで使用するためにIconと名前を変更します
-  onClick, // onClick関数を分解します
+  icon: Icon,
+  onClick,
 }) => {
   return (
     // 様々なスタイリングクラスを持つボタン要素
