@@ -1,6 +1,6 @@
 import prisma from "@/app/libs/prismadb";
 
-// 使い方 await connectDb;
+// 使い方 await connectDb();
 
 // DB接続関数
 const connectDb = async () => {
