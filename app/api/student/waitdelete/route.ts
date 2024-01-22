@@ -3,29 +3,28 @@ import prisma from "@/app/libs/prismadb";
 
 // DB接続関数
 export async function main() {
-    try {
-        await prisma.$connect();
-    } catch (err) {
-        return Error("DB接続に失敗しました");
-    }
+  try {
+    await prisma.$connect();
+  } catch (err) {
+    return Error("DB接続に失敗しました");
+  }
 }
 
 // DELETE
 // 指定された予定を削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
+  try {
+    const { scheduleId } = await req.json();
 
-    try {
-        const { scheduleId, } = await req.json();
+    await main();
+    await prisma.waitingList.delete({
+      where: { id: scheduleId },
+    });
 
-        await main();
-        const user = await prisma.waitingList.delete({
-            where: { id: scheduleId },
-        });
-
-        return NextResponse.json({ message: "Success", }, { status: 200 });
-    } catch (err) {
-        return NextResponse.json({ message: "Error", err }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
+    return NextResponse.json({ message: "Success" }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
 };
