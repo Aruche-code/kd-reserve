@@ -80,7 +80,6 @@ const Record = () => {
     }
 
     const handleChange = async (putrecordId: string, content: string, progress: string, ymd: string) => {
-        console.log(putrecordId, content, progress, ymd)
         try {
             const data = {
                 recordId: putrecordId,
@@ -105,7 +104,6 @@ const Record = () => {
                 toast.error("データの更新に失敗しました");
             }
         } catch (error) {
-            console.error('エラー:', error);
             toast.error("データの更新中にエラーが発生しました");
         }
     };
@@ -116,25 +114,15 @@ const Record = () => {
                 const response = await axios.get('/api/staff/record');
 
                 if (response.status === 200) {
-                    alert("データの取得に成功しました");
-
                     const users = response.data.responseData[0];
 
                     setUsers(users);
 
-                    console.log(response.data);
-                    console.log(response.data.responseData[0]);
-                    console.log(response.data.responseData[0].name);
-                    console.log(response.data.responseData[0].studentProfile);
-                    console.log(response.data.responseData[0].studentProfile.department);
-
-
                 } else {
-                    alert("データの取得に失敗しました");
+                    toast.error("データの取得に失敗しました");
                 }
             } catch (error) {
-                console.error('エラー:', error);
-                alert("データの取得中にエラーが発生しました");
+                toast.error("データの取得中にエラーが発生しました");
             }
         };
 
