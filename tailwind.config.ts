@@ -46,6 +46,10 @@ const config: Config = {
       spacing: {
         "100px": "100px",
       },
+      boxShadow: {
+        "custom-blue": "0 0 10px rgba(0, 0, 255, 0.2)",
+        "custom-green": "0 0 10px rgba(0, 255, 0, 0.2)",
+      },
     },
   },
   plugins: [

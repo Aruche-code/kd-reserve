@@ -76,165 +76,151 @@ function UserForm() {
     }
   };
 
-  // const handleDelete = async () => {
-  //   try {
-  //     await axios.delete("/api/student/profile");
-  //     toast.success("プロフィールを削除しました。");
-  //     mutate("/api/student/profile");
-  //   } catch (error) {
-  //     toast.error("削除できませんでした。");
-  //   }
-  // };
-
   if (error) return <div>データの取得に失敗しました。</div>;
-  if (!data)
-    return (
-      // <div>ローディング中...{/* ここにスケルトンボディを追加してほしい */}</div>
-      <div className="flex flex-col flex-1 p-1.5 items-center">
-        <div className="mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-1/2 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
-          <div className="animate-pulse bg-gray-300 h-10 p-3 px-6 w-full rounded-t-lg mb-2"></div>
-
-          <div className="animate-pulse w-3/4 sm:w-8/12 mx-auto">
-            {[
-              "名前",
-              "メールアドレス",
-              "電話番号",
-              "学科",
-              "学年",
-              "卒業予定年",
-              "希望勤務地",
-              "資格",
-            ].map((label, index) => (
-              <div className="flex items-center mt-3" key={index}>
-                <label className="text-gray-900 w-1/3 bg-gray-300 p-3 mt-1 mx-2"></label>
-                <div className="ms-2 bg-gray-300 w-2/3 p-3 mt-1 mx-1"></div>
-              </div>
-            ))}
-            <button
-              className="flex items-center px-20 py-2 text-center text-white bg-kd-button-cl rounded-xl mt-7 mb-7 mx-auto"
-              type="submit"
-              disabled
-            >
-              ローディング中...
-            </button>
-          </div>
-        </div>
-      </div>
-    );
 
   return (
-    <div className="flex flex-col flex-1 items-center">
-      <div className="mt-20 md:mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full lg:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
-        <div className="p-3 px-6 w-full rounded-t-lg bg-kd-sub2-cl text-white mb-2">
+    <div className="flex flex-col justify-center items-center">
+      <div className="mt-4 w-full lg:w-2/4 bg-white rounded-md shadow-md">
+        <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white text-center">
           ■ プロフィール
         </div>
 
-        <form onSubmit={handleSubmit} className="w-full mx-auto">
-          <div className="flex items-center mt-5 w-3/4 sm:w-8/12 py-1 mx-auto">
-            <label className="text-gray-900 w-1/3">名前</label> {userData?.name}
+        <div className="p-4 ml-7 mr-7 sm:ml-10 sm:mr-10 ">
+          <div className="profile-header mb-7 mt-1">
+            {userData ? (
+              <h2 className="text-center text-xl font-bold">
+                {userData?.name}
+              </h2>
+            ) : (
+              <h2 className="text-center text-xl font-bold h-6 mx-20 animate-pulse bg-gray-300 rounded-md"></h2>
+            )}
           </div>
-          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300"></div>
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 py-1 mx-auto">
-            <label className="text-gray-900 w-1/3">メールアドレス</label>{" "}
-            {userData?.email}
-          </div>
-          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300"></div>
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
-            <label className=" text-gray-900 w-1/3">電話番号</label>
-            <input
-              className={`p-1 border-1 rounded-lg w-2/3 px-4`}
-              type="text"
-              name="tel"
-              value={profileData.tel}
-              onChange={handleChange}
-            />
-          </div>
-          {/* 各フォームフィールド */}
-          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300"></div>
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
-            <label className="text-gray-900 w-1/3">学科</label>
-            <input
-              className="p-1 border-1 rounded-lg w-2/3 px-4"
-              type="text"
-              name="department"
-              value={profileData.department}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300"></div>
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
-            <label className=" text-gray-900 w-1/3">学年</label>
-            <select
-              className="p-1 border-1 rounded-lg w-1/3 md:w-1/4 px-4"
-              name="schoolYear"
-              value={profileData.schoolYear}
-              onChange={handleChange}
-            >
-              {schoolYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <label className="ms-2 text-gray-900">年</label>
-          </div>
-          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300"></div>
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
-            <label className=" text-gray-900 w-1/3">卒業予定</label>
-            <select
-              className="p-1 border-1 rounded-lg w-1/3 md:w-1/4 px-4"
-              name="graduationYear"
-              value={profileData.graduationYear}
-              onChange={handleChange}
-            >
-              {graduationYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <label className="ms-2 text-gray-900">年</label>
-          </div>
-          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300"></div>
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
-            <label className=" text-gray-900 w-1/3">希望勤務地</label>
-            <input
-              className="p-1 border-1 rounded-lg w-2/3 px-4"
-              type="text"
-              name="workLocation"
-              value={profileData.workLocation}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mt-2 mx-10 sm:mx-14 md:mx-20 flex-grow border-b border-gray-300"></div>
-          <div className="flex items-center mt-3 w-3/4 sm:w-8/12 mx-auto">
-            <label className=" text-gray-900 w-1/3">資格</label>
-            <textarea
-              className="p-1 border-1 rounded-lg w-2/3 px-4"
-              name="qualification"
-              value={profileData.qualification}
-              onChange={handleChange}
-              rows={2}
-              style={{ resize: "none" }}
-            />
-          </div>
-
-          <button
-            className="flex items-center px-20 py-2 text-center text-white bg-kd-button-cl rounded-xl hover:bg-blue-500 mt-5 mb-5 mx-auto"
-            type="submit"
+          <form
+            onSubmit={handleSubmit}
+            className="w-full mx-auto text-xs md:text-base"
           >
-            {isEditing ? "保存" : "新規作成"}
-          </button>
-          {/* {isEditing && (
-            <button
-              className="flex items-center px-20 py-2 text-center text-white bg-red-400 rounded-xl hover:bg-red-500 mb-7 mx-auto"
-              type="button"
-              onClick={handleDelete}
-            >
-              プロフィール情報を削除
-            </button>
-          )} */}
-        </form>
+            {/* メールアドレス */}
+            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+              <label className="text-gray-900 ">メールアドレス</label>
+
+              {userData ? (
+                <span className="col-span-2 sm:col-span-1">
+                  {userData?.email}
+                </span>
+              ) : (
+                <span className=" col-span-2 sm:col-span-1 h-4 animate-pulse bg-gray-300 rounded-md"></span>
+              )}
+            </div>
+
+            <div className="mt-2 mb-8 border-b border-gray-300"></div>
+
+            {/* 電話番号 */}
+            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+              <label className="text-gray-900">電話番号</label>
+              <span className="col-span-2 sm:col-span-1 ">
+                <input
+                  className="bg-slate-100 p-1 rounded-md text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  type="text"
+                  name="tel"
+                  value={profileData.tel}
+                  onChange={handleChange}
+                  placeholder="000-0000-0000"
+                />
+              </span>
+            </div>
+            {/* 学科 */}
+            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+              <label className="text-gray-900">学科</label>
+              <span className="col-span-2 sm:col-span-1 ">
+                <input
+                  className="bg-slate-100 p-1 rounded-md text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  type="text"
+                  name="department"
+                  value={profileData.department}
+                  onChange={handleChange}
+                  placeholder="ITスペシャリスト"
+                />
+              </span>
+            </div>
+            {/* 学年*/}
+            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+              <label className="text-gray-900">学年</label>
+              <span className="col-span-2 sm:col-span-1 ">
+                <select
+                  className="bg-slate-100 p-1 rounded-md text-sm focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  name="schoolYear"
+                  value={profileData.schoolYear}
+                  onChange={handleChange}
+                >
+                  {schoolYears.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+                <label className="ms-2 text-gray-900">年</label>
+              </span>
+            </div>
+            {/* 卒業予定 */}
+            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+              <label className="text-gray-900">卒業予定</label>
+              <span className="col-span-2 sm:col-span-1 ">
+                <select
+                  className="bg-slate-100 p-1 rounded-md text-sm focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  name="graduationYear"
+                  value={profileData.graduationYear}
+                  onChange={handleChange}
+                >
+                  {graduationYears.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+                <label className="ms-2 text-gray-900">年</label>
+              </span>
+            </div>
+            {/* 希望勤務地 */}
+            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+              <label className="text-gray-900">希望勤務地</label>
+              <span className="col-span-2 sm:col-span-1 ">
+                <input
+                  className="bg-slate-100 p-1 rounded-md text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  type="text"
+                  name="workLocation"
+                  value={profileData.workLocation}
+                  onChange={handleChange}
+                  placeholder="兵庫、大阪、"
+                />
+              </span>
+            </div>
+
+            {/* 資格 */}
+            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+              <label className="text-gray-900">資格</label>
+              <span className="col-span-3 sm:col-span-2">
+                <textarea
+                  className="bg-slate-100 p-1 rounded-md text-sm w-full focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  name="qualification"
+                  value={profileData.qualification}
+                  onChange={handleChange}
+                  rows={2}
+                  style={{ resize: "none" }}
+                />
+              </span>
+            </div>
+            {userData ? (
+              <button
+                className="flex items-center px-14 py-2 text-center text-white bg-kd-button-cl rounded-xl hover:bg-blue-500 mt-8 mx-auto"
+                type="submit"
+              >
+                {isEditing ? "保存" : "新規作成"}
+              </button>
+            ) : (
+              <div></div>
+            )}
+          </form>
+        </div>
       </div>
     </div>
   );
