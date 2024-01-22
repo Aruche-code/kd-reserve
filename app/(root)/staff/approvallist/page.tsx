@@ -144,23 +144,23 @@ const Approval = () => {
     };
 
     // データを取得(GET){
-        const { data: staffDat, error: staffEr } = useSWR(
+        const { data: staffData, error: staffEr } = useSWR(
             "/api/staff/approvallist",
             fetcher
         );
 
         //staffデータの取得
-        const staff: Staff[] = staffDat?.wait.staffList || [];
+        const staff: Staff[] = staffData?.wait.staffList || [];
         //console.log(staffDat)
 
         //waitinglistの取得
-        const waitinglist: WaitingList[] = staffDat?.wait.waitingList || [];
-        const noNominationList: WaitingList[] = staffDat?.wait.noNominationList || [];
+        const waitinglist: WaitingList[] = staffData?.wait.waitingList || [];
+        const noNominationList: WaitingList[] = staffData?.wait.noNominationList || [];
 
         useEffect(() => {
             setNowUser(waitinglist); 
             //console.log("変更しました")
-        }, [staffDat]);
+        }, [staffData]);
 
     //}
     
