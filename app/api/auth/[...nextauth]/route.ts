@@ -87,6 +87,11 @@ export const authOptions: AuthOptions = {
     }),
   ],
 
+  pages: {
+    signIn: "/",
+    error: "/",
+  },
+
   // session情報にrole属性を追加
   callbacks: {
     async jwt({ token, user, trigger, session }) {
