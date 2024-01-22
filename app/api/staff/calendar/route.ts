@@ -16,7 +16,6 @@ export async function main() {
 // NG日程の作成
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    //const staffEmail = await getStaffUsers();    // 教員セッション情報を取得
     const email = await getUserMail(); // 変数emailにセッション情報から取得したemail情報を格納する
 
     await main();
@@ -53,16 +52,8 @@ export const GET = async (req: Request, res: NextResponse) => {
 
   try {
     const email = await getUserMail()  // 変数emailにセッション情報から取得したemail情報を格納する
-
     // 職員のidを取得
-    const staffData: any = await prisma.user.findUnique({
-      where: { email: email },
-      select: {
-        id: true, // 職員のidを取得
-      },
-    });
-
-    const staffUserId: any = staffData.id;
+    const staffUserId = await getUserId(email);
 
     await main();
 
