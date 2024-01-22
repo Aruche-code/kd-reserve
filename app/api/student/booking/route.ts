@@ -51,15 +51,15 @@ export const POST = async (req: Request, res: NextResponse) => {
     const email = await getUserMail();
 
     // 予約情報に保存するための学生の名前とIDを取得する
-    const studentData : any = await prisma.user.findUnique({
+    const studentData: any = await prisma.user.findUnique({
       where: { email: email },
       select: {
-          id:   true,                   // 学生のID
-          name: true,                   // 学生の名前
+        id: true, // 学生のID
+        name: true, // 学生の名前
       },
     });
-  const studentUserId: string = studentData.id
-  const studentName: string = studentData.name
+    const studentUserId: string = studentData.id;
+    const studentName: string = studentData.name;
 
     const {
       staffUserId,
@@ -77,75 +77,74 @@ export const POST = async (req: Request, res: NextResponse) => {
     await main();
 
     if (staffUserId != null) {
-
       // 予約情報に保存するための職員の名前を取得する
-      const staffData : any = await prisma.user.findUnique({
-          where: { id: staffUserId },
-          select: {
-              name: true,                   // 職員の名前
-          },
+      const staffData: any = await prisma.user.findUnique({
+        where: { id: staffUserId },
+        select: {
+          name: true, // 職員の名前
+        },
       });
 
       // 職員が指名されている場合
-      const staffName: any = staffData.name
+      const staffName: any = staffData.name;
 
       // 予約情報をUserモデルの中の操作している学生のWaitingListに保存する
-      const WaitingListCreate = await prisma.waitingList.create({
-          data: {
-              studentUserId,
-              studentName,
-              staffUserId,
-              staffName,
-              details,
-              firstYmd,
-              firstStartTime,
-              firstEndTime,
-              secondYmd,
-              secondStartTime,
-              secondEndTime,
-              thirdYmd,
-              thirdStartTime,
-              thirdEndTime,
-              // 既存のUserとWaitingListとの関連付け
-              user: { connect: { email } },
-          },
-          include: {
-              user: true, // userテーブルも含めて取得
-          },
+      await prisma.waitingList.create({
+        data: {
+          studentUserId,
+          studentName,
+          staffUserId,
+          staffName,
+          details,
+          firstYmd,
+          firstStartTime,
+          firstEndTime,
+          secondYmd,
+          secondStartTime,
+          secondEndTime,
+          thirdYmd,
+          thirdStartTime,
+          thirdEndTime,
+          // 既存のUserとWaitingListとの関連付け
+          user: { connect: { email } },
+        },
+        include: {
+          user: true, // userテーブルも含めて取得
+        },
       });
 
       return NextResponse.json({ message: "Success" }, { status: 200 });
-  } else {
+    } else {
       // 職員が指名されていない場合
-      const staffName: any = "指名なし"
+      const staffName: any = "指名なし";
 
       // 予約情報をUserモデルの中の操作している学生のWaitingListに保存する
-      const WaitingListCreate = await prisma.waitingList.create({
-          data: {
-              studentUserId,
-              studentName,
-              staffUserId,
-              staffName,
-              details,
-              firstYmd,
-              firstStartTime,
-              firstEndTime,
-              secondYmd,
-              secondStartTime,
-              secondEndTime,
-              thirdYmd,
-              thirdStartTime,
-              thirdEndTime,
-              // 既存のUserとWaitingListとの関連付け
-              user: { connect: { email } },
-          },
-          include: {
-              user: true, // userテーブルも含めて取得
-          },
+      await prisma.waitingList.create({
+        data: {
+          studentUserId,
+          studentName,
+          staffUserId,
+          staffName,
+          details,
+          firstYmd,
+          firstStartTime,
+          firstEndTime,
+          secondYmd,
+          secondStartTime,
+          secondEndTime,
+          thirdYmd,
+          thirdStartTime,
+          thirdEndTime,
+          // 既存のUserとWaitingListとの関連付け
+          user: { connect: { email } },
+        },
+        include: {
+          user: true, // userテーブルも含めて取得
+        },
       });
 
       return NextResponse.json({ message: "Success" }, { status: 200 });
-  }
+    }
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   } finally {

@@ -51,38 +51,45 @@ export const GET = async (req: Request, res: NextResponse) => {
 
   try {
     const email = await getUserMail()  // 変数emailにセッション情報から取得したemail情報を格納する
-    //const email = "yama@master.mail.com"; // emailを格納
-    await main();
-    const getedStaffNgBooking = await prisma.user.findUnique({
-      // emailと一致するuserのid、名前、emailとstaffNgテーブル、bookingテーブルを表示
-      where: { email },
-      include: {
-        staffng: true,
-        booking: true,
+
+    // 職員のidを取得
+    const staffData: any = await prisma.user.findUnique({
+      where: { email: email },
+      select: {
+        id: true, // 職員のIDを取得
       },
     });
 
-    const responseData = getedStaffNgBooking // responseの編集
-      ? {
-          id: getedStaffNgBooking.id,
-          name: getedStaffNgBooking.name,
-          email: getedStaffNgBooking.email,
-          staffng: getedStaffNgBooking.staffng
-            ? getedStaffNgBooking.staffng.map((staffng) => ({
-                ymd: staffng?.ymd,
-                time: staffng?.time,
-              }))
-            : null,
-          booking: getedStaffNgBooking.booking
-            ? getedStaffNgBooking.booking.map((booking) => ({
-                ymd: booking?.ymd,
-                time: booking?.time,
-                details: booking?.details,
-                studentName: booking?.studentName,
-              }))
-            : null,
+    const staffUserId: any = staffData.id;
+
+    await main();
+
+    const getstaffng = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        staffng: {
+          select: {
+            ymd: true,
+            time: true,
+          }
         }
-      : null;
+      },
+    });
+
+    const getbooking = await prisma.booking.findMany({
+      where: { staffUserId: staffUserId },
+      select: {
+        studentName: true,
+        ymd: true,
+        time: true,
+        details: true,
+      }
+    })
+
+    const responseData = {
+        staffng: getstaffng?.staffng,
+        booking: getbooking,
+    };
 
     return NextResponse.json(
       { message: "Success", responseData },

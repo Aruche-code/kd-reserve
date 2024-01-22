@@ -17,7 +17,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     const { scheduleId } = await req.json();
 
     await main();
-    const user = await prisma.booking.delete({
+    await prisma.booking.delete({
       where: { id: scheduleId },
     });
 
