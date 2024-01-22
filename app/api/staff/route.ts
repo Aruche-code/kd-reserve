@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-import { time } from "console";
+import getUserId from "@/app/actions/getUserId";
 
 // DB接続関数
 export async function main() {
@@ -20,14 +20,7 @@ export const GET = async (req: Request, res: NextResponse) => {
 
     // 操作している職員のidを取得
     const userMail = await getUserMail();
-    const staff : any = await prisma.user.findUnique({
-      where: { email: userMail },
-      select: {
-          id: true,                   // 職員のid
-      },
-    });
-
-    const staffId: any = staff.id
+    const staffId = await getUserId(userMail);
 
     const getBookingList = await prisma.booking.findMany({
       where: { staffUserId: staffId },
