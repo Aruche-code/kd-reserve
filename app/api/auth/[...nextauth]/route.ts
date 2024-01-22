@@ -18,11 +18,6 @@ export const authOptions: AuthOptions = {
 
   // 認証プロバイダの設定
   providers: [
-    // GitHub OAuthプロバイダの設定
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string, // 環境変数からGitHubのクライアントIDを取得
-      clientSecret: process.env.GITHUB_SECRET as string, // 環境変数からGitHubのクライアントシークレットを取得
-    }),
     // Google OAuthプロバイダの設定
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string, // 環境変数からGoogleのクライアントIDを取得
