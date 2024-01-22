@@ -3,22 +3,14 @@ import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 import getUserId from "@/app/actions/getUserId";
 import { User } from '../../../components/types';
-
-// DB接続関数
-export async function main() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    return Error("DB接続に失敗しました");
-  }
-}
+import connectDb from "@/app/actions/connectDb";
 
 // NG日程の作成
 export const POST = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail(); // 変数emailにセッション情報から取得したemail情報を格納する
 
-    await main();
+    await connectDb();
     const { ymd, time } = await req.json();
 
     const user = await prisma.user.findUnique({
@@ -55,7 +47,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     // 職員のidを取得
     const staffUserId = await getUserId(email);
 
-    await main();
+    await connectDb();
 
     const getstaffng = await prisma.user.findUnique({
       where: { email },
@@ -102,7 +94,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
     const email = await getUserMail()  // 変数emailに操作している職員のメールアドレスを挿入
     const staffNgId = await getUserId(email); // staffNgIdに職員のオブジェクトidを格納する
 
-    await main();
+    await connectDb();
     const { ymd, time } = await req.json();
 
     const updatedStaffNg = await prisma.staffNg.update({
@@ -130,7 +122,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
 
   try {
     const staffNgId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
-    await main();
+    await connectDb();
     const deletedStaffNg = await prisma.staffNg.delete({
       // staffNgIdと一致するstaffNgテーブルを削除
       where: {
