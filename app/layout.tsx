@@ -3,6 +3,7 @@ import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import TosterContext from "./context/TosterContext";
 import AuthContext from "./context/AuthContext";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "KD Reserve App",
@@ -23,6 +24,7 @@ export default function RootLayout({
           <TosterContext />
           {children}
         </AuthContext>
+        <SpeedInsights />
       </body>
     </html>
   );
