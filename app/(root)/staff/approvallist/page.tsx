@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import axios from "axios";
@@ -144,31 +144,32 @@ const Approval = () => {
     };
 
     // データを取得(GET){
-        const { data: staffDat, error: staffEr } = useSWR(
+        const { data: staffData, error: staffEr } = useSWR(
             "/api/staff/approvallist",
             fetcher
         );
 
         //staffデータの取得
-        const staff: Staff[] = staffDat?.wait.staffList || [];
+        const staff: Staff[] = staffData?.wait.staffList || [];
         //console.log(staffDat)
 
         //waitinglistの取得
-        const waitinglist: WaitingList[] = staffDat?.wait.waitingList || [];
-        const noNominationList: WaitingList[] = staffDat?.wait.noNominationList || [];
+        const waitinglist: WaitingList[] = staffData?.wait.waitingList || [];
+        const noNominationList: WaitingList[] = staffData?.wait.noNominationList || [];
 
         useEffect(() => {
             setNowUser(waitinglist); 
             //console.log("変更しました")
-        }, [staffDat]);
+        }, [staffData]);
 
     //}
     
 
-    //bookingに追加
-    const addBooking = async(studentId:string, ymd:string, firsttime:string, endtime:string, detail:string) => {
+    //bookingに追加(指名あり)
+    const addBooking = async(id:string, studentId:string, ymd:string, firsttime:string, endtime:string, detail:string) => {
         var time = [firsttime + "-" + endtime];
         const body = {
+            id:id,
             studentUserId: studentId,
             ymd: ymd, 
             time: time,
@@ -184,11 +185,35 @@ const Approval = () => {
         } else {
             toast.error("保存できませんでした");
         }
+
+        setNowUser(waitinglist); 
     }
 
-    //waitinglistから削除
-    const deleteWaiting = () => {
+    //staffの選択状況
+    const [selectValue, setSelectValue] = useState("佐藤夏美");
+    //bookingに追加(指名なし)
+    const addNominationBooking = async(id:string, staffName:string, studentId:string, ymd:string, firsttime:string, endtime:string, detail:string) => {
+        var time = [firsttime + "-" + endtime];
+        const body = {
+            id:id,
+            staffName: staffName,
+            studentUserId: studentId,
+            ymd: ymd, 
+            time: time,
+            details: detail,
+        }
+        console.log(body)
 
+        const response = await axios.post("/api/staff/approvallist",body)
+        console.log(response)
+
+        if (response.status === 201) {
+            toast.success("保存できました");
+        } else {
+            toast.error("保存できませんでした");
+        }
+
+        setNowUser(noNominationList);
     }
 
     return (
@@ -283,7 +308,7 @@ const Approval = () => {
                                                 </div>
                                                 {/* endtimeselect */}
                                                 <div className="flex justify-end">
-                                                    <button className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs" onClick={() =>{addBooking(user.studentUserId, getIndex(index), getFirstTime(index), getEndTime(index), user.details)}}>
+                                                    <button className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs" onClick={() =>{addBooking(user.id, user.studentUserId, getIndex(index), getFirstTime(index), getEndTime(index), user.details)}}>
                                                         承認
                                                     </button>
                                                 </div>
@@ -366,14 +391,17 @@ const Approval = () => {
                                                 </div>
                                                 {/* endtimeselect */}
                                                 <div className="flex justify-end">
-                                                    <select className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md">
+                                                    <select onChange={(e) => setSelectValue(e.target.value)} className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md">
                                                         {staff.map(staff => (
                                                             <option className="text-sm" key={staff.name} value={staff.name}>
                                                             {staff.name}
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <button className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs">
+                                                    <button className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs" onClick={() => {
+                                                            const selectedStaffName = selectValue;
+                                                            addNominationBooking(user.id, selectedStaffName, user.studentUserId, getIndex(index), getFirstTime(index), getEndTime(index), user.details);
+                                                        }}>
                                                         承認
                                                     </button>
                                                 </div>

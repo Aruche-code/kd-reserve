@@ -19,13 +19,12 @@ export async function POST(request: Request) {
         email,
         name,
         hashedPassword,
-        role: "staff", //職員初期登録用default値
+        role: "student", //初期登録用default値
       },
     });
 
     return NextResponse.json(user);
   } catch (error: any) {
-    console.log(error, "REGISTRATTON_ERROR");
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
