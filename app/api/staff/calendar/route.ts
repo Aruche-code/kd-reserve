@@ -50,8 +50,8 @@ export const POST = async (req: Request, res: NextResponse) => {
 export const GET = async (req: Request, res: NextResponse) => {
 
   try {
-    // const email = await getUsermail()  // 変数emailにセッション情報から取得したemail情報を格納する
-    const email = "yama@master.mail.com"; // emailを格納
+    const email = await getUserMail()  // 変数emailにセッション情報から取得したemail情報を格納する
+    //const email = "yama@master.mail.com"; // emailを格納
     await main();
     const getedStaffNgBooking = await prisma.user.findUnique({
       // emailと一致するuserのid、名前、emailとstaffNgテーブル、bookingテーブルを表示
