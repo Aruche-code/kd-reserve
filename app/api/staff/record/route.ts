@@ -14,7 +14,6 @@ export async function main() {
 
 // 指定したemailをもつUserのRecordを表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-    console.log("GET");
 
     try {
         // const email = await getUsermail() 本番
@@ -64,7 +63,6 @@ export const GET = async (req: Request, res: NextResponse) => {
 
 // 指定したemailのUserにRecordを作成するAPI
 export const POST = async (req: Request, res: NextResponse) => {
-    console.log("POST");
 
     try {
         const email = "sample3@gmail.com"; // テスト
@@ -93,7 +91,6 @@ export const POST = async (req: Request, res: NextResponse) => {
 
 // 指定したemailのStudentprofileを編集するAPI
 export const PUT = async (req: Request, res: NextResponse) => {
-    console.log("PUT");
 
     try {
         const { recordId, content, progress, ymd } = await req.json();
@@ -118,7 +115,6 @@ export const PUT = async (req: Request, res: NextResponse) => {
 
 // 指定したrecordを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
-    console.log("DELETE");
 
     try {
         const recordId = "658eedaad7973a3b99ca5db0" // staffNgIdに職員のオブジェクトidを格納する
