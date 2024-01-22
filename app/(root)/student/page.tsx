@@ -29,7 +29,6 @@ const Home = () => {
   } = useSWR<HomeData>("/api/student", fetcher);
 
   if (error) return <div>エラーが発生しました</div>;
-  // if (!homeData) return setIsLoading(true);
 
   const handleCancelBooking = async (id: string) => {
     try {
