@@ -148,6 +148,7 @@ export const GET = async (req: Request, res: NextResponse) => {
       select: {
         id: true,
         studentName: true,
+        studentUserId: true,
         details: true,
         firstYmd: true,
         firstStartTime: true,
@@ -167,6 +168,7 @@ export const GET = async (req: Request, res: NextResponse) => {
       select: {
         id: true,
         studentName: true,
+        studentUserId: true,
         details: true,
         firstYmd: true,
         firstStartTime: true,
