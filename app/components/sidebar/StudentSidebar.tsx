@@ -40,7 +40,7 @@ const Sidebar = () => {
   const renderMobileNav = () => (
     <>
       <div className="fixed inset-x-0 top-0 z-30 bg-kd-sub2-cl text-white">
-        <div className="flex justify-between items-center p-5">
+        <div className="flex justify-between items-center p-2">
           <div className="p-2 cursor-pointer" onClick={() => setOpen(!open)}>
             {/* ハンバーガーメニューアイコン */}
             <svg
@@ -55,7 +55,7 @@ const Sidebar = () => {
               <path d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>
           </div>
-          <span className="flex-grow text-center text-xl">Apptitle</span>
+          <span className="flex-grow text-center text-xl">KD-Reserve</span>
           <div className="p-2" onClick={() => signOut()}>
             {/* ログアウトアイコン */}
             <LogoutIcon />

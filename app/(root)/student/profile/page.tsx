@@ -92,7 +92,7 @@ function UserForm() {
       // <div>ローディング中...{/* ここにスケルトンボディを追加してほしい */}</div>
       <div className="flex flex-col flex-1 p-1.5 items-center">
         <div className="mt-4 bg-gray-100 shadow-lg flex flex-col items-center w-full md:w-4/5 lg:w-1/2 xl:w-1/2 text-xs md:text-sm lg:text-sm rounded-lg">
-          <div className="animate-pulse bg-gray-300 h-6 p-4 w-1/3 mt-8 mb-3"></div>
+          <div className="animate-pulse bg-gray-300 h-10 p-3 px-6 w-full rounded-t-lg mb-2"></div>
 
           <div className="animate-pulse w-3/4 sm:w-8/12 mx-auto">
             {[
@@ -111,7 +111,7 @@ function UserForm() {
               </div>
             ))}
             <button
-              className="flex items-center px-20 py-2 text-center text-white bg-blue-500 rounded-xl mt-7 mb-7 mx-auto"
+              className="flex items-center px-20 py-2 text-center text-white bg-kd-button-cl rounded-xl mt-7 mb-7 mx-auto"
               type="submit"
               disabled
             >
