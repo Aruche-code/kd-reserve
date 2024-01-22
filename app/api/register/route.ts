@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         email,
         name,
         hashedPassword,
-        role: "staff", //職員初期登録用default値
+        role: "student", //初期登録用default値
       },
     });
 
