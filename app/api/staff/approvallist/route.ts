@@ -15,7 +15,7 @@ export async function main() {
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    const { studentUserId, ymd, time, details } = await req.json();
+    const { id, studentUserId, ymd, time, details } = await req.json();
     await main();
 
     // 職員のユーザーIDを取得する
@@ -84,6 +84,11 @@ export const POST = async (req: Request, res: NextResponse) => {
           // 既存のUserとrecordの関連付け
           user: { connect: { id: studentUserId } },
         },
+      });
+
+      // bookingに予定を追加したとき、waitingListの予定を削除
+      const waitingDelete = await prisma.waitingList.delete({
+            where: { id: id },
       });
 
       return NextResponse.json({ message: "Success" }, { status: 201 });
