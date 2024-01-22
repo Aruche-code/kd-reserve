@@ -213,10 +213,8 @@ const Approval = () => {
       time: time,
       details: detail,
     };
-    console.log(body);
 
     const response = await axios.post("/api/staff/approvallist", body);
-    console.log(response);
 
     if (response.status === 201) {
       toast.success("保存できました");

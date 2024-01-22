@@ -55,13 +55,8 @@ const Home = () => {
     //GET処理----------------------------------------------------------------//
     const [selectedTimes, setSelectedTimes] = useState<{ [key: string]: string[] }>({}); //GETで取得したものを管理する
     const [bookings, setBookings] = useState<{ detail: string; name: string; time: string[]; ymd: string }[]>([]);
-    useEffect(() => {
-        //console.log(bookings);
-        // bookings が更新された後に行いたい処理をここに書く
-    }, [bookings]); 
     const fetcher = (url: string) => axios.get(url).then((res) => res.data);
     const { data: response, error } = useSWR('/api/staff/calendar', fetcher);
-    console.log(response)
     //データを取得する(GET)
     const getdata = () => { 
         if(!response.responseData) {
@@ -69,7 +64,6 @@ const Home = () => {
         } else {
             const {staffng} = response.responseData;
             const {booking} = response.responseData;
-            //console.log(booking)
 
             const ngDays: {[key: string]: string[]} = {};
             const books: { detail: string; name: string; time: string[]; ymd: string }[] = [];
@@ -88,8 +82,6 @@ const Home = () => {
 
                 books.push(book);
             });
-
-            //console.log(books)
 
             const newArray = Object.entries(ngDays).map(([date, times]) => ({
                 date,
@@ -111,12 +103,9 @@ const Home = () => {
                 }
             });
 
-            //console.log(mappedTimes);
-
             
             setSelectedTimes(mappedTimes);
             setBookings(books);
-            //console.log(bookings)
             setIsLoading(false);
         }
     }
@@ -230,16 +219,6 @@ const Home = () => {
             }
         });
         const jsonSelectedTimes = JSON.stringify(selectedTimes);
-        //console.log(jsonSelectedTimes);
-        // if (prev.includes(time)) {
-        //     // 時間がすでに選択されている場合は削除
-        //     return prev.filter((selectedTime) => selectedTime !== time);
-        // } else {
-        //     // 時間が選択されていない場合は追加
-        //     return [...prev, time];
-        // }
-        // });
-        // console.log(selectedTimes);
     };
 
     //時間の範囲指定
@@ -327,14 +306,12 @@ const Home = () => {
     const bookingreload =  () => {
         // matchingUsersを更新
         const updatedMatchingUsers = bookings.filter((booking: BookingUser) => booking.ymd === selectedDay);
-        //console.log(updatedMatchingUsers)
         setMatchingUsers(updatedMatchingUsers);
     }
 
     const handleTabClick = (tab: any) => {
         setSelectedTab(tab);
         const updatedMatchingUsers = bookings.filter((booking: BookingUser) => booking.ymd === selectedDay);
-        //console.log(updatedMatchingUsers)
         setMatchingUsers(updatedMatchingUsers);
     };
 
