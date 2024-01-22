@@ -2,24 +2,15 @@ import { NextResponse } from "next/server";               // APIミドルウェ�
 import { PrismaClient } from "@prisma/client";            // データベース接続とクエリのためのメインオブジェクト
 // import getStaffUsers from "@/app/actions/getStaffUsers";  //教員のセッション情報認証ロジックをインポート
 // import getUserMail from "@/app/actions/getUserMail";      //ユーザーのセッション情報認証ロジックをインポート
+import connectDb from "@/app/actions/connectDb";
 
 const prisma = new PrismaClient();                        // prisma clientのインスタンス生成
-
-
-// DB接続関数の定義
-export async function main() {
-  try {
-    await prisma.$connect();    // DBに接続
-  } catch (err) {
-    return Error("DB接続に失敗しました");
-  }
-}
 
 // 学生一覧を取得するAPI
 export const GET = async (req: Request, res: NextResponse) => {
   console.log("GET All Students");
   try{
-    await main(); // DB接続関数の呼び出し
+    await connectDb(); // DB接続関数の呼び出し
     const user = await prisma.user.findMany({
       where: { role: "student" },  // 学生のみを検索対象とする
       select: {

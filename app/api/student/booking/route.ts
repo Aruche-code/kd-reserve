@@ -1,21 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-
-// DB接続関数
-export async function main() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    return Error("DB接続に失敗しました");
-  }
-}
+import connectDb from "@/app/actions/connectDb";
 
 // GET
 // 先生のプロフィール等の表示   ＊2023-12-19 最終編集 後々職員プロフィール情報がレスポンスに追加される可能性あり
 export const GET = async (req: Request, res: NextResponse) => {
   try {
-    await main(); // dbに接続
+    await connectDb(); // dbに接続
     const staffUsers = await prisma.user.findMany({
       where: { role: "staff" },
       select: {
@@ -74,7 +66,7 @@ export const POST = async (req: Request, res: NextResponse) => {
       thirdStartTime,
       thirdEndTime,
     } = await req.json();
-    await main();
+    await connectDb();
 
     if (staffUserId != null) {
       // 予約情報に保存するための職員の名前を取得する

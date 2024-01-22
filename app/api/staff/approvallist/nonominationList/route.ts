@@ -2,21 +2,13 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 import getUserId from "@/app/actions/getUserId";
-
-// DB接続関数
-export async function main() {
-    try {
-        await prisma.$connect();
-    } catch (err) {
-        return Error("DB接続に失敗しました");
-    }
-}
+import connectDb from "@/app/actions/connectDb";
 
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
     try {
         const { id, staffName, studentUserId, ymd, time, details } = await req.json();
-        await main();
+        await connectDb();
 
     // 職員のユーザーIDを取得する
     const userMail = await getUserMail();

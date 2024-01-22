@@ -2,21 +2,13 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 import getUserId from "@/app/actions/getUserId";
-
-// DB接続関数
-export async function main() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    return Error("DB接続に失敗しました");
-  }
-}
+import connectDb from "@/app/actions/connectDb";
 
 // GET
 // 職員ごとの確定した予定の取得用API
 export const GET = async (req: Request, res: NextResponse) => {
   try {
-    await main(); // dbに接続
+    await connectDb; // dbに接続
 
     // 操作している職員のidを取得
     const userMail = await getUserMail();

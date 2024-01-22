@@ -1,21 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-
-// DB接続関数
-export async function main() {
-  try {
-    await prisma.$connect();
-  } catch (err) {
-    return Error("DB接続に失敗しました");
-  }
-}
+import connectDb from "@/app/actions/connectDb";
 
 export const GET = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
 
-    await main();
+    await connectDb();
     const user = await prisma.user.findMany({
       where: { email },
       include: {
@@ -64,7 +56,7 @@ export const POST = async (req: Request, res: NextResponse) => {
       workLocation,
     } = await req.json();
 
-    await main();
+    await connectDb();
 
     const newStudentProfile = await prisma.studentProfile.create({
       data: {
@@ -113,7 +105,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
       workLocation,
     } = await req.json();
 
-    await main();
+    await connectDb();
 
     const updatedUser = await prisma.user.update({
       where: { email },
@@ -162,7 +154,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
 
-    await main();
+    await connectDb();
     await prisma.user.update({
       where: { email },
       data: {
