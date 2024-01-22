@@ -13,12 +13,14 @@ import { Staff } from "@/app/components/types";
 // スケルトンボディコンポーネント
 const SkeletonBody = () => {
   return (
-    <div className="animate-pulse flex flex-wrap">
-      {Array.from({ length: 5 }).map((_, index) => (
+    <div className="animate-pulse m-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2">
+      {Array.from({ length: 6 }).map((_, index) => (
         <div
           key={index}
-          className="p-2 m-1 border rounded bg-gray-200 w-48 h-12"
-        ></div>
+          className="m-1 p-1 border rounded bg-gray-300 text-center"
+        >
+          <div className="h-5 mb-1 rounded" />
+        </div>
       ))}
     </div>
   );
@@ -43,14 +45,13 @@ const StaffList: React.FC<StaffListProps> = ({
   if (staffError) return <div>職員リストの取得に失敗。</div>;
   if (!staffData) return <SkeletonBody />;
   return (
-    <div className="flex flex-wrap">
-      <h1 className="w-full">先生一覧</h1>
-      {/* 「指定なし」オプションを追加 */}
+    <div className="m-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2">
+      {/* 「指定なし」オプション */}
       <div
-        onClick={() => onSelect(null)} // onSelectをnullで呼び出す
-        className={`p-2 m-1 border rounded cursor-pointer ${
+        onClick={() => onSelect(null)}
+        className={`m-1 p-1 border rounded cursor-pointer shadow hover:shadow-md transition-all  ${
           selectedTeacherId === null ? "bg-blue-200" : "bg-white"
-        }`}
+        } text-center`}
       >
         <h2>指定なし</h2>
       </div>
@@ -59,9 +60,9 @@ const StaffList: React.FC<StaffListProps> = ({
         <div
           key={staffMember.id}
           onClick={() => onSelect(staffMember.id)}
-          className={`p-2 m-1 border rounded cursor-pointer ${
+          className={`m-1 p-1 border rounded cursor-pointer shadow hover:shadow-md transition-all  ${
             selectedTeacherId === staffMember.id ? "bg-blue-200" : "bg-white"
-          }`}
+          } text-center`}
         >
           <h2>{staffMember.name}</h2>
         </div>
