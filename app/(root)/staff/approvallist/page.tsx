@@ -258,7 +258,7 @@ const Approval = () => {
           {isNominationSelected
             ? nowUser.map((user, index) => (
                 <div className="mt-2" key={user.id}>
-                  <div className="">
+                  <div>
                     <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
                       <div className="flex flex-row ">
                         <div
@@ -377,138 +377,136 @@ const Approval = () => {
                 </div>
               ))
             : nowUser.map((user, index) => (
-                <div className="mt-2">
-                  <Link href="" key={user.id}>
-                    <div className="">
-                      <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
-                        <div className="flex flex-row ">
-                          <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
-                            {user.studentName}
-                            <br />
+                <div className="mt-2" key={user.id}>
+                  <div>
+                    <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
+                      <div className="flex flex-row ">
+                        <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
+                          {user.studentName}
+                          <br />
+                        </div>
+                        <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
+                          <div
+                            className="border-b-2 cursor-pointer border-gray-200"
+                            onClick={() =>
+                              handleSelect(
+                                index,
+                                user.firstYmd,
+                                user.firstStartTime,
+                                user.firstEndTime
+                              )
+                            }
+                          >
+                            1. {user.firstYmd}
+                            {"　"}
+                            {user.firstStartTime} ~ {user.firstEndTime}
                           </div>
-                          <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                            <div
-                              className="border-b-2 cursor-pointer border-gray-200"
-                              onClick={() =>
+                          {/* 2. */}
+                          <div
+                            className="border-b-2 cursor-pointer border-gray-200"
+                            onClick={() => {
+                              if (user.secondYmd) {
                                 handleSelect(
                                   index,
-                                  user.firstYmd,
-                                  user.firstStartTime,
-                                  user.firstEndTime
-                                )
+                                  user.secondYmd,
+                                  user.secondStartTime,
+                                  user.secondEndTime
+                                );
+                              } else {
                               }
-                            >
-                              1. {user.firstYmd}
-                              {"　"}
-                              {user.firstStartTime} ~ {user.firstEndTime}
-                            </div>
-                            {/* 2. */}
-                            <div
-                              className="border-b-2 cursor-pointer border-gray-200"
-                              onClick={() => {
-                                if (user.secondYmd) {
-                                  handleSelect(
-                                    index,
-                                    user.secondYmd,
-                                    user.secondStartTime,
-                                    user.secondEndTime
-                                  );
-                                } else {
-                                }
-                              }}
-                            >
-                              2.{" "}
-                              {user.secondYmd
-                                ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
-                                : "希望日がありません"}
-                            </div>
+                            }}
+                          >
+                            2.{" "}
+                            {user.secondYmd
+                              ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                              : "希望日がありません"}
+                          </div>
 
-                            {/* 3. */}
-                            <div
-                              className="border-b-2 cursor-pointer border-gray-200"
-                              onClick={() => {
-                                if (user.thirdYmd) {
-                                  handleSelect(
-                                    index,
-                                    user.thirdYmd,
-                                    user.thirdStartTime,
-                                    user.thirdEndTime
-                                  );
-                                } else {
-                                }
-                              }}
-                            >
-                              3.{" "}
-                              {user.thirdYmd
-                                ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
-                                : "希望日がありません"}
+                          {/* 3. */}
+                          <div
+                            className="border-b-2 cursor-pointer border-gray-200"
+                            onClick={() => {
+                              if (user.thirdYmd) {
+                                handleSelect(
+                                  index,
+                                  user.thirdYmd,
+                                  user.thirdStartTime,
+                                  user.thirdEndTime
+                                );
+                              } else {
+                              }
+                            }}
+                          >
+                            3.{" "}
+                            {user.thirdYmd
+                              ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                              : "希望日がありません"}
+                          </div>
+                        </div>
+                        <div className="p-3 px-5 mx-2 my-2 border-l-2">
+                          <div className="flex flex-row">
+                            {getIndex(index) ? (
+                              <div>
+                                {getIndex(index)}　[{user.details}]
+                              </div>
+                            ) : (
+                              <div>{user.details}</div>
+                            )}
+                          </div>
+                          {/* firsttimeselect */}
+                          <div className="flex flex-row">
+                            <div className="m-2 w-24">
+                              <TimeSelectMenu
+                                firsttime={getFirstTime(index)}
+                                endtime={getEndTime(index)}
+                              />
+                            </div>
+                            <div className="m-1 mt-2">～</div>
+                            <div className="m-2 w-24">
+                              <TimeSelectMenu
+                                firsttime={getFirstTime(index)}
+                                endtime={getEndTime(index)}
+                              />
                             </div>
                           </div>
-                          <div className="p-3 px-5 mx-2 my-2 border-l-2">
-                            <div className="flex flex-row">
-                              {getIndex(index) ? (
-                                <div>
-                                  {getIndex(index)}　[{user.details}]
-                                </div>
-                              ) : (
-                                <div>{user.details}</div>
-                              )}
-                            </div>
-                            {/* firsttimeselect */}
-                            <div className="flex flex-row">
-                              <div className="m-2 w-24">
-                                <TimeSelectMenu
-                                  firsttime={getFirstTime(index)}
-                                  endtime={getEndTime(index)}
-                                />
-                              </div>
-                              <div className="m-1 mt-2">～</div>
-                              <div className="m-2 w-24">
-                                <TimeSelectMenu
-                                  firsttime={getFirstTime(index)}
-                                  endtime={getEndTime(index)}
-                                />
-                              </div>
-                            </div>
-                            {/* endtimeselect */}
-                            <div className="flex justify-end">
-                              <select
-                                onChange={(e) => setSelectValue(e.target.value)}
-                                className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md"
-                              >
-                                {staff.map((staff) => (
-                                  <option
-                                    className="text-sm"
-                                    key={staff.name}
-                                    value={staff.name}
-                                  >
-                                    {staff.name}
-                                  </option>
-                                ))}
-                              </select>
-                              <button
-                                className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
-                                onClick={() => {
-                                  const selectedStaffName = selectValue;
-                                  addNominationBooking(
-                                    user.id,
-                                    selectedStaffName,
-                                    user.studentUserId,
-                                    getIndex(index),
-                                    getFirstTime(index),
-                                    getEndTime(index),
-                                    user.details
-                                  );
-                                }}
-                              >
-                                承認
-                              </button>
-                            </div>
+                          {/* endtimeselect */}
+                          <div className="flex justify-end">
+                            <select
+                              onChange={(e) => setSelectValue(e.target.value)}
+                              className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md"
+                            >
+                              {staff.map((staff) => (
+                                <option
+                                  className="text-sm"
+                                  key={staff.name}
+                                  value={staff.name}
+                                >
+                                  {staff.name}
+                                </option>
+                              ))}
+                            </select>
+                            <button
+                              className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                              onClick={() => {
+                                const selectedStaffName = selectValue;
+                                addNominationBooking(
+                                  user.id,
+                                  selectedStaffName,
+                                  user.studentUserId,
+                                  getIndex(index),
+                                  getFirstTime(index),
+                                  getEndTime(index),
+                                  user.details
+                                );
+                              }}
+                            >
+                              承認
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </div>
               ))}
         </div>
