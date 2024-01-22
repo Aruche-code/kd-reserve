@@ -15,11 +15,10 @@ export async function main() {
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    const { studentUserId, ymd, time, details } = await req.json();
+    const { id, studentUserId, ymd, time, details } = await req.json();
     await main();
 
     // 職員のユーザーIDを取得する
-    // 本番用
     const userMail = await getUserMail();
     const staffData: any = await prisma.user.findUnique({
       where: { email: userMail },
@@ -31,17 +30,6 @@ export const POST = async (req: Request, res: NextResponse) => {
 
     const staffUserId: any = staffData.id;
     const staffName: any = staffData.name;
-
-    // テスト用
-    // const staffUserId = "657a50663dbe46e6c28b95ca"
-    // const staffData: any = await prisma.user.findUnique({
-    //     where: { id: staffUserId },
-    //     select: {
-    //         name: true,                   // 職員の名前
-    //     },
-    // });
-
-    // const staffName: any = staffData.name
 
     // すでに同じ時間帯に予定が存在しているかの判定
     const BookingData = await prisma.booking.findMany({
@@ -63,11 +51,7 @@ export const POST = async (req: Request, res: NextResponse) => {
     } else {
       // データが存在しない場合の処理
       // Userコレクションに紐づけるために、予約確定画面を操作している職員のメールアドレスを取得
-      // 本番用
       const email = await getUserMail();
-
-      // テスト用 予約確定画面を操作している職員のメールアドレスを取得
-      // const email = "yama@master.mail.com";
 
       // 予約情報に保存するための生徒の名前を取得する
       const studentData: any = await prisma.user.findUnique({
@@ -102,7 +86,12 @@ export const POST = async (req: Request, res: NextResponse) => {
         },
       });
 
-      return NextResponse.json({ message: "Success" }, { status: 200 });
+      // bookingに予定を追加したとき、waitingListの予定を削除
+      const waitingDelete = await prisma.waitingList.delete({
+            where: { id: id },
+      });
+
+      return NextResponse.json({ message: "Success" }, { status: 201 });
     }
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
@@ -111,9 +100,8 @@ export const POST = async (req: Request, res: NextResponse) => {
   }
 };
 
-// 指定したemailをもつUserのWaitinglistを表示するAPI
+// 画面を操作している職員が指定されているWaitinglistを表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-  console.log("GET");
 
   try {
     await main();
@@ -127,7 +115,6 @@ export const GET = async (req: Request, res: NextResponse) => {
 
 
     // 操作している職員のidを取得
-    //  本番用
     const usermail = await getUserMail();
     const staff : any = await prisma.user.findUnique({
         where: { email: usermail },
@@ -137,17 +124,13 @@ export const GET = async (req: Request, res: NextResponse) => {
     });
     const staffId: any = staff.id
 
-
-
-    // テスト用
-    // const staffId = "65a7dd6e1c561cd88218477d";
-
     // 操作している職員が指定されている承認待ちリストの取得
     const waitingList = await prisma.waitingList.findMany({
       where: { staffUserId: staffId },
       select: {
         id: true,
         studentName: true,
+        studentUserId: true,
         details: true,
         firstYmd: true,
         firstStartTime: true,
@@ -161,12 +144,13 @@ export const GET = async (req: Request, res: NextResponse) => {
       },
     });
 
-
+    // 職員が特に指定されていない承認待ちリストの取得
     const noNominationList = await prisma.waitingList.findMany({
       where: { staffUserId: null },
       select: {
         id: true,
         studentName: true,
+        studentUserId: true,
         details: true,
         firstYmd: true,
         firstStartTime: true,
@@ -180,7 +164,7 @@ export const GET = async (req: Request, res: NextResponse) => {
       },
     });
 
-
+    // これまでに取得して情報をひとまとめにしてレスポンスデータを作成
     const wait = {
       staffList: staffUserList,
       waitingList: waitingList,

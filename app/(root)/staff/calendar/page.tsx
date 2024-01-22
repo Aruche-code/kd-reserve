@@ -49,15 +49,6 @@ const Home = () => {
         setDate(new Date(date.getFullYear(), date.getMonth() + 1));
     };
 
-    //選ばれている日
-    const [selectedDay, setselectedDay] = useState<string>("1");
-    const getDay = () => {
-        return selectedDay.slice(-2);
-    }
-
-
-
-
     //---------------------------------------------------------------------------------------------//
     //データの管理(GET,POST)------------------------------------------------------------------------//
 
@@ -70,7 +61,7 @@ const Home = () => {
     }, [bookings]); 
     const fetcher = (url: string) => axios.get(url).then((res) => res.data);
     const { data: response, error } = useSWR('/api/staff/calendar', fetcher);
-    //console.log(response)
+    console.log(response)
     //データを取得する(GET)
     const getdata = () => { 
         if(!response.responseData) {
@@ -193,6 +184,13 @@ const Home = () => {
     
     
 
+
+
+    //選ばれている日
+    const [selectedDay, setselectedDay] = useState<string>("1");
+    const getDay = () => {
+        return selectedDay.slice(-2);
+    }
 
     
     // バックグラウンドカラーを切り替える関数
