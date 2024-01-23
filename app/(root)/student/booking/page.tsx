@@ -21,6 +21,9 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import ja from "date-fns/locale/ja"; // date-fnsの日本語ロケール
 import CustomInput from "@/app/components/styles/DatePicker";
+import PersonIcon from "@mui/icons-material/Person";
+import InfoIcon from "@mui/icons-material/Info";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface OptionType {
   value: string;
@@ -119,6 +122,22 @@ const InterviewScheduler: React.FC = () => {
     setSecondPreferenceDate(null);
     setSecondPreferenceStartTime(null);
     setSecondPreferenceEndTime(null);
+    setThirdPreferenceDate(null);
+    setThirdPreferenceStartTime(null);
+    setThirdPreferenceEndTime(null);
+  };
+
+  const resetFirst = () => {
+    setFirstPreferenceDate(null);
+    setFirstPreferenceStartTime(null);
+    setFirstPreferenceEndTime(null);
+  };
+  const resetSecond = () => {
+    setSecondPreferenceDate(null);
+    setSecondPreferenceStartTime(null);
+    setSecondPreferenceEndTime(null);
+  };
+  const resetThird = () => {
     setThirdPreferenceDate(null);
     setThirdPreferenceStartTime(null);
     setThirdPreferenceEndTime(null);
@@ -283,13 +302,17 @@ const InterviewScheduler: React.FC = () => {
         </div>
         <div className=" m-4 bg-slate-100 rounded-md shadow-md border border-c-black_200">
           {/* 詳細エリア */}
-          <h2 className="text-base font-bold p-4">詳細</h2>
+          <h2 className="text-base font-bold p-4">
+            <InfoIcon style={{ fontSize: "30px", opacity: 0.4 }} />
+          </h2>
           <ReservationTags
             selectedTag={selectedTag}
             setSelectedTag={setSelectedTag}
           />
           {/* 職員表示エリア */}
-          <h2 className="text-base font-bold p-4">職員</h2>
+          <h2 className="text-base font-bold p-4">
+            <PersonIcon style={{ fontSize: "30px", opacity: 0.4 }} />
+          </h2>
           <StaffList
             staffData={staffData}
             staffError={staffError}
@@ -299,13 +322,21 @@ const InterviewScheduler: React.FC = () => {
 
           {/* 各希望日時選択 エリア*/}
           <div className="p-4 rounded-md">
-            <h2 className=" text-base font-bold mb-4">希望日時</h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 pt-8 m-0 sm:pb-7">
+            <h2 className=" text-base font-bold mb-4 mt-1"></h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 pt-0 m-0 sm:pb-7">
               {/* 第一希望日時 */}
               {/* 日付ピッカーコンポーネント */}
-              <div className="  rounded p-2 mx-auto">
-                <h1 className="m-2 text-center">第一希望日を入力</h1>
+              <div className=" rounded p-2 mx-auto">
+                <span className="opacity-30 m-2 ">※必須</span>
+                <div className="flex justify-between items-center">
+                  <h1 className="ml-2 mt-3 mb-3">第一希望日を入力</h1>
+                  <button
+                    onClick={resetFirst}
+                    className="mr-1 border-none rounded transition duration-300 ease-in-out transform hover:scale-110 focus:scale-110 focus:outline-none"
+                  >
+                    <DeleteForeverIcon style={{ opacity: 0.4 }} />
+                  </button>
+                </div>
                 <div>
                   <DatePicker
                     selected={firstPreferenceDate}
@@ -359,8 +390,17 @@ const InterviewScheduler: React.FC = () => {
 
               {/* 第二希望日時 */}
               {/* 日付ピッカーコンポーネント */}
-              <div className="  rounded p-2 mx-auto">
-                <h1 className="m-2 text-center">第二希望日を入力</h1>
+              <div className=" rounded p-2 mx-auto">
+                <span className="opacity-30 m-2 ">※必須</span>
+                <div className="flex justify-between items-center">
+                  <h1 className="ml-2 mt-3 mb-3">第二希望日を入力</h1>
+                  <button
+                    onClick={resetSecond}
+                    className="mr-1 border-none rounded transition duration-300 ease-in-out transform hover:scale-110 focus:scale-110 focus:outline-none"
+                  >
+                    <DeleteForeverIcon style={{ opacity: 0.4 }} />
+                  </button>
+                </div>
                 <div>
                   <DatePicker
                     selected={secondPreferenceDate}
@@ -414,7 +454,16 @@ const InterviewScheduler: React.FC = () => {
               {/* 第三希望日時 */}
               {/* 日付ピッカーコンポーネント */}
               <div className=" rounded p-2 mx-auto">
-                <h1 className="m-2 text-center">第三希望日を入力</h1>
+                <span className="opacity-30 m-2 ">※任意</span>
+                <div className="flex justify-between items-center">
+                  <h1 className="ml-2 mt-3 mb-3">第三希望日を入力</h1>
+                  <button
+                    onClick={resetThird}
+                    className="mr-1 border-none rounded transition duration-300 ease-in-out transform hover:scale-110 focus:scale-110 focus:outline-none"
+                  >
+                    <DeleteForeverIcon style={{ opacity: 0.4 }} />
+                  </button>
+                </div>
                 <div>
                   <DatePicker
                     selected={thirdPreferenceDate}

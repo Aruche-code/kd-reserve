@@ -39,6 +39,7 @@ const config: Config = {
       },
       boxShadow: {
         "custom-blue": "0 0 10px rgba(0, 0, 255, 0.2)",
+        "custom-red": "0 0 10px rgba(255, 0, 0, 0.5)",
         "custom-green": "0 0 10px rgba(0, 255, 0, 0.2)",
       },
     },
