@@ -3,12 +3,31 @@ import axios from "axios";
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
 
+/**
+ * StaffList Component
+ * @param {any} staffData - 職員のデータが入っていると予想されるオブジェクト
+ */
+
+//ヘルパー関数
+const findStaffNameById = (
+  staffData: any,
+  selectedStaffMember: string | null
+) => {
+  for (let i = 0; i < staffData.staffUsers.length; i++) {
+    if (staffData.staffUsers[i].id === selectedStaffMember) {
+      return staffData.staffUsers[i].name;
+    }
+  }
+  return "指名なし";
+};
+
 interface OptionType {
   value: string;
   label: string;
 }
 
 interface BookingPostProps {
+  staffData: any;
   selectedStaffMember: string | null;
   selectedTag: string | null;
   firstPreferenceDate: Date | null;
@@ -24,6 +43,7 @@ interface BookingPostProps {
 }
 
 const BookingPost: React.FC<BookingPostProps> = ({
+  staffData,
   selectedStaffMember,
   selectedTag,
   firstPreferenceDate,
@@ -38,6 +58,16 @@ const BookingPost: React.FC<BookingPostProps> = ({
   resetAll,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // モーダルを開く関数
+  const openModal = () => setIsModalOpen(true);
+
+  // モーダルを閉じる関数
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsLoading(false); // モーダルを閉じるときにローディング状態もリセット
+  };
 
   const isAnyFieldNull = () => {
     return (
@@ -51,7 +81,17 @@ const BookingPost: React.FC<BookingPostProps> = ({
     );
   };
 
-  const handleWaitingSubmit = async () => {
+  const isAnyThirdFieldNull = () => {
+    return (
+      !thirdPreferenceDate ||
+      !thirdPreferenceStartTime ||
+      !thirdPreferenceEndTime
+    );
+  };
+
+  const handleConfirmSubmit = async () => {
+    closeModal();
+    setIsLoading(true); // 送信処理開始
     if (isAnyFieldNull()) {
       toast.error("予約内容、第一希望日時、\n第二希望日時は必須です。", {
         style: {
@@ -61,10 +101,22 @@ const BookingPost: React.FC<BookingPostProps> = ({
           fontSize: "14px",
         },
       });
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true); // 送信処理開始
+    if (isAnyThirdFieldNull()) {
+      toast.error("第三希望日の入力に不備があります。", {
+        style: {
+          textAlign: "center",
+          color: "#ef4444",
+          lineHeight: "1.5",
+          fontSize: "14px",
+        },
+      });
+      setIsLoading(false);
+      return;
+    }
 
     const data = {
       staffUserId: selectedStaffMember,
@@ -108,7 +160,6 @@ const BookingPost: React.FC<BookingPostProps> = ({
         });
       }
     } catch (error) {
-      console.error("Error sending data: ", error);
       toast.error("エラーが発生しました", {
         style: {
           textAlign: "center",
@@ -121,26 +172,88 @@ const BookingPost: React.FC<BookingPostProps> = ({
     }
   };
 
+  // モーダルのレンダリング
+  const renderModal = () => (
+    <div className="modal-backdrop">
+      <div className="modal">
+        <div className="p-3 px-6 rounded-t-md bg-kd-s text-white text-center">
+          予約内容を確認
+        </div>
+        <div>
+          <div>{selectedTag}</div>
+          <div>{findStaffNameById(staffData, selectedStaffMember)}</div>
+          <div>
+            {firstPreferenceDate
+              ? format(firstPreferenceDate, "yyyy-MM-dd")
+              : null}
+          </div>
+          <div>{firstPreferenceStartTime?.value}</div>
+          <div>{firstPreferenceEndTime?.value}</div>
+          <div>
+            {secondPreferenceDate
+              ? format(secondPreferenceDate, "yyyy-MM-dd")
+              : null}
+          </div>
+          <div>{secondPreferenceStartTime?.value}</div>
+          <div>{secondPreferenceEndTime?.value}</div>
+          <div>
+            {thirdPreferenceDate
+              ? format(thirdPreferenceDate, "yyyy-MM-dd")
+              : null}
+          </div>
+          <div>{thirdPreferenceStartTime?.value}</div>
+          <div>{thirdPreferenceEndTime?.value}</div>
+          <button
+            onClick={handleConfirmSubmit}
+            disabled={isLoading}
+            className={`px-4 py-1.5 text-sm text-white rounded transition duration-300 ease-in-out transform ${
+              isLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-kd-a_100 hover:bg-blue-400 hover:scale-105"
+            }`}
+            style={{ minWidth: "100px" }} // 最小幅を設定
+          >
+            <div
+              className="flex justify-center items-center"
+              style={{ minWidth: "80px" }}
+            >
+              {isLoading ? "送信中..." : "送信"}
+            </div>
+          </button>
+          <button
+            onClick={closeModal}
+            className="px-4 py-1.5 text-sm text-white rounded transition duration-300 ease-in-out transform bg-red-500 hover:bg-red-600 hover:scale-105 "
+            style={{ minWidth: "100px" }} // 最小幅を設定
+          >
+            <div
+              className="flex justify-center items-center"
+              style={{ minWidth: "80px" }}
+            >
+              キャンセル
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <button
-        onClick={handleWaitingSubmit}
-        disabled={isLoading}
-        className={`px-4 py-1.5 text-sm text-white rounded transition duration-300 ease-in-out transform ${
-          isLoading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-kd-a_100 hover:bg-blue-400 hover:scale-105"
-        }`}
-        style={{ minWidth: "100px" }} // 最小幅を設定
+        onClick={openModal}
+        className="w-full px-4 py-1.5 text-sm shadow-md border border-kd-a_100 text-white rounded-b-md transition duration-300 ease-in-out transform bg-kd-a_100 hover:bg-blue-400 "
+        style={{ minWidth: "100px" }}
       >
         <div
           className="flex justify-center items-center"
           style={{ minWidth: "80px" }}
         >
-          {/* テキストの幅を固定 */}
-          {isLoading ? "送信中..." : "送信"}
+          確認
         </div>
       </button>
+
+      {/* モーダルの条件付きレンダリング */}
+      {(isModalOpen || isLoading) && renderModal()}
     </>
   );
 };

@@ -82,7 +82,7 @@ function UserForm() {
     <div className="flex flex-col justify-center items-center">
       <div className="mt-4 w-full lg:w-2/4 bg-white rounded-md shadow-md">
         <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white text-center">
-          ■ プロフィール
+          プロフィール
         </div>
 
         <div className="p-4 ml-7 mr-7 sm:ml-10 sm:mr-10 ">
@@ -100,11 +100,11 @@ function UserForm() {
             className="w-full mx-auto text-xs md:text-base"
           >
             {/* メールアドレス */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center mt-3">
               <label className="text-gray-900 ">メールアドレス</label>
 
               {userData ? (
-                <span className="col-span-2 sm:col-span-1">
+                <span className="col-span-2 sm:col-span-1 ">
                   {userData?.email}
                 </span>
               ) : (
@@ -211,7 +211,7 @@ function UserForm() {
             </div>
             {userData ? (
               <button
-                className="flex items-center px-14 py-2 text-center text-white bg-kd-button-cl rounded-xl hover:bg-blue-500 mt-8 mx-auto"
+                className="flex items-center px-14 py-2 text-center text-white mt-8 mx-auto rounded  transition duration-300 ease-in-out transform bg-kd-a_100 hover:bg-blue-400 hover:scale-105"
                 type="submit"
               >
                 {isEditing ? "保存" : "新規作成"}

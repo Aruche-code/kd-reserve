@@ -49,8 +49,10 @@ const StaffList: React.FC<StaffListProps> = ({
       {/* 「指定なし」オプション */}
       <div
         onClick={() => onSelect(null)}
-        className={`m-1 p-1 border rounded cursor-pointer shadow hover:shadow-md transition-all  ${
-          selectedTeacherId === null ? "bg-blue-200" : "bg-white"
+        className={`m-1 p-1 border rounded cursor-pointer shadow focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue  ${
+          selectedTeacherId === null
+            ? "bg-[rgba(56,170,201,0.4)]" //kd-a_100
+            : "bg-white"
         } text-center`}
       >
         <h2>指定なし</h2>
@@ -60,8 +62,10 @@ const StaffList: React.FC<StaffListProps> = ({
         <div
           key={staffMember.id}
           onClick={() => onSelect(staffMember.id)}
-          className={`m-1 p-1 border rounded cursor-pointer shadow hover:shadow-md transition-all  ${
-            selectedTeacherId === staffMember.id ? "bg-blue-200" : "bg-white"
+          className={`m-1 p-1 border rounded cursor-pointer shadow focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue  ${
+            selectedTeacherId === staffMember.id
+              ? "bg-[rgba(56,170,201,0.4)]" //kd-a_100
+              : "bg-white"
           } text-center`}
         >
           <h2>{staffMember.name}</h2>
