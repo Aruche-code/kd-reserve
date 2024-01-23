@@ -26,11 +26,7 @@ interface HomeData {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Home = () => {
-  const {
-    data: homeData,
-    error,
-    mutate,
-  } = useSWR<HomeData>("/api/student", fetcher);
+  const { data: homeData, error } = useSWR<HomeData>("/api/student", fetcher);
 
   if (error) return <div>エラーが発生しました</div>;
 
@@ -39,7 +35,6 @@ const Home = () => {
       await axios.delete("/api/student/bookingdelete", {
         data: { scheduleId: id },
       });
-      mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }
@@ -50,7 +45,6 @@ const Home = () => {
       await axios.delete("/api/student/waitdelete", {
         data: { scheduleId: id },
       });
-      mutate(); // データを再検証し、更新
     } catch (error) {
       console.error("Error cancelling waiting:", error);
     }
