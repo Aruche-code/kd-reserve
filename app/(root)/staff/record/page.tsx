@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import "./App.css";
 
 const Record = () => {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -146,11 +145,11 @@ const Record = () => {
 
               <div className="mx-5 p-2 mt-2 pt-3 pb-3 text-gray-700 px-2 text-sm sm:text-base">
                 <div>
-                  <div className="wrapper">
-                    <div className="accordion">
+                  <div className="wrapper7">
+                    <div className="accordion7">
                       {data.map((item, i) => (
-                        <div className="item" key={i}>
-                          <div className="title" onClick={() => toggle(i)}>
+                        <div className="item7" key={i}>
+                          <div className="title7" onClick={() => toggle(i)}>
                             <h2>{item.question}</h2>
                             <span>
                               {selected === i ? (
@@ -162,7 +161,7 @@ const Record = () => {
                           </div>
                           <div
                             className={
-                              selected === i ? "content show" : "content"
+                              selected === i ? "content show7" : "content7"
                             }
                           >
                             {item.answer}
