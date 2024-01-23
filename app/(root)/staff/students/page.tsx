@@ -1,7 +1,10 @@
 // 教員側の画面で学生の一覧を表示するページのコンポーネント
 "use client";
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface User {
   id: number | string;
@@ -12,21 +15,20 @@ interface User {
 
 const Students = () => {
   const [user, setStudents] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  // console.log(user);
+
   useEffect(() => {
     // 学生一覧を取得するAPIのエンドポイント
-    const apiEndpoint = '/api/koma/StudentsListGet';
+    const apiEndpoint = "/api/staff/students";
 
     // APIから学生一覧を取得
     const fetchStudents = async () => {
       try {
         const response = await axios.get(apiEndpoint);
-        // console.log(response);
         setStudents(response.data.users);
       } catch (error) {
-        console.error('学生データの取得エラー:', error);
+        toast.error("学生データの取得エラー");
       }
     };
 
@@ -35,17 +37,16 @@ const Students = () => {
 
   useEffect(() => {
     // searchTermが変更されるたびに検索を実行
-    const filtered = user.filter(user =>
+    const filtered = user.filter((user) =>
       user.studentIdNumber.includes(searchTerm)
     );
     setFilteredUsers(filtered);
   }, [searchTerm, user]);
 
+  // 検索欄の入力値が変更された時に画面に更新結果を反映するコンポーネント
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-
-
 
   return (
     <div className="flex flex-col justify-center items-center mt-6">
@@ -55,20 +56,16 @@ const Students = () => {
         </div>
         <div className="mt-3 p-3">
           <div className="relative flex justify-end">
-            <div className="relative w-20px">
-              <div className="relative flex justify-end">
+            <div className="flex justify-center w-full px-4">
+              <div className="relative w-full max-w-sm">
+                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
-                  className="w-full rounded-full hover:shadow-lg focus:shadow-lg focus:outline-0 p-2 px-10 border pl-18 mr-6 ml-6"
+                  className="pl-10 pr-3 py-2 border rounded-full w-full hover:shadow-lg focus:shadow-lg focus:outline-0"
                   type="text"
                   placeholder="検索"
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
-              </div>
-              <div className="absolute left-10 top-3 text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
               </div>
             </div>
           </div>
@@ -76,14 +73,22 @@ const Students = () => {
 
         <div className="m-5 flex flex-wrap justify-center items-center">
           {filteredUsers.map((user) => (
-            <button
-              key={user.id}
-              className={'my-2 mx-5 min-w-[24ch] px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl overflow-hidden'}
-              title={user.name}
-            >
-              {user.name.length > 8 ? user.name.slice(0, 8) + '...' : user.name}<br />
-              学籍番号：{user.studentIdNumber}
-            </button>
+            // <Link key={user.id} href={`../staff/record/${user.id}`}>
+            <Link key={user.id} href={`../staff/record/`}>
+              <button
+                // key={user.id}
+                className={
+                  "my-2 mx-5 min-w-[24ch] px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl overflow-hidden"
+                }
+                title={user.name}
+              >
+                {user.name.length > 8
+                  ? user.name.slice(0, 8) + "..."
+                  : user.name}
+                <br />
+                学籍番号：{user.studentIdNumber}
+              </button>
+            </Link>
           ))}
         </div>
       </div>

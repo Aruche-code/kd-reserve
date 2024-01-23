@@ -29,7 +29,6 @@ const Home = () => {
   } = useSWR<HomeData>("/api/student", fetcher);
 
   if (error) return <div>エラーが発生しました</div>;
-  // if (!homeData) return setIsLoading(true);
 
   const handleCancelBooking = async (id: string) => {
     try {
@@ -118,7 +117,7 @@ const Home = () => {
                   {/* キャンセルボタン */}
                   <button
                     type="button"
-                    className="bg-red-500 text-white text-xs px-2 py-1 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
+                    className="bg-red-500 text-white text-xs px-2 py-1 mx-14 md:mx-2 lg:mx-2 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
                     onClick={() => handleCancelBooking(booking.id)}
                   >
                     キャンセル
@@ -208,7 +207,7 @@ const Home = () => {
                   {/* キャンセルボタン */}
                   <button
                     type="button"
-                    className="bg-red-500 text-white text-xs px-2 py-1 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
+                    className="bg-red-500 text-white text-xs px-2 py-1 mx-14 md:mx-2 lg:mx-2 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
                     onClick={() => handleCancelWaiting(waiting.id)}
                   >
                     キャンセル

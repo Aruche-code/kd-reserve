@@ -38,7 +38,6 @@ const BookingPost: React.FC<BookingPostProps> = ({
   resetAll,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  //   const [message, setMessage] = useState("");
 
   const isAnyFieldNull = () => {
     return (
@@ -66,7 +65,6 @@ const BookingPost: React.FC<BookingPostProps> = ({
     }
 
     setIsLoading(true); // 送信処理開始
-    // setMessage(""); // メッセージをリセット
 
     const data = {
       staffUserId: selectedStaffMember,
@@ -143,8 +141,6 @@ const BookingPost: React.FC<BookingPostProps> = ({
           {isLoading ? "送信中..." : "送信"}
         </div>
       </button>
-
-      {/* <p>{message}</p> メッセージの表示 */}
     </>
   );
 };

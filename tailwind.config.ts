@@ -18,12 +18,6 @@ const config: Config = {
         "c-black_100": "#f7f7f7",
         "c-black_200": "#ebebeb",
         "c-black_300": "#d9d9d9",
-        "c-black_400": "#bdbdbd",
-        "c-black_500": "#999",
-        "c-black_600": "#737373",
-        "c-black_700": "#4d4d4d",
-        "c-black_800": "#333",
-        "c-black_900": "#1a1a1a",
         "n-gravemarker": "#b1c7d4",
         "n-breakeingdown": "#6cb2d3",
         "n-midnight": "#1d4b69",
@@ -45,6 +39,10 @@ const config: Config = {
       },
       spacing: {
         "100px": "100px",
+      },
+      boxShadow: {
+        "custom-blue": "0 0 10px rgba(0, 0, 255, 0.2)",
+        "custom-green": "0 0 10px rgba(0, 255, 0, 0.2)",
       },
     },
   },
