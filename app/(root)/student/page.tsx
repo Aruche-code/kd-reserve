@@ -2,6 +2,10 @@
 import React, { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
+import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PersonIcon from "@mui/icons-material/Person";
+import InfoIcon from "@mui/icons-material/Info";
 
 interface Booking {
   id: string;
@@ -64,8 +68,8 @@ const Home = () => {
     <div className="flex flex-col justify-center items-center">
       <div className="mt-4 w-full lg:w-4/5 bg-white rounded-md shadow-md">
         {/* 確定予約セクション */}
-        <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white">
-          ■ 予約確定一覧
+        <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white text-center">
+          予約確定一覧
         </div>
 
         <div className="p-4">
@@ -81,7 +85,7 @@ const Home = () => {
                   {/* 日付 */}
                   <div className="flex flex-col">
                     <span className="font-bold text-xs md:text-sm mb-2">
-                      日付
+                      <CalendarTodaySharpIcon style={{ opacity: 0.4 }} />
                     </span>
                     <span className="text-sm md:text-base">{booking.ymd}</span>
                   </div>
@@ -89,7 +93,7 @@ const Home = () => {
                   {/* 時間帯 */}
                   <div className="flex flex-col">
                     <span className="font-bold text-xs md:text-sm mb-2">
-                      時間帯
+                      <AccessTimeIcon style={{ opacity: 0.4 }} />
                     </span>
                     <span className="text-sm md:text-base">{booking.time}</span>
                   </div>
@@ -97,7 +101,7 @@ const Home = () => {
                   {/* 職員名 */}
                   <div className="flex flex-col">
                     <span className="font-bold text-xs md:text-sm mb-2">
-                      職員
+                      <PersonIcon style={{ opacity: 0.4 }} />
                     </span>
                     <span className="text-sm md:text-base">
                       {booking.staffName}
@@ -107,7 +111,7 @@ const Home = () => {
                   {/* 詳細 */}
                   <div className="flex flex-col">
                     <span className="font-bold text-xs md:text-sm mb-2">
-                      詳細
+                      <InfoIcon style={{ opacity: 0.4 }} />
                     </span>
                     <span className="text-sm md:text-base">
                       {booking.details}
@@ -129,10 +133,11 @@ const Home = () => {
             <SkeletonRow />
           )}
         </div>
-
+      </div>
+      <div className="mt-8 w-full lg:w-4/5 bg-white rounded-md shadow-md">
         {/* 承認待ちセクション */}
-        <div className="p-3 px-6 bg-kd-a_200 text-white">
-          ■ 承認待ちリクエスト内容
+        <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white text-center">
+          承認待ちリクエスト内容
         </div>
         <div className="p-4">
           {homeData?.getWaitingList ? (
@@ -148,10 +153,10 @@ const Home = () => {
                   <div className="sm:col-span-2 flex flex-col">
                     <div className="flex justify-start space-x-1 mb-2">
                       <span className="font-bold text-xs md:text-sm w-1/2 text-left">
-                        希望日
+                        <CalendarTodaySharpIcon style={{ opacity: 0.4 }} />
                       </span>
                       <span className="font-bold text-xs md:text-sm w-1/2 text-left">
-                        時間帯
+                        <AccessTimeIcon style={{ opacity: 0.4 }} />
                       </span>
                     </div>
                     <div className="flex justify-start space-x-1">
@@ -171,23 +176,34 @@ const Home = () => {
                       </span>
                     </div>
                     <div className="flex justify-start space-x-1">
-                      <span className="text-sm md:text-base w-1/2 text-left">
-                        {waiting.thirdYmd ? waiting.thirdYmd : "なし"}
+                      <span
+                        className="text-sm md:text-base w-1/2 text-left"
+                        style={{ opacity: waiting.thirdYmd ? 1 : 0.5 }}
+                      >
+                        {waiting.thirdYmd ? waiting.thirdYmd : ""}
                       </span>
-                      <span className="text-sm md:text-base w-1/2 text-left">
+                      <span
+                        className="text-sm md:text-base w-1/2 text-left"
+                        style={{
+                          opacity:
+                            waiting.thirdStartTime || waiting.thirdEndTime
+                              ? 1
+                              : 0.5,
+                        }}
+                      >
                         {waiting.thirdStartTime && waiting.thirdEndTime
                           ? `${waiting.thirdStartTime}～${waiting.thirdEndTime}`
                           : waiting.thirdStartTime ||
                             waiting.thirdEndTime ||
-                            "なし"}
+                            ""}
                       </span>
                     </div>
                   </div>
 
                   {/* 職員名カード */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col sm:mb-6">
                     <span className="font-bold text-xs md:text-sm mb-2">
-                      指名職員
+                      <PersonIcon style={{ opacity: 0.4 }} />
                     </span>
                     <span className="text-sm md:text-base">
                       {waiting.staffName}
@@ -195,9 +211,9 @@ const Home = () => {
                   </div>
 
                   {/* 詳細カード */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col sm:mb-6">
                     <span className="font-bold text-xs md:text-sm mb-2">
-                      詳細
+                      <InfoIcon style={{ opacity: 0.4 }} />
                     </span>
                     <span className="text-sm md:text-base">
                       {waiting.details}
@@ -205,13 +221,15 @@ const Home = () => {
                   </div>
 
                   {/* キャンセルボタン */}
-                  <button
-                    type="button"
-                    className="bg-red-500 text-white text-xs px-2 py-1 mx-14 md:mx-2 lg:mx-2 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
-                    onClick={() => handleCancelWaiting(waiting.id)}
-                  >
-                    キャンセル
-                  </button>
+                  <div className=" text-center">
+                    <button
+                      type="button"
+                      className=" text-white text-xs px-2 py-1 mx-2 w-1/2 md:w-2/3 rounded transition duration-300 ease-in-out transform bg-red-500 hover:bg-red-600 hover:scale-105"
+                      onClick={() => handleCancelWaiting(waiting.id)}
+                    >
+                      キャンセル
+                    </button>
+                  </div>
                 </div>
               ))
             )

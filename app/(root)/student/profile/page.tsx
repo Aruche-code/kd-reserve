@@ -82,13 +82,13 @@ function UserForm() {
     <div className="flex flex-col justify-center items-center">
       <div className="mt-4 w-full lg:w-2/4 bg-white rounded-md shadow-md">
         <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white text-center">
-          ■ プロフィール
+          プロフィール
         </div>
 
         <div className="p-4 ml-7 mr-7 sm:ml-10 sm:mr-10 ">
           <div className="profile-header mb-7 mt-1">
             {userData ? (
-              <h2 className="text-center text-xl font-bold">
+              <h2 className="text-center text-lg font-bold">
                 {userData?.name}
               </h2>
             ) : (
@@ -100,11 +100,11 @@ function UserForm() {
             className="w-full mx-auto text-xs md:text-base"
           >
             {/* メールアドレス */}
-            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center mt-3">
               <label className="text-gray-900 ">メールアドレス</label>
 
               {userData ? (
-                <span className="col-span-2 sm:col-span-1">
+                <span className="col-span-2 sm:col-span-1 ">
                   {userData?.email}
                 </span>
               ) : (
@@ -115,11 +115,11 @@ function UserForm() {
             <div className="mt-2 mb-8 border-b border-gray-300"></div>
 
             {/* 電話番号 */}
-            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 items-center mt-3">
               <label className="text-gray-900">電話番号</label>
               <span className="col-span-2 sm:col-span-1 ">
                 <input
-                  className="bg-slate-100 p-1 rounded-md text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  className="bg-slate-100 p-1 rounded-md text-xs sm:text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
                   type="text"
                   name="tel"
                   value={profileData.tel}
@@ -129,11 +129,11 @@ function UserForm() {
               </span>
             </div>
             {/* 学科 */}
-            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 items-center mt-3">
               <label className="text-gray-900">学科</label>
               <span className="col-span-2 sm:col-span-1 ">
                 <input
-                  className="bg-slate-100 p-1 rounded-md text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  className="bg-slate-100 p-1 rounded-md text-xs sm:text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
                   type="text"
                   name="department"
                   value={profileData.department}
@@ -143,11 +143,11 @@ function UserForm() {
               </span>
             </div>
             {/* 学年*/}
-            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 items-center mt-3">
               <label className="text-gray-900">学年</label>
               <span className="col-span-2 sm:col-span-1 ">
                 <select
-                  className="bg-slate-100 p-1 rounded-md text-sm focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  className="bg-slate-100 p-1 rounded-md text-xs sm:text-sm focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
                   name="schoolYear"
                   value={profileData.schoolYear}
                   onChange={handleChange}
@@ -162,11 +162,11 @@ function UserForm() {
               </span>
             </div>
             {/* 卒業予定 */}
-            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 items-center mt-3">
               <label className="text-gray-900">卒業予定</label>
               <span className="col-span-2 sm:col-span-1 ">
                 <select
-                  className="bg-slate-100 p-1 rounded-md text-sm focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  className="bg-slate-100 p-1 rounded-md text-xs sm:text-sm focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
                   name="graduationYear"
                   value={profileData.graduationYear}
                   onChange={handleChange}
@@ -181,11 +181,11 @@ function UserForm() {
               </span>
             </div>
             {/* 希望勤務地 */}
-            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 items-center mt-3">
               <label className="text-gray-900">希望勤務地</label>
               <span className="col-span-2 sm:col-span-1 ">
                 <input
-                  className="bg-slate-100 p-1 rounded-md text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  className="bg-slate-100 p-1 rounded-md text-xs sm:text-sm text-center focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
                   type="text"
                   name="workLocation"
                   value={profileData.workLocation}
@@ -196,11 +196,11 @@ function UserForm() {
             </div>
 
             {/* 資格 */}
-            <div className="grid grid-cols-3 gap-4 items-center mt-3">
+            <div className="grid grid-cols-2 gap-4 items-center mt-3">
               <label className="text-gray-900">資格</label>
               <span className="col-span-3 sm:col-span-2">
                 <textarea
-                  className="bg-slate-100 p-1 rounded-md text-sm w-full focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
+                  className="bg-slate-100 p-1 rounded-md text-xs sm:text-sm w-full focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue"
                   name="qualification"
                   value={profileData.qualification}
                   onChange={handleChange}
@@ -211,7 +211,7 @@ function UserForm() {
             </div>
             {userData ? (
               <button
-                className="flex items-center px-14 py-2 text-center text-white bg-kd-button-cl rounded-xl hover:bg-blue-500 mt-8 mx-auto"
+                className="flex items-center px-14 py-2 text-center text-white mt-8 mx-auto rounded  transition duration-300 ease-in-out transform bg-kd-a_100 hover:bg-blue-400 hover:scale-105"
                 type="submit"
               >
                 {isEditing ? "保存" : "新規作成"}

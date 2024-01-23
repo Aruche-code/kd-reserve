@@ -1,31 +1,3 @@
-// import React from "react";
-
-// const CustomInput = React.forwardRef<
-//   HTMLInputElement,
-//   React.InputHTMLAttributes<HTMLInputElement>
-// >((props, ref) => {
-//   // CSSプロパティの型を正確に指定
-//   const inputStyle: React.CSSProperties = {
-//     maxWidth: "340px",
-//     width: "100%",
-//     height: "45px",
-//     padding: "0",
-//     outline: "none",
-//     border: "none",
-//     borderRadius: "6px",
-//     textAlign: "center",
-//     fontSize: "1rem",
-//     backgroundColor: "#1facf3",
-//     color: "#ffffff",
-//   };
-
-//   return <input style={inputStyle} {...props} ref={ref} readOnly />;
-// });
-
-// CustomInput.displayName = "CustomInput";
-
-// export default CustomInput;
-
 import React from "react";
 import { TextField, IconButton, Box } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -33,19 +5,21 @@ import { styled } from "@mui/material/styles";
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
-    borderRadius: 4,
-    backgroundColor: theme.palette.background.paper,
-    borderColor: theme.palette.primary.main,
-    width: "150px", // Adjust width as needed
+    backgroundColor: "white",
+    width: "auto", // Adjust width as needed
     height: "30px", // Adjust height as needed
     margin: "4px",
     fontWeight: "500",
-    "&:hover fieldset": {
-      borderColor: theme.palette.primary.light,
+    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+    "&:hover": {
+      boxShadow: "0 0 10px rgba(0, 0, 255, 0.2)",
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#1b4c6a",
-    },
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    border: "none", // ボーダーを消す
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    border: "none", // ホバー時もボーダーを消す
   },
   "& .MuiInputBase-input": {
     fontSize: "1rem", // Reduce font size
