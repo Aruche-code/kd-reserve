@@ -365,6 +365,7 @@ const InterviewScheduler: React.FC = () => {
                     placeholder="開始時間を選択..."
                     styles={customSelectStyles}
                     menuPlacement="auto"
+                    isSearchable={false}
                   />
                 </div>
                 {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
@@ -378,6 +379,7 @@ const InterviewScheduler: React.FC = () => {
                     placeholder="終了時間を選択..."
                     styles={customSelectStyles}
                     menuPlacement="auto"
+                    isSearchable={false}
                   />
                 ) : (
                   <p className="text-red-500 text-xs text-center p-0.5 ">
@@ -429,6 +431,7 @@ const InterviewScheduler: React.FC = () => {
                     placeholder="開始時間を選択..."
                     styles={customSelectStyles}
                     menuPlacement="auto"
+                    isSearchable={false}
                   />
                 </div>
                 {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
@@ -442,6 +445,7 @@ const InterviewScheduler: React.FC = () => {
                     placeholder="終了時間を選択..."
                     styles={customSelectStyles}
                     menuPlacement="auto"
+                    isSearchable={false}
                   />
                 ) : (
                   <p className="text-red-500 text-xs text-center p-0.5">
@@ -492,6 +496,7 @@ const InterviewScheduler: React.FC = () => {
                     placeholder="開始時間を選択..."
                     styles={customSelectStyles}
                     menuPlacement="auto"
+                    isSearchable={false}
                   />
                 </div>
                 {/* 選択された開始時間に基づいて終了時間のセレクトまたはメッセージを条件付きレンダリング */}
@@ -505,6 +510,7 @@ const InterviewScheduler: React.FC = () => {
                     placeholder="終了時間を選択..."
                     styles={customSelectStyles}
                     menuPlacement="auto"
+                    isSearchable={false}
                   />
                 ) : (
                   <p className="text-red-500 text-xs text-center p-0.5">
