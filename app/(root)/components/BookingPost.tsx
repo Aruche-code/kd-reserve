@@ -273,7 +273,7 @@ const BookingPost: React.FC<BookingPostProps> = ({
     <>
       <button
         onClick={openModal}
-        className="w-full px-4 py-1.5 text-sm shadow-md border border-kd-a_100 text-white rounded-b-md transition duration-300 ease-in-out transform bg-kd-a_100 hover:bg-blue-400 "
+        className="w-full px-4 py-1.5 text-sm shadow-md border-none text-white rounded-b-md transition duration-300 ease-in-out transform bg-kd-a_100 hover:bg-blue-400 "
         style={{ minWidth: "100px" }}
       >
         <div
