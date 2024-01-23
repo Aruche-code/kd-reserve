@@ -8,6 +8,8 @@ import { Staff, StaffNgData } from "@/app/components/types";
 import { toast } from "react-hot-toast";
 
 interface TimeSelectMenuProps {
+  id:string;
+  timeType:string;
   firsttime: string;
   endtime: string;
 }
@@ -27,92 +29,90 @@ interface WaitingList {
   studentName: string;
   studentUserId: string;
 }
-interface User {
-  id: string;
-  kana: string;
-  name: string;
-  details: string;
-  day1: string;
-  firsttime1: string;
-  endtime1: string;
-  day2: string;
-  firsttime2: string;
-  endtime2: string;
-  day3: string;
-  firsttime3: string;
-  endtime3: string;
-}
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Approval = () => {
-  const [nowUser, setNowUser] = useState<WaitingList[]>([]);
-
-  //状態の管理
-  const [timeRanges, setTimeRanges] = useState<Record<number, string[]>>({});
-  //選択済みの入れ替え
-  const clearTimeRanges = () => {
-    setTimeRanges({});
-  };
 
   // stateでtimeRangesを保持
-  const [selectedTimes, setSelectedTimes] = useState(timeRanges);
+  const [selectedTimes, setSelectedTimes] = useState<Record<string, string[]>>({});
+  //選択済みの入れ替え
+  const clearTimeRanges = () => {
+    setSelectedTimes({});
+  };
 
   //timeRangesが変化時にstateを更新
-  useEffect(() => {
-    setSelectedTimes(timeRanges);
-  }, [timeRanges]);
+  // useEffect(() => {
+  //   setSelectedTimes(timeRanges);
+  // }, [timeRanges]);
 
   // ユーザー選択時のハンドラ
   const handleSelect = (
-    id: number,
+    id: string,
     index: string,
     firsttime: string,
     endtime: string
   ) => {
-    setTimeRanges((prev) => ({
+    setSelectedTimes((prev) => ({
       ...prev,
       [id]: [index, firsttime, endtime],
     }));
   };
 
-  const getIndex = (id: number): string => {
+  const getIndex = (id: string): string => {
     return selectedTimes[id] ? selectedTimes[id][0] : "";
   };
 
-  const getFirstTime = (id: number): string => {
+  const getFirstTime = (id: string): string => {
     return selectedTimes[id] ? selectedTimes[id][1] : "";
   };
 
-  const getEndTime = (id: number): string => {
+  const getEndTime = (id: string): string => {
     return selectedTimes[id] ? selectedTimes[id][2] : "";
   };
 
   const [isNominationSelected, setIsNominationSelected] = useState(true);
 
-  const setUser = (users: any) => {
-    setNowUser(users);
-    setIsNominationSelected(true);
-  };
-  const setUser2 = (users: any) => {
-    setNowUser(users);
-    setIsNominationSelected(false);
-  };
-
   //選択時間のプルダウンのコンポーネント
   const TimeSelectMenu: React.FC<TimeSelectMenuProps> = ({
+    id,
+    timeType,
     firsttime,
     endtime,
   }) => {
     const startParts = firsttime.split(":");
     const startHour = parseInt(startParts[0], 10);
     const startMinute = parseInt(startParts[1], 10);
+    //console.log(firsttime)
 
     const endParts = endtime.split(":");
     const endHour = parseInt(endParts[0], 10);
     const endMinute = parseInt(endParts[1], 10);
 
     const timeOptions = [];
+
+    //時間変更した際の処理
+  const handleTimeSelect = (id: string, timeType: string, event: any) => {
+    const time = event.target.value;
+    timeType === "firstTime" ? (
+      setSelectedTimes({
+        ...selectedTimes,
+        [id]: [
+          ...selectedTimes[id].slice(0, 1), // firstTimeはそのまま
+          time // index 2を新しいtimeに更新
+        ]
+      })
+    ) : (
+      setSelectedTimes({
+        ...selectedTimes,
+        [id]: [
+          ...selectedTimes[id].slice(0, 2), // endTimeはそのまま
+          time // index 3を新しいtimeに更新
+        ]
+      })
+    )
+    console.log(selectedTimes)
+  }
 
     for (let hour = startHour; hour <= endHour; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
@@ -139,7 +139,9 @@ const Approval = () => {
     }
 
     return (
-      <select className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md">
+      <select className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"> 
+      {/* onchangeを実行するとエラー発生。もう少しで行けそう */}
+      {/* onChange={(event) => handleTimeSelect(id,timeType,event)} */}
         {timeOptions}
       </select>
     );
@@ -156,13 +158,7 @@ const Approval = () => {
 
   //waitinglistの取得
   const waitinglist: WaitingList[] = staffData?.wait.waitingList || [];
-  const noNominationList: WaitingList[] =
-    staffData?.wait.noNominationList || [];
-
-  useEffect(() => {
-    setNowUser(waitinglist);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [staffData]);
+  const noNominationList: WaitingList[] = staffData?.wait.noNominationList || [];
 
   //bookingに追加(指名あり)
   const addBooking = async (
@@ -181,6 +177,8 @@ const Approval = () => {
       time: time,
       details: detail,
     };
+
+    //console.log(body)
     const response = await axios.post("/api/staff/approvallist", body);
 
     if (response.status === 201) {
@@ -189,7 +187,6 @@ const Approval = () => {
       toast.error("保存できませんでした");
     }
 
-    setNowUser(waitinglist);
   };
 
   //staffの選択状況
@@ -221,8 +218,6 @@ const Approval = () => {
     } else {
       toast.error("保存できませんでした");
     }
-
-    setNowUser(noNominationList);
   };
 
   return (
@@ -235,7 +230,7 @@ const Approval = () => {
                 ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
                 : "border-gray-200 bg-gray-50"
             }`}
-            onClick={() => (setUser(waitinglist), clearTimeRanges())}
+            onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
           >
             指名あり
           </button>
@@ -245,7 +240,7 @@ const Approval = () => {
                 ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
                 : "border-gray-200 bg-gray-50"
             }`}
-            onClick={() => (setUser2(noNominationList), clearTimeRanges())}
+            onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
           >
             指名なし
           </button>
@@ -253,8 +248,12 @@ const Approval = () => {
       </div>
       <div className="mt-12 w-full bg-gray-100 h-auto">
         <div className="flex flex-col items-center h-full">
-          {isNominationSelected
-            ? nowUser.map((user, index) => (
+
+          {isNominationSelected ? (
+            waitinglist?.length === 0 ? ( 
+              <div className="text-center">指名ありの承認待ちはありません</div>
+            ) : (
+              waitinglist?.map((user, index) => (
                 <div className="mt-2" key={user.id}>
                   <div>
                     <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
@@ -271,7 +270,7 @@ const Approval = () => {
                             className="border-b-2 cursor-pointer border-gray-200"
                             onClick={() =>
                               handleSelect(
-                                index,
+                                user.id,
                                 user.firstYmd,
                                 user.firstStartTime,
                                 user.firstEndTime
@@ -288,7 +287,7 @@ const Approval = () => {
                             onClick={() => {
                               if (user.secondYmd) {
                                 handleSelect(
-                                  index,
+                                  user.id,
                                   user.secondYmd,
                                   user.secondStartTime,
                                   user.secondEndTime
@@ -309,7 +308,7 @@ const Approval = () => {
                             onClick={() => {
                               if (user.thirdYmd) {
                                 handleSelect(
-                                  index,
+                                  user.id,
                                   user.thirdYmd,
                                   user.thirdStartTime,
                                   user.thirdEndTime
@@ -326,9 +325,9 @@ const Approval = () => {
                         </div>
                         <div className="p-3 px-5 mx-2 my-2 border-l-2">
                           <div className="flex flex-row">
-                            {getIndex(index) ? (
+                            {getIndex(user.id) ? (
                               <div>
-                                {getIndex(index)}　[{user.details}]
+                                {getIndex(user.id)}　[{user.details}]
                               </div>
                             ) : (
                               <div>{user.details}</div>
@@ -338,15 +337,19 @@ const Approval = () => {
                           <div className="flex flex-row">
                             <div className="m-2 w-24">
                               <TimeSelectMenu
-                                firsttime={getFirstTime(index)}
-                                endtime={getEndTime(index)}
+                                id={user.id}
+                                timeType="firstTime"
+                                firsttime={getFirstTime(user.id)}
+                                endtime={getEndTime(user.id)}
                               />
                             </div>
                             <div className="m-1 mt-2">～</div>
                             <div className="m-2 w-24">
-                              <TimeSelectMenu
-                                firsttime={getFirstTime(index)}
-                                endtime={getEndTime(index)}
+                            <TimeSelectMenu
+                                id={user.id}
+                                timeType="endTime"
+                                firsttime={getFirstTime(user.id)}
+                                endtime={getEndTime(user.id)}
                               />
                             </div>
                           </div>
@@ -358,9 +361,9 @@ const Approval = () => {
                                 addBooking(
                                   user.id,
                                   user.studentUserId,
-                                  getIndex(index),
-                                  getFirstTime(index),
-                                  getEndTime(index),
+                                  getIndex(user.id),
+                                  getFirstTime(user.id),
+                                  getEndTime(user.id),
                                   user.details
                                 );
                               }}
@@ -374,139 +377,150 @@ const Approval = () => {
                   </div>
                 </div>
               ))
-            : nowUser.map((user, index) => (
-                <div className="mt-2" key={user.id}>
-                  <div>
-                    <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
-                      <div className="flex flex-row ">
-                        <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
-                          {user.studentName}
-                          <br />
-                        </div>
-                        <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                          <div
-                            className="border-b-2 cursor-pointer border-gray-200"
-                            onClick={() =>
-                              handleSelect(
-                                index,
-                                user.firstYmd,
-                                user.firstStartTime,
-                                user.firstEndTime
-                              )
-                            }
-                          >
-                            1. {user.firstYmd}
-                            {"　"}
-                            {user.firstStartTime} ~ {user.firstEndTime}
+            )
+          ) : (
+            noNominationList?.length === 0 ? ( 
+              <div className="text-center">指名なしの承認待ちはありません</div>
+            ) : (
+              noNominationList?.map((user, index) => (
+                  <div className="mt-2" key={user.id}>
+                    <div>
+                      <div className="mt-3 mb-5 w-full border-2 bg-white border-gray-200 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl">
+                        <div className="flex flex-row ">
+                          <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
+                            {user.studentName}
+                            <br />
                           </div>
-                          {/* 2. */}
-                          <div
-                            className="border-b-2 cursor-pointer border-gray-200"
-                            onClick={() => {
-                              if (user.secondYmd) {
+                          <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
+                            <div
+                              className="border-b-2 cursor-pointer border-gray-200"
+                              onClick={() =>
                                 handleSelect(
-                                  index,
-                                  user.secondYmd,
-                                  user.secondStartTime,
-                                  user.secondEndTime
-                                );
-                              } else {
-                              }
-                            }}
-                          >
-                            2.{" "}
-                            {user.secondYmd
-                              ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
-                              : "希望日がありません"}
-                          </div>
-
-                          {/* 3. */}
-                          <div
-                            className="border-b-2 cursor-pointer border-gray-200"
-                            onClick={() => {
-                              if (user.thirdYmd) {
-                                handleSelect(
-                                  index,
-                                  user.thirdYmd,
-                                  user.thirdStartTime,
-                                  user.thirdEndTime
-                                );
-                              } else {
-                              }
-                            }}
-                          >
-                            3.{" "}
-                            {user.thirdYmd
-                              ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
-                              : "希望日がありません"}
-                          </div>
-                        </div>
-                        <div className="p-3 px-5 mx-2 my-2 border-l-2">
-                          <div className="flex flex-row">
-                            {getIndex(index) ? (
-                              <div>
-                                {getIndex(index)}　[{user.details}]
-                              </div>
-                            ) : (
-                              <div>{user.details}</div>
-                            )}
-                          </div>
-                          {/* firsttimeselect */}
-                          <div className="flex flex-row">
-                            <div className="m-2 w-24">
-                              <TimeSelectMenu
-                                firsttime={getFirstTime(index)}
-                                endtime={getEndTime(index)}
-                              />
-                            </div>
-                            <div className="m-1 mt-2">～</div>
-                            <div className="m-2 w-24">
-                              <TimeSelectMenu
-                                firsttime={getFirstTime(index)}
-                                endtime={getEndTime(index)}
-                              />
-                            </div>
-                          </div>
-                          {/* endtimeselect */}
-                          <div className="flex justify-end">
-                            <select
-                              onChange={(e) => setSelectValue(e.target.value)}
-                              className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md"
-                            >
-                              {staff.map((staff) => (
-                                <option
-                                  className="text-sm"
-                                  key={staff.name}
-                                  value={staff.name}
-                                >
-                                  {staff.name}
-                                </option>
-                              ))}
-                            </select>
-                            <button
-                              className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
-                              onClick={() => {
-                                const selectedStaffName = selectValue;
-                                addNominationBooking(
                                   user.id,
-                                  selectedStaffName,
-                                  user.studentUserId,
-                                  getIndex(index),
-                                  getFirstTime(index),
-                                  getEndTime(index),
-                                  user.details
-                                );
+                                  user.firstYmd,
+                                  user.firstStartTime,
+                                  user.firstEndTime
+                                )
+                              }
+                            >
+                              1. {user.firstYmd}
+                              {"　"}
+                              {user.firstStartTime} ~ {user.firstEndTime}
+                            </div>
+                            {/* 2. */}
+                            <div
+                              className="border-b-2 cursor-pointer border-gray-200"
+                              onClick={() => {
+                                if (user.secondYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.secondYmd,
+                                    user.secondStartTime,
+                                    user.secondEndTime
+                                  );
+                                } else {
+                                }
                               }}
                             >
-                              承認
-                            </button>
+                              2.{" "}
+                              {user.secondYmd
+                                ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                                : "希望日がありません"}
+                            </div>
+
+                            {/* 3. */}
+                            <div
+                              className="border-b-2 cursor-pointer border-gray-200"
+                              onClick={() => {
+                                if (user.thirdYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.thirdYmd,
+                                    user.thirdStartTime,
+                                    user.thirdEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              3.{" "}
+                              {user.thirdYmd
+                                ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                                : "希望日がありません"}
+                            </div>
+                          </div>
+                          <div className="p-3 px-5 mx-2 my-2 border-l-2">
+                            <div className="flex flex-row">
+                              {getIndex(user.id) ? (
+                                <div>
+                                  {getIndex(user.id)}　[{user.details}]
+                                </div>
+                              ) : (
+                                <div>{user.details}</div>
+                              )}
+                            </div>
+                            {/* firsttimeselect */}
+                            <div className="flex flex-row">
+                              <div className="m-2 w-24">
+                                <TimeSelectMenu
+                                  id={user.id}
+                                  timeType="firstTime"
+                                  firsttime={getFirstTime(user.id)}
+                                  endtime={getEndTime(user.id)}
+                                />
+                              </div>
+                              <div className="m-1 mt-2">～</div>
+                              <div className="m-2 w-24">
+                                <TimeSelectMenu
+                                  id={user.id}
+                                  timeType="endTime"
+                                  firsttime={getFirstTime(user.id)}
+                                  endtime={getEndTime(user.id)}
+                                />
+                              </div>
+                            </div>
+                            {/* endtimeselect */}
+                            <div className="flex justify-end">
+                              <select
+                                onChange={(e) => setSelectValue(e.target.value)}
+                                className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md"
+                              >
+                                {staff.map((staff) => (
+                                  <option
+                                    className="text-sm"
+                                    key={staff.name}
+                                    value={staff.name}
+                                  >
+                                    {staff.name}
+                                  </option>
+                                ))}
+                              </select>
+                              <button
+                                className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                                onClick={() => {
+                                  const selectedStaffName = selectValue;
+                                  addNominationBooking(
+                                    user.id,
+                                    selectedStaffName,
+                                    user.studentUserId,
+                                    getIndex(user.id),
+                                    getFirstTime(user.id),
+                                    getEndTime(user.id),
+                                    user.details
+                                  );
+                                }}
+                              >
+                                承認
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+              ))
+            )
+          )}
         </div>
       </div>
     </div>
