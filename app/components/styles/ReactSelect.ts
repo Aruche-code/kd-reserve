@@ -32,13 +32,13 @@ export const customSelectStyles = {
   control: (provided: any) => ({
     ...provided,
     backgroundColor: "white",
-    borderColor: "#c0c0c0",
+    borderColor: "transparent", // ボーダーを透明に
     minHeight: "20px",
     boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
     "&:hover": {
-      borderColor: "#a0a0a0",
+      boxShadow: "0 0 10px rgba(0, 0, 255, 0.2)",
     },
-    width: "150px",
+    width: "auto",
     margin: "4px",
   }),
   valueContainer: (provided: any) => ({

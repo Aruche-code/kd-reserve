@@ -32,8 +32,10 @@ const ReservationTags: React.FC<ReservationTagsProps> = ({
         <div
           key={tag}
           onClick={() => setSelectedTag(tag)}
-          className={`m-1 p-1 border rounded cursor-pointer shadow hover:shadow-md transition-all text-center ${
-            tag === selectedTag ? "bg-blue-200" : "bg-white"
+          className={`m-1 p-1 text-center border rounded cursor-pointer shadow focus:outline-none focus:shadow-custom-blue hover:shadow-custom-blue ${
+            tag === selectedTag
+              ? "bg-[rgba(56,170,201,0.4)]" //kd-a_100
+              : "bg-white"
           }`}
         >
           {tag}
