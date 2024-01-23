@@ -147,7 +147,7 @@ const Home = () => {
 
         let firstValue = sendTimes[firstKey]; 
 
-        if (firstValue.includes("全日")) {
+        if (firstValue.includes("終日")) {
             firstValue = ["allng"]
         }
 
@@ -218,11 +218,81 @@ const Home = () => {
                 };
             }
         });
-        const jsonSelectedTimes = JSON.stringify(selectedTimes);
     };
+    const deleteAll = (day:string, time:string) => {
+        setSelectedAll((prev) => {
+            if (prev[day]) {
+                // dayが存在する場合は、時間を空にする
+                return {
+                ...prev,
+                [day]: [], 
+                };
+            } else {
+                // それ以外は変更なし
+                return {
+                ...prev,
+                [day]: [time],
+                }; 
+            }
+        });
+    
+    };
+
+    const [selectedAll, setSelectedAll] = useState<{ [key: string]: string[] }>({}); //一括選択色変更用
+    //空にする
+    const toggleclear = (day: string) => {
+        setSelectedTimes(prev => {
+            if (prev[day]) {
+            // 存在する場合は空にする
+            return {
+                ...prev,
+                [day]: [],
+            };
+        
+            } else {
+            // 存在しない場合は何もしない
+            return prev;
+            }
+        
+        });
+        
+        setSendTimes(prev => {
+            if (prev[day]) {
+            // 存在する場合は空にする  
+            return {
+                ...prev,
+                [day]: [],
+            };
+            
+            } else {
+            // 存在しない場合は何もしない
+            return prev;
+            }
+        
+        });
+    }
+    const toggleBgColorALL = (day:string, time:string) => {
+        setSelectedAll((prev) => {
+            if (prev[day]) {
+                // dayが存在する場合は、時間を空にする
+                return {
+                ...prev,
+                [day]: [time], 
+                };
+            } else {
+                // dayが存在しない場合、新しく作成する
+                return {
+                    ...prev,
+                    [day]: [time],
+                };
+            }
+        });
+    }
 
     //時間の範囲指定
     const toggleALL = (value:string) => {
+        toggleBgColorALL(selectedDay,value)
+        toggleclear(selectedDay)
         switch (value) {
             case "午前":
                 const timeAM = [
@@ -233,6 +303,7 @@ const Home = () => {
                 {timeAM.map((time) => (
                     toggleBgColor(selectedDay,time)
                 ))};
+                //一括選択処理
 
             break;
         
@@ -260,13 +331,12 @@ const Home = () => {
                 ))};
 
         }
-        toggleBgColor(selectedDay,value)
         
     }
 
     //全体選択
     const timeAll = [
-        "午前", "午後", "全日",
+        "午前", "午後", "終日",
     ]
 
     // 表示する時間の選択肢
@@ -281,6 +351,13 @@ const Home = () => {
     // timeが指定された日付の時間配列に含まれているかを確認する関数
     const isTimeIncluded = (day: string, time: string) => {
         const timeslot = selectedTimes[day];
+        console.log(selectedTimes[day])
+        console.log(selectedAll[day])
+        return timeslot ? timeslot.includes(time) : false;
+    };
+    const isTimeIncludedall = (day: string, time: string) => {
+        const timeslot = selectedAll[day];
+        //console.log(selectedTimes[day])
         return timeslot ? timeslot.includes(time) : false;
     };
 
@@ -374,9 +451,9 @@ const Home = () => {
                                             <div
                                                 key={time}
                                                 className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
-                                                isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                                isTimeIncludedall(selectedDay,time) ? "bg-blue-500 text-white" : "bg-white"
                                                 }`}
-                                                onClick={() => toggleALL(time)}
+                                                onClick={() => {toggleALL(time)}}
                                             >
                                                 <span>{time}</span>
                                             </div>
@@ -389,16 +466,16 @@ const Home = () => {
                                             <div
                                                 key={time}
                                                 className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
-                                                isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                                isTimeIncluded(selectedDay,time) ? "bg-blue-500 text-white" : "bg-white"
                                                 }`}
-                                                onClick={() => toggleBgColor(selectedDay,time)}
+                                                onClick={() => {deleteAll(selectedDay,time),toggleBgColor(selectedDay,time)}}
                                             >
                                                 <span>{time}</span>
                                             </div>
                                         ))}
                                     </div>
                                     <div className="text-center">
-                                        <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
+                                        <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-6 mb-2 border border-blue-700 rounded">
                                             保存
                                         </button>
                                     </div>
@@ -524,9 +601,9 @@ const Home = () => {
                                 <div
                                     key={time}
                                     className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
-                                    isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                    isTimeIncludedall(selectedDay,time) ? "bg-blue-500 text-white" : "bg-white"
                                     }`}
-                                    onClick={() => toggleALL(time)}
+                                    onClick={() => {toggleBgColorALL(selectedDay,time),toggleALL(time)}}
                                 >
                                     <span>{time}</span>
                                 </div>
@@ -539,16 +616,16 @@ const Home = () => {
                                 <div
                                     key={time}
                                     className={`border border-black hover:border-gray-400 rounded-lg flex items-center justify-center w-16 h-10 m-2 font-bold ${
-                                    isTimeIncluded(selectedDay,time) ? "bg-gray-400" : "bg-white"
+                                    isTimeIncluded(selectedDay,time) ? "bg-blue-500 text-white" : "bg-white"
                                     }`}
-                                    onClick={() => toggleBgColor(selectedDay,time)}
+                                    onClick={() => {deleteAll(selectedDay,time),toggleBgColor(selectedDay,time)}}
                                 >
                                     <span>{time}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="text-center">
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
+                            <button onClick={handleClick} className="bg-blue-300 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 mb-2 border border-blue-700 rounded">
                                 保存
                             </button>
                         </div>

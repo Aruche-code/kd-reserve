@@ -27,21 +27,6 @@ interface WaitingList {
   studentName: string;
   studentUserId: string;
 }
-interface User {
-  id: string;
-  kana: string;
-  name: string;
-  details: string;
-  day1: string;
-  firsttime1: string;
-  endtime1: string;
-  day2: string;
-  firsttime2: string;
-  endtime2: string;
-  day3: string;
-  firsttime3: string;
-  endtime3: string;
-}
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -137,9 +122,11 @@ const Approval = () => {
         );
       }
     }
+    
 
     return (
       <select className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md">
+        <option value="" selected disabled>"選択"</option>
         {timeOptions}
       </select>
     );
@@ -151,6 +138,7 @@ const Approval = () => {
     fetcher
   );
 
+  //get-----------------------------------------------------------------------------------------------
   //staffデータの取得
   const staff: Staff[] = staffData?.wait.staffList || [];
 
@@ -164,6 +152,7 @@ const Approval = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [staffData]);
 
+  //POST--------------------------------------------------------------------------------------------
   //bookingに追加(指名あり)
   const addBooking = async (
     id: string,
@@ -214,15 +203,17 @@ const Approval = () => {
       details: detail,
     };
 
-    const response = await axios.post("/api/staff/approvallist", body);
+    console.log(staffName,ymd,time);
 
-    if (response.status === 201) {
-      toast.success("保存できました");
-    } else {
-      toast.error("保存できませんでした");
-    }
+    // const response = await axios.post("/api/staff/approvallist/nonominationList", body);
 
-    setNowUser(noNominationList);
+    // if (response.status === 201) {
+    //   toast.success("保存できました");
+    // } else {
+    //   toast.error("保存できませんでした");
+    // }
+
+    // setNowUser(noNominationList);
   };
 
   return (
