@@ -389,7 +389,7 @@ const InterviewScheduler: React.FC = () => {
               </div>
 
               {/* 第二希望日時 */}
-              {/* 日付ピッカーコンポーネント */}
+              {/* 日付ピッカーコンポーネント   */}
               <div className=" rounded p-2 mx-auto">
                 <span className="opacity-30 m-2 ">※必須</span>
                 <div className="flex justify-between items-center">
