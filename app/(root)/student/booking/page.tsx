@@ -300,7 +300,7 @@ const InterviewScheduler: React.FC = () => {
         <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white text-center">
           予約内容を選んでください
         </div>
-        <div className=" m-4 bg-slate-100 rounded-md shadow-md border border-c-black_200">
+        <div className=" m-4 bg-white rounded-md ">
           {/* 詳細エリア */}
           <h2 className="text-base font-bold p-4">
             <InfoIcon style={{ fontSize: "30px", opacity: 0.4 }} />
@@ -326,7 +326,7 @@ const InterviewScheduler: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 pt-0 m-0 sm:pb-7">
               {/* 第一希望日時 */}
               {/* 日付ピッカーコンポーネント */}
-              <div className=" rounded p-2 mx-auto">
+              <div className=" rounded p-2 mx-auto bg-slate-100">
                 <span className="opacity-30 m-2 ">※必須</span>
                 <div className="flex justify-between items-center">
                   <h1 className="ml-2 mt-3 mb-3">第一希望日を入力</h1>
@@ -392,7 +392,7 @@ const InterviewScheduler: React.FC = () => {
 
               {/* 第二希望日時 */}
               {/* 日付ピッカーコンポーネント   */}
-              <div className=" rounded p-2 mx-auto">
+              <div className=" rounded p-2 mx-auto bg-slate-100">
                 <span className="opacity-30 m-2 ">※必須</span>
                 <div className="flex justify-between items-center">
                   <h1 className="ml-2 mt-3 mb-3">第二希望日を入力</h1>
@@ -457,7 +457,7 @@ const InterviewScheduler: React.FC = () => {
               </div>
               {/* 第三希望日時 */}
               {/* 日付ピッカーコンポーネント */}
-              <div className=" rounded p-2 mx-auto">
+              <div className=" rounded p-2 mx-auto bg-slate-100">
                 <span className="opacity-30 m-2 ">※任意</span>
                 <div className="flex justify-between items-center">
                   <h1 className="ml-2 mt-3 mb-3">第三希望日を入力</h1>
@@ -523,23 +523,23 @@ const InterviewScheduler: React.FC = () => {
             </div>
           </div>
           {/* 送信ボタン */}
-          <div>
-            <BookingPost
-              staffData={staffData}
-              selectedStaffMember={selectedStaffMember}
-              selectedTag={selectedTag}
-              firstPreferenceDate={firstPreferenceDate}
-              firstPreferenceStartTime={firstPreferenceStartTime}
-              firstPreferenceEndTime={firstPreferenceEndTime}
-              secondPreferenceDate={secondPreferenceDate}
-              secondPreferenceStartTime={secondPreferenceStartTime}
-              secondPreferenceEndTime={secondPreferenceEndTime}
-              thirdPreferenceDate={thirdPreferenceDate}
-              thirdPreferenceStartTime={thirdPreferenceStartTime}
-              thirdPreferenceEndTime={thirdPreferenceEndTime}
-              resetAll={resetAll}
-            />
-          </div>
+        </div>
+        <div>
+          <BookingPost
+            staffData={staffData}
+            selectedStaffMember={selectedStaffMember}
+            selectedTag={selectedTag}
+            firstPreferenceDate={firstPreferenceDate}
+            firstPreferenceStartTime={firstPreferenceStartTime}
+            firstPreferenceEndTime={firstPreferenceEndTime}
+            secondPreferenceDate={secondPreferenceDate}
+            secondPreferenceStartTime={secondPreferenceStartTime}
+            secondPreferenceEndTime={secondPreferenceEndTime}
+            thirdPreferenceDate={thirdPreferenceDate}
+            thirdPreferenceStartTime={thirdPreferenceStartTime}
+            thirdPreferenceEndTime={thirdPreferenceEndTime}
+            resetAll={resetAll}
+          />
         </div>
       </div>
     </div>
