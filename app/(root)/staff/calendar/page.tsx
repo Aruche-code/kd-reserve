@@ -115,6 +115,7 @@ const Home = () => {
         if (response) {
             getdata(); 
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response]);
 
     //POST処理------------------------------------------------------------//

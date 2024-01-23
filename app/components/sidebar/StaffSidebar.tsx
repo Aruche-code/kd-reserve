@@ -15,7 +15,7 @@ const Sidebar = () => {
   const pathname = usePathname(); // アクティブなメニューを追跡するための状態
 
   const Menus = [
-    { title: "ホーム", icon: <HomeIcon />, link: "/staff", gap: false },
+    { title: "ホーム", icon: <HomeIcon />, link: "/staff", gap: true },
     {
       title: "カレンダー",
       icon: <CalendarTodaySharpIcon />, //適切なアイコンに変えてください
@@ -73,9 +73,8 @@ const Sidebar = () => {
               menu.link ? (
                 <Link href={menu.link} key={index}>
                   <li
-                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${
-                      pathname === menu.link ? "bg-white text-kd-button-cl" : ""
-                    }`}
+                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${pathname === menu.link ? "bg-white text-kd-button-cl" : ""
+                      }`}
                   >
                     {menu.icon}
                     <span>{menu.title}</span>
@@ -109,12 +108,16 @@ const Sidebar = () => {
     <aside>
       <div className="flex">
         <div
-          className={`${
-            open ? "w-48" : "w-20"
-          } h-screen p-5 pt-8 relative duration-300 bg-kd-sub2-cl`}
+          className={`${open ? "w-48" : "w-20"
+            } h-screen p-5 pt-8 relative duration-300 bg-kd-sub2-cl`}
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
+          <div
+            className={`w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center absolute top-4 left-4 mt-2`}
+          >
+            職員
+          </div>
           <ul className="pt-6 text-white">
             {Menus.map((menu, index) =>
               menu.link ? (
@@ -127,7 +130,7 @@ const Sidebar = () => {
                   >
                     {menu.icon}
                     <span
-                      className={`${ !open && "hidden" } origin-left duration-200`}
+                      className={`${!open && "hidden"} origin-left duration-200`}
                     >
                       {menu.title}
                     </span>
