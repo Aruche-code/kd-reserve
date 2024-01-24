@@ -30,7 +30,7 @@ const Home = () => {
     data: homeData,
     error,
     mutate,
-  } = useSWR<HomeData>("/api/student", fetcher);
+  } = useSWR<HomeData>("/api/student/student", fetcher);
 
   if (error) return <div>エラーが発生しました</div>;
 
