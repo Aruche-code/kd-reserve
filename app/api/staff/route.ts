@@ -8,7 +8,7 @@ import connectDb from "@/app/actions/connectDb";
 // 職員ごとの確定した予定の取得用API
 export const GET = async (req: Request, res: NextResponse) => {
   try {
-    await connectDb; // dbに接続
+    await connectDb(); // dbに接続
 
     // 操作している職員のidを取得
     const userMail = await getUserMail();
