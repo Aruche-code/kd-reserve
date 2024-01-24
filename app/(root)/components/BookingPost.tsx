@@ -84,13 +84,13 @@ const BookingPost: React.FC<BookingPostProps> = ({
     );
   };
 
-  const isAnyThirdFieldNull = () => {
-    return (
-      !thirdPreferenceDate ||
-      !thirdPreferenceStartTime ||
-      !thirdPreferenceEndTime
-    );
-  };
+  // const isAnyThirdFieldNull = () => {
+  //   return (
+  //     !thirdPreferenceDate ||
+  //     !thirdPreferenceStartTime ||
+  //     !thirdPreferenceEndTime
+  //   );
+  // };
 
   const handleConfirmSubmit = async () => {
     closeModal();
@@ -108,18 +108,18 @@ const BookingPost: React.FC<BookingPostProps> = ({
       return;
     }
 
-    if (isAnyThirdFieldNull()) {
-      toast.error("第三希望日の入力に不備があります。", {
-        style: {
-          textAlign: "center",
-          color: "#ef4444",
-          lineHeight: "1.5",
-          fontSize: "14px",
-        },
-      });
-      setIsLoading(false);
-      return;
-    }
+    // if (isAnyThirdFieldNull()) {
+    //   toast.error("第三希望日の入力に不備があります。", {
+    //     style: {
+    //       textAlign: "center",
+    //       color: "#ef4444",
+    //       lineHeight: "1.5",
+    //       fontSize: "14px",
+    //     },
+    //   });
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     const data = {
       staffUserId: selectedStaffMember,
