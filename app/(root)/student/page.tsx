@@ -29,6 +29,7 @@ const Home = () => {
   const { data: homeData, error } = useSWR<HomeData>("/api/student", fetcher);
 
   if (error) return <div>エラーが発生しました</div>;
+  if (!homeData) return;
 
   const handleCancelBooking = async (id: string) => {
     try {
@@ -67,7 +68,7 @@ const Home = () => {
         </div>
 
         <div className="p-4">
-          {homeData?.getBookingList ? (
+          {homeData.getBookingList ? (
             homeData.getBookingList.length === 0 ? (
               <div className="text-center">現在確定した予約はありません</div>
             ) : (
@@ -134,7 +135,7 @@ const Home = () => {
           承認待ちリクエスト内容
         </div>
         <div className="p-4">
-          {homeData?.getWaitingList ? (
+          {homeData.getWaitingList ? (
             homeData.getWaitingList.length === 0 ? (
               <div className="text-center">現在承認待ちの予定はありません</div>
             ) : (
