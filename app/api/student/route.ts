@@ -44,7 +44,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     });
 
     return NextResponse.json(
-      { message: "Success", getBookingList },
+      { message: "Success", getBookingList, getWaitingList },
       { status: 200 }
     );
   } catch (err) {
