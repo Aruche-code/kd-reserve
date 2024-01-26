@@ -12,16 +12,16 @@ export const GET = async (req: Request, res: NextResponse) => {
     const usermail = await getUserMail();
     const studentId = await getUserId(usermail);
 
-    // const getBookingList = await prisma.booking.findMany({
-    //   where: { studentUserId: studentId },
-    //   select: {
-    //     id: true,
-    //     staffName: true,
-    //     ymd: true,
-    //     time: true,
-    //     details: true,
-    //   },
-    // });
+    const getBookingList = await prisma.booking.findMany({
+      where: { studentUserId: studentId },
+      select: {
+        id: true,
+        staffName: true,
+        ymd: true,
+        time: true,
+        details: true,
+      },
+    });
 
     const getWaitingList = await prisma.waitingList.findMany({
       where: { studentUserId: studentId },
@@ -42,7 +42,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     });
 
     return NextResponse.json(
-      { message: "Success", getWaitingList },
+      { message: "Success", getBookingList, getWaitingList },
       { status: 200 }
     );
   } catch (err) {
