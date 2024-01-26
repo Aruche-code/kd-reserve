@@ -8,7 +8,6 @@ export const DELETE = async (req: Request, res: NextResponse) => {
   try {
     const { scheduleId } = await req.json();
 
-    await connectDb();
     await prisma.waitingList.delete({
       where: { id: scheduleId },
     });
@@ -16,7 +15,5 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     return NextResponse.json({ message: "Success" }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
