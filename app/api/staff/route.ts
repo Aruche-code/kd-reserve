@@ -11,7 +11,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     // 操作している職員のidを取得
     const userMail = await getUserMail();
     const staffId = await getUserId(userMail);
-    await connectDb(); // dbに接続
+    await connectDb();
 
     const getBookingList = await prisma.booking.findMany({
       where: { staffUserId: staffId },
