@@ -1,4 +1,3 @@
-import getSession from "./getSession";
 import prisma from "@/app/libs/prismadb";
 
 // 使い方
