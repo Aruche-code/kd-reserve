@@ -7,20 +7,20 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoIcon from "@mui/icons-material/Info";
 
-// interface Booking {
-//   id: string;
-//   // その他の予約関連のフィールド
-// }
+interface Booking {
+  id: string;
+  // その他の予約関連のフィールド
+}
 
-// interface Waiting {
-//   id: string;
-//   // その他の待機関連のフィールド
-// }
+interface Waiting {
+  id: string;
+  // その他の待機関連のフィールド
+}
 
 interface HomeData {
   message: string;
-  getBookingList: any;
-  getWaitingList: any;
+  getBookingList: Booking[];
+  getWaitingList: Waiting[];
 }
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
