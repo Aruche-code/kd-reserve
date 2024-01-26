@@ -8,8 +8,14 @@ import getUserId from "@/app/actions/getUserId";
 export const GET = async (req: Request, res: NextResponse) => {
   try {
     // 操作している学生のidを取得
-    const usermail = await getUserMail();
-    const studentId = await getUserId(usermail);
+    const userMail = await getUserMail();
+    const student: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 学生のid
+      },
+    });
+    const studentId: any = student.id;
 
     const getBookingList = await prisma.booking.findMany({
       where: { studentUserId: studentId },

@@ -14,14 +14,9 @@ const getUserId = async (email: string) => {
       },
     });
 
-    // ユーザーデータが見つからない場合の処理
-    if (!UserData?.id) {
-      return null;
-    }
-
     return UserData.id;
   } catch (error) {
-    return null; // エラーが発生した場合
+    return null; // 引数で受け取ったemailのユーザは存在しません。
   }
 };
 

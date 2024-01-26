@@ -9,7 +9,13 @@ export const GET = async (req: Request, res: NextResponse) => {
   try {
     // 操作している職員のidを取得
     const userMail = await getUserMail();
-    const staffId = await getUserId(userMail);
+    const staff: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 学生のid
+      },
+    });
+    const staffId: any = staff.id;
 
     const getBookingList = await prisma.booking.findMany({
       where: { staffUserId: staffId },
