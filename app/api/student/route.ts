@@ -11,39 +11,46 @@ export const GET = async (req: Request, res: NextResponse) => {
     const usermail = await getUserMail();
     const studentId = await getUserId(usermail);
 
-    const getBookingList = await prisma.booking.findMany({
-      where: { studentUserId: studentId },
-      select: {
-        id: true,
-        staffName: true,
-        ymd: true,
-        time: true,
-        details: true,
-      },
-    });
+    if (studentId === null) {
+      return NextResponse.json(
+        { message: "有効なメールアドレスが指定されています" },
+        { status: 400 }
+      );
+    } else {
+      const getBookingList = await prisma.booking.findMany({
+        where: { studentUserId: studentId },
+        select: {
+          id: true,
+          staffName: true,
+          ymd: true,
+          time: true,
+          details: true,
+        },
+      });
 
-    const getWaitingList = await prisma.waitingList.findMany({
-      where: { studentUserId: studentId },
-      select: {
-        id: true,
-        staffName: true,
-        details: true,
-        firstYmd: true,
-        firstStartTime: true,
-        firstEndTime: true,
-        secondYmd: true,
-        secondStartTime: true,
-        secondEndTime: true,
-        thirdYmd: true,
-        thirdStartTime: true,
-        thirdEndTime: true,
-      },
-    });
+      const getWaitingList = await prisma.waitingList.findMany({
+        where: { studentUserId: studentId },
+        select: {
+          id: true,
+          staffName: true,
+          details: true,
+          firstYmd: true,
+          firstStartTime: true,
+          firstEndTime: true,
+          secondYmd: true,
+          secondStartTime: true,
+          secondEndTime: true,
+          thirdYmd: true,
+          thirdStartTime: true,
+          thirdEndTime: true,
+        },
+      });
 
-    return NextResponse.json(
-      { message: "Success", getBookingList, getWaitingList },
-      { status: 200 }
-    );
+      return NextResponse.json(
+        { message: "Success", getBookingList, getWaitingList },
+        { status: 200 }
+      );
+    }
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }

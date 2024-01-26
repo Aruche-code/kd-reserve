@@ -7,7 +7,7 @@ import prisma from "@/app/libs/prismadb";
 const getUserId = async (email: string) => {
   try {
     // 画面を操作しているユーザーのidを取得
-    const UserData: any = prisma.user.findUnique({
+    const UserData: any = await prisma.user.findUnique({
       where: { email: email },
       select: {
         id: true, // idを取得
