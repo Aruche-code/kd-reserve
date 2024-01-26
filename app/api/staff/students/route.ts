@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server"; // APIミドルウェアでレスポンスを操作するためのオブジェクト
 import { PrismaClient } from "@prisma/client"; // データベース接続とクエリのためのメインオブジェクト
-import connectDb from "@/app/actions/connectDb";
 
 const prisma = new PrismaClient(); // prisma clientのインスタンス生成
 
 // 学生一覧を取得するAPI
 export const GET = async (req: Request, res: NextResponse) => {
   try {
-    await connectDb(); // DB接続関数の呼び出し
     const user = await prisma.user.findMany({
       where: { role: "student" }, // 学生のみを検索対象とする
       select: {
@@ -31,7 +29,5 @@ export const GET = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error" }, { status: 500 });
-  } finally {
-    await prisma.$disconnect(); // DBへの接続を解除
   }
 };
