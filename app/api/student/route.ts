@@ -11,7 +11,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     // 操作している学生のidを取得
     const usermail = await getUserMail();
     const studentId = await getUserId(usermail);
-    await connectDb();
+    connectDb();
 
     const getBookingList = await prisma.booking.findMany({
       where: { studentUserId: studentId },

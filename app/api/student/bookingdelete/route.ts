@@ -8,7 +8,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
   try {
     const { scheduleId } = await req.json();
 
-    await connectDb();
+    connectDb();
     await prisma.booking.delete({
       where: { id: scheduleId },
     });

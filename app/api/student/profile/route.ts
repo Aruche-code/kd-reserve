@@ -7,7 +7,7 @@ export const GET = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
 
-    await connectDb();
+    connectDb();
     const user = await prisma.user.findMany({
       where: { email },
       include: {
@@ -56,7 +56,7 @@ export const POST = async (req: Request, res: NextResponse) => {
       workLocation,
     } = await req.json();
 
-    await connectDb();
+    connectDb();
 
     const newStudentProfile = await prisma.studentProfile.create({
       data: {
@@ -105,7 +105,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
       workLocation,
     } = await req.json();
 
-    await connectDb();
+    connectDb();
 
     const updatedUser = await prisma.user.update({
       where: { email },
@@ -154,7 +154,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
 
-    await connectDb();
+    connectDb();
     await prisma.user.update({
       where: { email },
       data: {
