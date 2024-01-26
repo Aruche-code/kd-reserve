@@ -80,7 +80,7 @@ export const POST = async (req: Request, res: NextResponse) => {
 
       // bookingに予定を追加したとき、waitingListの予定を削除
       const waitingDelete = await prisma.waitingList.delete({
-            where: { id: id },
+        where: { id: id },
       });
 
       return NextResponse.json({ message: "Success" }, { status: 201 });
@@ -94,17 +94,15 @@ export const POST = async (req: Request, res: NextResponse) => {
 
 // 画面を操作している職員が指定されているWaitinglistを表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-
   try {
-    await connectDb;
+    await connectDb();
     // すべての職員の名前のリストを取得
     const staffUserList = await prisma.user.findMany({
       where: { role: "staff" },
       select: {
-        name: true
-      }
-    })
-
+        name: true,
+      },
+    });
 
     // 操作している職員のidを取得
     const userMail = await getUserMail();
@@ -154,8 +152,8 @@ export const GET = async (req: Request, res: NextResponse) => {
     const wait = {
       staffList: staffUserList,
       waitingList: waitingList,
-      noNominationList: noNominationList
-    }
+      noNominationList: noNominationList,
+    };
 
     return NextResponse.json({ message: "Success", wait }, { status: 200 });
   } catch (err) {
