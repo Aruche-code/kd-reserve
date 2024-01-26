@@ -11,7 +11,6 @@ export const GET = async (req: Request, res: NextResponse) => {
     // 操作している学生のidを取得
     const usermail = await getUserMail();
     const studentId = await getUserId(usermail);
-    connectDb();
 
     const getBookingList = await prisma.booking.findMany({
       where: { studentUserId: studentId },
@@ -48,7 +47,5 @@ export const GET = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect(); // DBへの接続を閉じる
   }
 };

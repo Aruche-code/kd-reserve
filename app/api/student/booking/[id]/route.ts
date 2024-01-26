@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
     // URLの動的な部分からstaffUserIdを抽出
     const staffUserId = req.nextUrl.pathname.split("/").pop();
-    connectDb(); // DB接続関数の呼び出し
+
     const staffNgData = await prisma.user.findMany({
       // findManyメソッドを使用して、StaffNgモデルから複数のレコードを取得
       where: { id: staffUserId }, // whereメソッドを使用して、staffUserIdが一致するレコードを取得
@@ -30,7 +30,5 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Server Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };

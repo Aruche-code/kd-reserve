@@ -7,7 +7,6 @@ export const GET = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
 
-    connectDb();
     const user = await prisma.user.findMany({
       where: { email },
       include: {
@@ -37,8 +36,6 @@ export const GET = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -55,8 +52,6 @@ export const POST = async (req: Request, res: NextResponse) => {
       qualification,
       workLocation,
     } = await req.json();
-
-    connectDb();
 
     const newStudentProfile = await prisma.studentProfile.create({
       data: {
@@ -86,8 +81,6 @@ export const POST = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -104,8 +97,6 @@ export const PUT = async (req: Request, res: NextResponse) => {
       qualification,
       workLocation,
     } = await req.json();
-
-    connectDb();
 
     const updatedUser = await prisma.user.update({
       where: { email },
@@ -144,8 +135,6 @@ export const PUT = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -154,7 +143,6 @@ export const DELETE = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
 
-    connectDb();
     await prisma.user.update({
       where: { email },
       data: {
@@ -169,7 +157,5 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
