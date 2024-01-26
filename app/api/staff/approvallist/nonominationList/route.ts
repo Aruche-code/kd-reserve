@@ -6,12 +6,8 @@ import getUserId from "@/app/actions/getUserId";
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    const { id, staffName, studentUserId, ymd, time, details } =
+    const { id, staffUserId, staffName, studentUserId, ymd, time, details } =
       await req.json();
-
-    // 職員のユーザーIDを取得する
-    const userMail = await getUserMail();
-    const staffUserId = await getUserId(userMail);
 
     // すでに同じ時間帯に予定が存在しているかの判定
     const BookingData = await prisma.booking.findMany({
