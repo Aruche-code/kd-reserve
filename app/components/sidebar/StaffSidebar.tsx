@@ -105,7 +105,14 @@ const Sidebar = () => {
 
   //標準ナビゲーションバーcomponent
   const renderSidebar = () => (
-    <aside>
+    <aside style={{
+      position: "absolute",
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      width: "200px",
+      height: "100%",
+    }}>
       <div className="flex">
         <div
           className={`${open ? "w-48" : "w-20"
