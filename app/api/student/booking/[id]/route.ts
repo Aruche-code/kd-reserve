@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import connectDb from "@/app/actions/connectDb";
 
 // このエンドポイントは、生徒側予約画面で職員ごとのNG日程を取得するAPIです。
 // APIで仕様する検索用キーに職員のユーザーモデルのオブジェクトIDが必要フロント側からクエリパラメータとしてIDを受け取る

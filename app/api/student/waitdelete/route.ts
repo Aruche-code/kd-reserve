@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import connectDb from "@/app/actions/connectDb";
 
 // DELETE
 // 指定された予定を削除するAPI
