@@ -15,7 +15,7 @@ const getUserId = async (email: string) => {
     });
 
     // ユーザーデータが見つからない場合の処理
-    if (!UserData) {
+    if (!UserData?.id) {
       return null;
     }
 
