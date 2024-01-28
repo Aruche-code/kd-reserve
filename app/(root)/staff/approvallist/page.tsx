@@ -5,11 +5,17 @@ import Link from "next/link";
 import useSWR from "swr";
 import axios from "axios";
 import { Staff, StaffNgData } from "@/app/components/types";
+import { customSelectStyles } from "@/app/components/styles/ApprovalSelect";
 import { toast } from "react-hot-toast";
+import Select from "react-select";
+import {
+  setHours,
+  setMinutes,
+  addMinutes,
+  format,
+} from "date-fns";
 
 interface TimeSelectMenuProps {
-  id:string;
-  timeType:string;
   firsttime: string;
   endtime: string;
 }
@@ -29,6 +35,11 @@ interface WaitingList {
   studentName: string;
   studentUserId: string;
 }
+interface OptionType {
+  value: string;
+  label: string;
+  id: string;
+}
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -36,15 +47,44 @@ const Approval = () => {
 
   // stateでtimeRangesを保持
   const [selectedTimes, setSelectedTimes] = useState<Record<string, string[]>>({});
+  const [EndTimeOptions, setEndTimeOptions] = useState<OptionType[]>([]);
   //選択済みの入れ替え
   const clearTimeRanges = () => {
     setSelectedTimes({});
+    setEndTimeOptions([]);
   };
 
-  //timeRangesが変化時にstateを更新
-  // useEffect(() => {
-  //   setSelectedTimes(timeRanges);
-  // }, [timeRanges]);
+  //starttimeの選択
+  const setStartTime = (selectedOption: OptionType) => {
+    //endtimeの設定
+    const startParts = selectedOption.label.split(":");
+    const startHour = parseInt(startParts[0], 10);
+    const startMinute = parseInt(startParts[1], 10);
+    let time = setHours(setMinutes(new Date(), 0), startHour);
+    if(startMinute != 0){
+      time = addMinutes(time, 30);
+    }
+    time = addMinutes(time, 30)
+    const timeString = format(time, "HH:mm");
+    setEndTimeOptions(TimeSelectMenu(timeString.toString(),selectedTimes[selectedOption.id][2],selectedOption.id));
+
+    //送信用starttimeの変更
+    setSelectedTimes((prev) => ({
+      ...prev,
+      [selectedOption.id]: [selectedTimes[selectedOption.id][0], selectedOption.label, selectedTimes[selectedOption.id][2]],
+    }));
+
+    console.log(selectedTimes)
+  }
+
+  //endtimeの選択
+  const setEndTime = (selectedOption: OptionType) => {
+    setSelectedTimes((prev) => ({
+      ...prev,
+      [selectedOption.id]: [selectedTimes[selectedOption.id][0], selectedTimes[selectedOption.id][1],  selectedOption.label],
+    }));
+    console.log(selectedTimes)
+  }
 
   // ユーザー選択時のハンドラ
   const handleSelect = (
@@ -57,6 +97,7 @@ const Approval = () => {
       ...prev,
       [id]: [index, firsttime, endtime],
     }));
+    console.log(selectedTimes)
   };
 
   const getIndex = (id: string): string => {
@@ -74,77 +115,37 @@ const Approval = () => {
   const [isNominationSelected, setIsNominationSelected] = useState(true);
 
   //選択時間のプルダウンのコンポーネント
-  const TimeSelectMenu: React.FC<TimeSelectMenuProps> = ({
-    id,
-    timeType,
-    firsttime,
-    endtime,
-  }) => {
+  const TimeSelectMenu = (firsttime: string, endtime: string, id:string) => {
     const startParts = firsttime.split(":");
     const startHour = parseInt(startParts[0], 10);
     const startMinute = parseInt(startParts[1], 10);
-    //console.log(firsttime)
 
     const endParts = endtime.split(":");
     const endHour = parseInt(endParts[0], 10);
     const endMinute = parseInt(endParts[1], 10);
 
-    const timeOptions = [];
-
-    //時間変更した際の処理
-  const handleTimeSelect = (id: string, timeType: string, event: any) => {
-    const time = event.target.value;
-    timeType === "firstTime" ? (
-      setSelectedTimes({
-        ...selectedTimes,
-        [id]: [
-          ...selectedTimes[id].slice(0, 1), // firstTimeはそのまま
-          time // index 2を新しいtimeに更新
-        ]
-      })
-    ) : (
-      setSelectedTimes({
-        ...selectedTimes,
-        [id]: [
-          ...selectedTimes[id].slice(0, 2), // endTimeはそのまま
-          time // index 3を新しいtimeに更新
-        ]
-      })
-    )
-    console.log(selectedTimes)
-  }
-
-    for (let hour = startHour; hour <= endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        if (hour === startHour && minute < startMinute) {
-          continue;
-        }
-        if (hour === endHour && minute > endMinute) {
-          break;
-        }
-
-        const timeValue = new Date(0, 0, 0, hour, minute);
-        const formattedTime = timeValue.toLocaleTimeString("ja-JP", {
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-
-        timeOptions.push(
-          <option key={`${hour}:${minute}`} value={`${hour}:${minute}`}>
-            {formattedTime}
-          </option>
-        );
-      }
+    const options: OptionType[] = [];
+    let time = setHours(setMinutes(new Date(), 0), startHour);
+    if(startMinute != 0){
+      time = addMinutes(time, 30);
     }
 
-    return (
-      <select className="py-1 px-5 w-full bg-white border border-gray-300 rounded-lg text-xs shadow-md"> 
-      {/* onchangeを実行するとエラー発生。もう少しで行けそう */}
-      {/* onChange={(event) => handleTimeSelect(id,timeType,event)} */}
-        {timeOptions}
-      </select>
-    );
+    while (time <= setHours(setMinutes(new Date(), 0), endHour)) {
+      const timeString = format(time, "HH:mm");
+      options.push({
+        value: timeString,
+        label: timeString,
+        id:id,
+      });
+      time = addMinutes(time, 30);
+    }
+
+    if(endMinute != 0){
+      time = addMinutes(time, 30);
+    }
+
+    
+    return options;
   };
 
   // データを取得(GET){
@@ -183,6 +184,11 @@ const Approval = () => {
 
     if (response.status === 201) {
       toast.success("保存できました");
+      const staff: Staff[] = staffData?.wait.staffList || [];
+
+      //waitinglistの取得
+      const waitinglist: WaitingList[] = staffData?.wait.waitingList || [];
+      const noNominationList: WaitingList[] = staffData?.wait.noNominationList || [];
     } else {
       toast.error("保存できませんでした");
     }
@@ -335,21 +341,20 @@ const Approval = () => {
                           </div>
                           {/* firsttimeselect */}
                           <div className="flex flex-row">
-                            <div className="m-2 w-24">
-                              <TimeSelectMenu
-                                id={user.id}
-                                timeType="firstTime"
-                                firsttime={getFirstTime(user.id)}
-                                endtime={getEndTime(user.id)}
+                            <div className="m-2 w-full">
+                              <Select
+                                options={TimeSelectMenu(getFirstTime(user.id),getEndTime(user.id),user.id)} 
+                                placeholder="開始時間を選択..."
+                                styles={customSelectStyles}
+                                onChange={(selectedOption) => setStartTime(selectedOption as OptionType)} 
                               />
                             </div>
-                            <div className="m-1 mt-2">～</div>
-                            <div className="m-2 w-24">
-                            <TimeSelectMenu
-                                id={user.id}
-                                timeType="endTime"
-                                firsttime={getFirstTime(user.id)}
-                                endtime={getEndTime(user.id)}
+                            <div className="m-2 w-full">
+                              <Select
+                                options={EndTimeOptions} 
+                                placeholder="終了時間を選択..."
+                                styles={customSelectStyles}
+                                onChange={(selectedOption) => setEndTime(selectedOption as OptionType)} 
                               />
                             </div>
                           </div>
@@ -461,21 +466,20 @@ const Approval = () => {
                             </div>
                             {/* firsttimeselect */}
                             <div className="flex flex-row">
-                              <div className="m-2 w-24">
-                                <TimeSelectMenu
-                                  id={user.id}
-                                  timeType="firstTime"
-                                  firsttime={getFirstTime(user.id)}
-                                  endtime={getEndTime(user.id)}
+                              <div className="m-2 w-full">
+                                <Select
+                                  options={TimeSelectMenu(getFirstTime(user.id),getEndTime(user.id),user.id)} 
+                                  placeholder="開始時間を選択..."
+                                  styles={customSelectStyles}
+                                  onChange={(selectedOption) => setStartTime(selectedOption as OptionType)} 
                                 />
                               </div>
-                              <div className="m-1 mt-2">～</div>
-                              <div className="m-2 w-24">
-                                <TimeSelectMenu
-                                  id={user.id}
-                                  timeType="endTime"
-                                  firsttime={getFirstTime(user.id)}
-                                  endtime={getEndTime(user.id)}
+                              <div className="m-2 w-full">
+                                <Select
+                                  options={EndTimeOptions} 
+                                  placeholder="終了時間を選択..."
+                                  styles={customSelectStyles}
+                                  onChange={(selectedOption) => setEndTime(selectedOption as OptionType)} 
                                 />
                               </div>
                             </div>
