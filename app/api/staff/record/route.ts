@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import getUserMail from "@/app/actions/getUserMail";
-import connectDb from "@/app/actions/connectDb";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +8,7 @@ const prisma = new PrismaClient();
 export const GET = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
-    await connectDb();
+
     const users = await prisma.user.findMany({
       where: { email },
       include: {
@@ -48,8 +47,6 @@ export const GET = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -58,7 +55,6 @@ export const POST = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
     const { content, progress, ymd } = await req.json();
-    await connectDb();
 
     const record = await prisma.record.create({
       data: {
@@ -73,8 +69,6 @@ export const POST = async (req: Request, res: NextResponse) => {
     return NextResponse.json({ message: "Success", record }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -82,7 +76,6 @@ export const POST = async (req: Request, res: NextResponse) => {
 export const PUT = async (req: Request, res: NextResponse) => {
   try {
     const { recordId, content, progress, ymd } = await req.json();
-    await connectDb();
 
     const user = await prisma.record.update({
       where: { id: recordId },
@@ -96,8 +89,6 @@ export const PUT = async (req: Request, res: NextResponse) => {
     return NextResponse.json({ message: "Success", user }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
@@ -105,7 +96,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
 export const DELETE = async (req: Request, res: NextResponse) => {
   try {
     const recordId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
-    await connectDb();
+
     const user = await prisma.record.delete({
       where: {
         id: recordId,
@@ -115,7 +106,5 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     return NextResponse.json({ message: "Success", user }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };

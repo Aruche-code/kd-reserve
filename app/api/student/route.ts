@@ -2,16 +2,20 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 import getUserId from "@/app/actions/getUserId";
-import connectDb from "@/app/actions/connectDb";
 
 // GET
 // 職員ごとの確定した予定の取得用API
 export const GET = async (req: Request, res: NextResponse) => {
   try {
     // 操作している学生のidを取得
-    const usermail = await getUserMail();
-    const studentId = await getUserId(usermail);
-    await connectDb(); // dbに接続
+    const userMail = await getUserMail();
+    const student: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 学生のid
+      },
+    });
+    const studentId: any = student.id;
 
     const getBookingList = await prisma.booking.findMany({
       where: { studentUserId: studentId },
@@ -48,7 +52,5 @@ export const GET = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect(); // DBへの接続を閉じる
   }
 };

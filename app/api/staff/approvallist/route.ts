@@ -2,13 +2,11 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserId from "@/app/actions/getUserId";
 import getUserMail from "@/app/actions/getUserMail";
-import connectDb from "@/app/actions/connectDb";
 
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
   try {
     const { id, studentUserId, ymd, time, details } = await req.json();
-    // await main();
 
     // 職員のユーザーIDを取得する
     const userMail = await getUserMail();
@@ -80,31 +78,27 @@ export const POST = async (req: Request, res: NextResponse) => {
 
       // bookingに予定を追加したとき、waitingListの予定を削除
       const waitingDelete = await prisma.waitingList.delete({
-            where: { id: id },
+        where: { id: id },
       });
 
       return NextResponse.json({ message: "Success" }, { status: 201 });
     }
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
 // 画面を操作している職員が指定されているWaitinglistを表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
-
   try {
-    await connectDb;
     // すべての職員の名前のリストを取得
     const staffUserList = await prisma.user.findMany({
       where: { role: "staff" },
       select: {
-        name: true
-      }
-    })
-
+        id: true,
+        name: true,
+      },
+    });
 
     // 操作している職員のidを取得
     const userMail = await getUserMail();
@@ -154,25 +148,19 @@ export const GET = async (req: Request, res: NextResponse) => {
     const wait = {
       staffList: staffUserList,
       waitingList: waitingList,
-      noNominationList: noNominationList
-    }
+      noNominationList: noNominationList,
+    };
 
     return NextResponse.json({ message: "Success", wait }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
 // 指定したemailのWatinglistを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
-  console.log("DELETE");
-
   try {
-    // const email = await getUsermail() 本番
-    const email = "sample3@gmail.com"; //テスト
-    // await main();
+    const email = await getUserMail();
 
     // Userを検索
     const user = await prisma.user.findUnique({
@@ -194,7 +182,5 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     }
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };

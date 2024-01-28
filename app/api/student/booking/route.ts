@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-import connectDb from "@/app/actions/connectDb";
 
 // GET
 // 先生のプロフィール等の表示   ＊2023-12-19 最終編集 後々職員プロフィール情報がレスポンスに追加される可能性あり
 export const GET = async (req: Request, res: NextResponse) => {
   try {
-    await connectDb(); // dbに接続
     const staffUsers = await prisma.user.findMany({
       where: { role: "staff" },
       select: {
@@ -30,8 +28,6 @@ export const GET = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect(); // DBへの接続を閉じる
   }
 };
 
@@ -66,7 +62,6 @@ export const POST = async (req: Request, res: NextResponse) => {
       thirdStartTime,
       thirdEndTime,
     } = await req.json();
-    await connectDb();
 
     if (staffUserId != null) {
       // 予約情報に保存するための職員の名前を取得する
@@ -139,7 +134,5 @@ export const POST = async (req: Request, res: NextResponse) => {
     }
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };

@@ -2,15 +2,12 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 import getUserId from "@/app/actions/getUserId";
-import { User } from '../../../components/types';
-import connectDb from "@/app/actions/connectDb";
 
 // NG日程の作成
 export const POST = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail(); // 変数emailにセッション情報から取得したemail情報を格納する
 
-    await connectDb();
     const { ymd, time } = await req.json();
 
     const user = await prisma.user.findUnique({
@@ -34,20 +31,15 @@ export const POST = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
 // NG日程と予約確定日時の表示
 export const GET = async (req: Request, res: NextResponse) => {
-
   try {
-    const email = await getUserMail()  // 変数emailにセッション情報から取得したemail情報を格納する
+    const email = await getUserMail(); // 変数emailにセッション情報から取得したemail情報を格納する
     // 職員のidを取得
     const staffUserId = await getUserId(email);
-
-    await connectDb();
 
     const getstaffng = await prisma.user.findUnique({
       where: { email },
@@ -56,8 +48,8 @@ export const GET = async (req: Request, res: NextResponse) => {
           select: {
             ymd: true,
             time: true,
-          }
-        }
+          },
+        },
       },
     });
 
@@ -68,12 +60,12 @@ export const GET = async (req: Request, res: NextResponse) => {
         ymd: true,
         time: true,
         details: true,
-      }
-    })
+      },
+    });
 
     const responseData = {
-        staffng: getstaffng?.staffng,
-        booking: getbooking,
+      staffng: getstaffng?.staffng,
+      booking: getbooking,
     };
 
     return NextResponse.json(
@@ -82,19 +74,15 @@ export const GET = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
 // 指定したidのNG日程を編集
 export const PUT = async (req: Request, res: NextResponse) => {
-
   try {
-    const email = await getUserMail()  // 変数emailに操作している職員のメールアドレスを挿入
+    const email = await getUserMail(); // 変数emailに操作している職員のメールアドレスを挿入
     const staffNgId = await getUserId(email); // staffNgIdに職員のオブジェクトidを格納する
 
-    await connectDb();
     const { ymd, time } = await req.json();
 
     const updatedStaffNg = await prisma.staffNg.update({
@@ -112,17 +100,14 @@ export const PUT = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
 
 // 指定したidのNG日程を削除
 export const DELETE = async (req: Request, res: NextResponse) => {
-
   try {
     const staffNgId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
-    await connectDb();
+
     const deletedStaffNg = await prisma.staffNg.delete({
       // staffNgIdと一致するstaffNgテーブルを削除
       where: {
@@ -136,7 +121,5 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     );
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 };
