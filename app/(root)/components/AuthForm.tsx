@@ -1,8 +1,7 @@
 "use client";
-import axios from "axios";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGoogle } from "react-icons/bs";
@@ -28,14 +27,6 @@ const AuthForm = () => {
     }
   }, [status, session?.user?.role, router]);
 
-  const toggleVariant = useCallback(() => {
-    if (variant === "LOGIN") {
-      setVariant("REGISTER");
-    } else {
-      setVariant("LOGIN");
-    }
-  }, [variant]);
-
   const {
     register,
     handleSubmit,
@@ -50,15 +41,6 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-
-    if (variant === "REGISTER") {
-      // Axios Register
-      axios
-        .post("/api/register", data)
-        .then(() => signIn("credentials", data))
-        .catch(() => toast.error("登録に失敗、再入力してください。"))
-        .finally(() => setIsLoading(false));
-    }
 
     if (variant === "LOGIN") {
       // NextAuth SignIn
@@ -174,14 +156,7 @@ const AuthForm = () => {
           </div>
         </div>
         <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
-          <div>
-            {variant === "LOGIN"
-              ? "KD-reserveを初めて利用する"
-              : "すでにアカウントをお持ちですか？"}
-          </div>
-          <div onClick={toggleVariant} className="underline cursor-pointer">
-            {variant === "LOGIN" ? "アカウントを新規作成" : "ログイン"}
-          </div>
+          <div>KD-reserveを利用する</div>
         </div>
       </div>
     </div>
