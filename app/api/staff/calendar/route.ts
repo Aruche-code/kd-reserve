@@ -14,7 +14,7 @@ export const POST = async (req: Request, res: NextResponse) => {
       where: { email },
     });
 
-    const postedStaffNg = await prisma.staffNg.create({
+    await prisma.staffNg.create({
       // emailと一致するuserにstaffNgを作成
       data: {
         ymd,
@@ -25,10 +25,7 @@ export const POST = async (req: Request, res: NextResponse) => {
       },
     });
 
-    return NextResponse.json(
-      { message: "Success" /* postedStaffNg */ },
-      { status: 201 }
-    );
+    return NextResponse.json({ message: "Success" }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
@@ -37,7 +34,7 @@ export const POST = async (req: Request, res: NextResponse) => {
 // NG日程と予約確定日時の表示
 export const GET = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUserMail(); // 変数emailにセッション情報から取得したemail情報を格納する
+    const email = await getUserMail();
     // 職員のidを取得
     const staffUserId = await getUserId(email);
 
@@ -85,7 +82,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
 
     const { ymd, time } = await req.json();
 
-    const updatedStaffNg = await prisma.staffNg.update({
+    await prisma.staffNg.update({
       // staffNgIdと一致するstaffNgテーブルを編集
       where: { id: staffNgId },
       data: {
@@ -94,10 +91,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
       },
     });
 
-    return NextResponse.json(
-      { message: "Success" /* updatedStaffNg */ },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Success" }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
@@ -108,17 +102,14 @@ export const DELETE = async (req: Request, res: NextResponse) => {
   try {
     const staffNgId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
 
-    const deletedStaffNg = await prisma.staffNg.delete({
+    await prisma.staffNg.delete({
       // staffNgIdと一致するstaffNgテーブルを削除
       where: {
         id: staffNgId,
       },
     });
 
-    return NextResponse.json(
-      { message: "Success" /* deletedStaffNg */ },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Success" }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
