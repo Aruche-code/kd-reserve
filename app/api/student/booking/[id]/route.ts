@@ -9,9 +9,9 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     // URLの動的な部分からstaffUserIdを抽出
     const staffUserId = req.nextUrl.pathname.split("/").pop();
 
+    // staffUserIdが一致するレコードを取得
     const staffNgData = await prisma.user.findMany({
-      // findManyメソッドを使用して、StaffNgモデルから複数のレコードを取得
-      where: { id: staffUserId }, // whereメソッドを使用して、staffUserIdが一致するレコードを取得
+      where: { id: staffUserId },
       select: {
         name: true, // スタッフの名前
         staffng: {

@@ -22,10 +22,9 @@ export const GET = async (req: Request, res: NextResponse) => {
       name: user.name,
     }));
 
-    // 成功時のレスポンス
     return NextResponse.json(
       { message: "Success", users: transformedUsers },
-      { status: 200 } // ステータスコード all OK
+      { status: 200 }
     );
   } catch (err) {
     return NextResponse.json({ message: "Error" }, { status: 500 });

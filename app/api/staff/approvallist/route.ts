@@ -54,7 +54,7 @@ export const POST = async (req: Request, res: NextResponse) => {
       const studentName: any = studentData.name;
 
       // Bookingコレクションにデータを保存
-      const BookingCreate = await prisma.booking.create({
+      await prisma.booking.create({
         data: {
           studentUserId,
           studentName,
@@ -77,7 +77,7 @@ export const POST = async (req: Request, res: NextResponse) => {
       });
 
       // bookingに予定を追加したとき、waitingListの予定を削除
-      const waitingDelete = await prisma.waitingList.delete({
+      await prisma.waitingList.delete({
         where: { id: id },
       });
 

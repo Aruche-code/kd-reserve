@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-import getUserId from "@/app/actions/getUserId";
 
 // GET
 // 職員ごとの確定した予定の取得用API
