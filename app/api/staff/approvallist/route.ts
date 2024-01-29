@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-import { pusherServer } from "@/app/libs/pusher";
+// import { pusherServer } from "@/app/libs/pusher";
 
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
@@ -81,9 +81,9 @@ export const POST = async (req: Request, res: NextResponse) => {
         where: { id: id },
       });
 
-      await pusherServer.trigger("my-channel", "appointment-approved", {
-        message: "Your appointment has been approved.",
-      });
+      // await pusherServer.trigger("booking-channel", "booking-event", {
+      //   message: "New booking created",
+      // });
 
       return NextResponse.json({ message: "Success" }, { status: 201 });
     }
