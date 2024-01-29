@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getUserId from "@/app/actions/getUserId";
 import getUserMail from "@/app/actions/getUserMail";
 
 // Bookingコレクションに情報を登録するAPI
@@ -102,7 +101,13 @@ export const GET = async (req: Request, res: NextResponse) => {
 
     // 操作している職員のidを取得
     const userMail = await getUserMail();
-    const staffId = await getUserId(userMail);
+    const staff: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 学生のid
+      },
+    });
+    const staffId: any = staff.id;
 
     // 操作している職員が指定されている承認待ちリストの取得
     const waitingList = await prisma.waitingList.findMany({
