@@ -1,6 +1,7 @@
 "use client";
 // 生徒用サイドバーです
 import { useState, useEffect } from "react";
+import axios from 'axios';
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,6 +13,28 @@ import LogoutIcon from "@mui/icons-material/Logout";
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname(); // アクティブなメニューを追跡するための状態
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // ユーザー情報を取得するためのAPIエンドポイント
+        const response = await axios.get('/api/student/sidebar');
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const Menus = [
     { title: "ホーム", icon: <HomeIcon />, link: "/student", gap: true },
