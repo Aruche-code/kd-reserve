@@ -6,7 +6,7 @@ import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoIcon from "@mui/icons-material/Info";
-import { pusherClient } from "@/app/libs/pusher";
+// import { pusherClient } from "@/app/libs/pusher";
 
 interface Booking {
   id: string;
@@ -32,6 +32,11 @@ const Home = () => {
     error,
     mutate,
   } = useSWR<HomeData>("/api/student", fetcher);
+
+  // const channel = pusherClient.subscribe("booking-channel");
+  // channel.bind("booking-event", () => {
+  //   mutate();
+  // });
 
   const handleCancelBooking = async (id: string) => {
     try {
@@ -62,22 +67,6 @@ const Home = () => {
       ))}
     </div>
   );
-
-  useEffect(() => {
-    // Pusherチャンネルの購読
-    const channel = pusherClient.subscribe("my-channel");
-
-    // 特定のイベントに対するバインド
-    channel.bind("appointment-approved", () => {
-      mutate(); // 予約の承認イベントが発生した場合、データを再フェッチ
-    });
-
-    // コンポーネントのクリーンアップ時に購読を解除
-    return () => {
-      channel.unbind("appointment-approved");
-      pusherClient.unsubscribe("my-channel");
-    };
-  }, [mutate]);
 
   if (error) return <div>エラーが発生しました</div>;
   return (
