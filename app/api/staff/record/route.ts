@@ -23,21 +23,21 @@ export const GET = async (req: Request, res: NextResponse) => {
       email: user.email,
       studentProfile: user.studentProfile
         ? {
-            department: user.studentProfile?.department,
-            schoolYear: user.studentProfile?.schoolYear,
-            tel: user.studentProfile?.tel,
-            graduationYear: user.studentProfile?.graduationYear,
-            qualification: user.studentProfile?.qualification,
-            workLocation: user.studentProfile?.workLocation,
-          }
+          department: user.studentProfile?.department,
+          schoolYear: user.studentProfile?.schoolYear,
+          tel: user.studentProfile?.tel,
+          graduationYear: user.studentProfile?.graduationYear,
+          qualification: user.studentProfile?.qualification,
+          workLocation: user.studentProfile?.workLocation,
+        }
         : null,
       records: user.record
         ? user.record.map((record) => ({
-            recordId: record.id,
-            content: record.content,
-            progress: record.progress,
-            ymd: record.ymd,
-          }))
+          recordId: record.id,
+          content: record.content,
+          progress: record.progress,
+          ymd: record.ymd,
+        }))
         : null,
     }));
 
@@ -95,7 +95,15 @@ export const PUT = async (req: Request, res: NextResponse) => {
 // 指定したrecordを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
   try {
-    const recordId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
+    // 操作している職員のidを取得
+    const userMail = await getUserMail();
+    const record: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 学生のid
+      },
+    });
+    const recordId: any = record.id;
 
     const user = await prisma.record.delete({
       where: {

@@ -100,7 +100,15 @@ export const PUT = async (req: Request, res: NextResponse) => {
 // 指定したidのNG日程を削除
 export const DELETE = async (req: Request, res: NextResponse) => {
   try {
-    const staffNgId = "658eedaad7973a3b99ca5db0"; // staffNgIdに職員のオブジェクトidを格納する
+    // 操作している職員のidを取得
+    const userMail = await getUserMail();
+    const staffNg: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 学生のid
+      },
+    });
+    const staffNgId: any = staffNg.id;
 
     await prisma.staffNg.delete({
       // staffNgIdと一致するstaffNgテーブルを削除
