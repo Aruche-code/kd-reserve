@@ -131,6 +131,7 @@ model WaitingList {
   thirdYmd        String? // 第三希望の日時
   thirdStartTime  String? // 第三希望の開始時刻
   thirdEndTime    String? // 第三希望の終了時刻
+  createdAt       DateTime?   @default(now()) // リクエストが作成された時間
 
   // Userとの逆向きのリレーション
   userId String @db.ObjectId
