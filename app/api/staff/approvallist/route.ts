@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getUserMail from "@/app/actions/getUserMail";
-import { pusherServer } from "@/app/libs/pusher";
+import getUserMail from "@/app/actions/getUserMail";import { pusherServer } from "@/app/libs/pusher";
 
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
@@ -131,6 +130,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         thirdYmd: true,
         thirdStartTime: true,
         thirdEndTime: true,
+        createdAt: true,
       },
     });
 
@@ -151,6 +151,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         thirdYmd: true,
         thirdStartTime: true,
         thirdEndTime: true,
+        createdAt: true,
       },
     });
 
