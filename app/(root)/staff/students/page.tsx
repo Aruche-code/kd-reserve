@@ -65,7 +65,7 @@ const Students = () => {
   );
 
   const recordClick = (id: number|string) => {
-    router.push('../staff/record/')
+    router.push(`../staff/record/${id}`)
   }
 
   return (
@@ -104,7 +104,7 @@ const Students = () => {
                     }
                     title={user.name}
                     key={user.name}
-                    onClick={() => recordClick(user.email)}
+                    onClick={() => recordClick(user.id)}
                   >
                     {user.name.length > 8
                       ? user.name.slice(0, 8) + "..."
