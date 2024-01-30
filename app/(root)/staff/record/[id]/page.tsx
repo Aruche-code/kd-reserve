@@ -18,6 +18,7 @@ const Record = () => {
 
   const pathname = usePathname();
   const studentId = pathname ? pathname.split("/").pop() : "不明";
+  const responseRef = useRef<any>(null);
 
   //ローディングフラグ
   const [isLoading, setIsLoading] = useState(true);
