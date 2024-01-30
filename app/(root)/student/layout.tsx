@@ -1,5 +1,6 @@
 // 生徒用レイアウト
-import Sidebar from "@/app/components/sidebar/StudentSidebar2";
+import Sidebar from "@/app/components/sidebar/StudentSidebar";
+// import Sidebar from "@/app/components/sidebar/StudentSidebar2";
 export default function StudentLayout({
   children,
 }: {
