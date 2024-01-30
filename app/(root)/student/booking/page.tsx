@@ -458,7 +458,7 @@ const InterviewScheduler: React.FC = () => {
               {/* 第三希望日時 */}
               {/* 日付ピッカーコンポーネント */}
               <div className=" rounded p-2 mx-auto bg-slate-100">
-                <span className="opacity-30 m-2 ">※任意</span>
+                <span className="opacity-30 m-2 ">※必須</span>
                 <div className="flex justify-between items-center">
                   <h1 className="ml-2 mt-3 mb-3">第三希望日を入力</h1>
                   <button

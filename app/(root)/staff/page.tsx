@@ -1,10 +1,11 @@
 "use client";
 //ここが職員のホームルートになります
 //ログアウトボタンはサイドバーに組み込む予定です
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "axios";
 import Link from "next/link";
 import useSWR from "swr";
+import { pusherClient } from "@/app/libs/pusher";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 interface Booking {
@@ -24,14 +25,12 @@ const Home = () => {
     mutate,
   } = useSWR<HomeData>("/api/staff", fetcher);
 
-  useEffect(() => {
-    console.log(homeData)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [homeData]);
-
+  const channel = pusherClient.subscribe("booking-delete-channel");
+  channel.bind("booking-delete-event", () => {
+    mutate();
+  });
 
   if (error) return <div>エラーが発生しました</div>;
-
 
   const SkeletonRow = () => (
     <div className="mb-3 grid grid-cols-1 sm:grid-cols-4 gap-4 bg-gray-100 rounded-lg shadow-sm p-4 items-center animate-pulse">
@@ -42,21 +41,19 @@ const Home = () => {
   );
 
   return (
-
     <div className="flex flex-col justify-center items-center">
       <div className="mt-4 w-full lg:w-4/5 bg-white rounded-md shadow-md">
-
         <div className="p-3 px-6 rounded-t-lg bg-kd-s text-white">
           ■ 本日の予定
         </div>
-        {/* <div className="mt-1 mb-1 flex-grow border-b border-gray-400" ></div> */}
+
         <div className="p-4">
-        {homeData?.getBookingList ? (
-          homeData?.getBookingList.length === 0 ? (
-            <div className="text-center">本日の予定はありません</div>
-          ) : (
-            homeData?.getBookingList.map((booking: any) => (
-              <div
+          {homeData?.getBookingList ? (
+            homeData.getBookingList.length === 0 ? (
+              <div className="text-center">本日の予定はありません</div>
+            ) : (
+              homeData?.getBookingList.map((booking: any) => (
+                <div
                   className="mb-3 grid grid-cols-1 sm:grid-cols-4 gap-4 bg-gray-100 rounded-lg shadow-sm p-4 items-center"
                   key={booking.staffName}
                 >
@@ -65,7 +62,9 @@ const Home = () => {
                     <span className="font-bold text-xs md:text-sm mb-2">
                       生徒名
                     </span>
-                    <span className="text-sm md:text-base">{booking.studentName}</span>
+                    <span className="text-sm md:text-base">
+                      {booking.studentName}
+                    </span>
                   </div>
 
                   {/* 日付 */}
@@ -93,17 +92,15 @@ const Home = () => {
                       {booking.details}
                     </span>
                   </div>
-                  <Link href="../staff/record">
-                </Link>
-              </div>
-            ))
-          )
-        ) :(
-          <SkeletonRow />
-        )}
+                  <Link href="../staff/record"></Link>
+                </div>
+              ))
+            )
+          ) : (
+            <SkeletonRow />
+          )}
         </div>
       </div>
-
     </div>
   );
 };
