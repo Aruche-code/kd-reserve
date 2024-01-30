@@ -6,7 +6,7 @@ import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoIcon from "@mui/icons-material/Info";
-// import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/app/libs/pusher";
 
 interface Booking {
   id: string;
@@ -33,10 +33,10 @@ const Home = () => {
     mutate,
   } = useSWR<HomeData>("/api/student", fetcher);
 
-  // const channel = pusherClient.subscribe("booking-channel");
-  // channel.bind("booking-event", () => {
-  //   mutate();
-  // });
+  const channel = pusherClient.subscribe("booking-channel");
+  channel.bind("booking-event", () => {
+    mutate();
+  });
 
   const handleCancelBooking = async (id: string) => {
     try {
