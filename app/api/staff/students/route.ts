@@ -9,6 +9,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     const user = await prisma.user.findMany({
       where: { role: "student" }, // 学生のみを検索対象とする
       select: {
+        id:true,
         name: true,
         email: true,
       },
@@ -20,7 +21,8 @@ export const GET = async (req: Request, res: NextResponse) => {
         ? user.email.replace(/\D/g, "")
         : "", // \D: 数字以外を表す正規表現
       name: user.name,
-      email: user.email
+      email: user.email,
+      id:user.id
     }));
 
     return NextResponse.json(

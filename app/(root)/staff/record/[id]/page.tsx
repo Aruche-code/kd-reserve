@@ -1,20 +1,64 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { usePathname } from "next/navigation";
+import axios from "axios";
+import useSWR, { mutate } from "swr";
+type StudentRecordItem = {
+  content: string;
+  progress: null | string;
+  recordId: string;
+  ymd: string;
+};
 
 const Record = () => {
   const [profileOpen, setProfileOpen] = useState(false);
-  const [selected, setSelected] = useState<number | null>(null); // ここを修正
+  const [selected, setSelected] = useState<number | null>(null);
 
   const pathname = usePathname();
-  const studentId = pathname.split("/").pop(); // パスの最後の部分を取得
+  const studentId = pathname.split("/").pop();
+  const responseRef = useRef<any>(null);
+
+  //ローディングフラグ
+  const [isLoading, setIsLoading] = useState(true);
+  const [number, setnumber] = useState<string | null>(null);
+  const [id, setId] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
+  const [studentProfile, setStudentProfile] = useState({
+    department: "",
+    graduationYear: "",
+    qualification: "",
+    schoolYear: "",
+    tel: "",
+    workLocation: ""
+  });
+  const [studentRecord, setStudentRecord]  = useState<StudentRecordItem[] | null>(null);
+
+  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+  const { data: response, error } = useSWR(`/api/staff/record/${studentId}`, fetcher);
+  const getdata = () => { 
+    if(!response.responseData) {
+        setIsLoading(false);
+    } else {
+      console.log(response);
+      setnumber(response.responseData[0].email.substring(2, 9))
+      setId(response.responseData[0].id)
+      setName(response.responseData[0].name)
+      const { studentProfile, records } = response.responseData[0];
+      setStudentProfile(studentProfile);
+      setStudentRecord(records);
+      console.log(records)
+    }
+  }
 
   useEffect(() => {
-    // studentIdを使ってAPIコール等の処理
-    console.log(studentId);
-  }, [studentId]);
+    if (response) {
+        getdata(); 
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [response]);
+
 
   const data = [
     {
@@ -95,9 +139,9 @@ const Record = () => {
             ■ 学生カルテ
           </div>
           <div className="flex-col text-center mt-5 mb-5">
-            <div className="text-gray-900 text-3xl">電子太郎</div>
+            <div className="text-gray-900 text-3xl">{name}</div>
             <div className="text-gray-900 mt-2 mb-2 flex flex-row">
-              <div className="w-full ">学籍番号 ： 1111111</div>
+              <div className="w-full ">学籍番号 ： {number}</div>
             </div>
           </div>
 
@@ -117,33 +161,37 @@ const Record = () => {
                 </span>
               </div>
               {profileOpen && (
+                studentProfile ? (
                 <div className="p-2 ml-5 mr-5 pb-5 pt-5 text-gray-700 px-2 text-sm md:text-base">
                   <div className="px-5 mb-1 flex flex-row">
                     <div className="w-1/3 text-right">学科・学年　/</div>
 
-                    <div className="w-2/3 px-4">ITエキスパート 3年</div>
+                    <div className="w-2/3 px-4">{studentProfile.department ? studentProfile.department : "未指定"} /  {studentProfile.schoolYear ? studentProfile.schoolYear + "年" : "未指定"}</div>
                   </div>
                   <div className="px-5 mb-1 flex flex-row">
                     <div className="w-1/3 text-right">卒業予定　/</div>
 
-                    <div className="w-2/3 px-4">2025年</div>
+                    <div className="w-2/3 px-4">{studentProfile.graduationYear ? studentProfile.graduationYear + "年" : "未指定"}</div>
                   </div>
                   <div className="px-5 mb-1 flex flex-row">
                     <div className="w-1/3 text-right">電話番号　/</div>
 
-                    <div className="w-2/3 px-4">090-0000-0000</div>
+                    <div className="w-2/3 px-4">{studentProfile.tel ? studentProfile.tel: "未指定"}</div>
                   </div>
                   <div className="px-5 mb-1 flex flex-row">
                     <div className="w-1/3 text-right">志望勤務地　/</div>
 
-                    <div className="w-2/3 px-4">大阪府</div>
+                    <div className="w-2/3 px-4">{studentProfile.workLocation ? studentProfile.workLocation: "未指定"}</div>
                   </div>
                   <div className="px-5 mb-1 flex flex-row">
                     <div className="w-1/3 text-right">保有資格　/</div>
 
-                    <div className="w-2/3 px-4">基本情報技術者</div>
+                    <div className="w-2/3 px-4">{studentProfile.qualification ? studentProfile.qualification: "未指定"}</div>
                   </div>
                 </div>
+                ) :(
+                  null
+                )
               )}
             </div>
 
@@ -156,10 +204,11 @@ const Record = () => {
                 <div>
                   <div className="wrapper7">
                     <div className="accordion7">
-                      {data.map((item, i) => (
+                      {studentRecord ? (
+                        studentRecord.map((item:any, i) => (
                         <div className="item7" key={i}>
                           <div className="title7" onClick={() => toggle(i)}>
-                            <h2>{item.question}</h2>
+                            <h2>{item.ymd}　{item.content}</h2>
                             <span>
                               {selected === i ? (
                                 <KeyboardArrowUpIcon />
@@ -173,10 +222,25 @@ const Record = () => {
                               selected === i ? "content show7" : "content7"
                             }
                           >
-                            {item.answer}
+                            <div>
+                              <textarea
+                                className="w-full border-2 mt-2 border-gray-300 rounded-lg p-1 px-5 text-gray-800"
+                                style={{ resize: "none" }}
+                              />
+                              <div className="flex justify-end ">
+                                <button
+                                  type="button"
+                                  className="rounded-lg border border-primary-500 bg-green-300 px-6 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 hover:bg-green-500 hover:text-white"
+                                >
+                                  保存
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      ))}
+                      ))):(
+                        null
+                      )}
                     </div>
                   </div>
                 </div>
