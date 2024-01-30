@@ -65,7 +65,7 @@ const Students = () => {
 
   return (
     <div className="flex flex-col justify-center items-center mt-6">
-      <div className="bg-white rounded-lg shadow-md w-4/5 mt-5">
+      <div className="bg-white rounded-lg shadow-md w-full md:w-4/5 mt-5">
         <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
           ■ 学生一覧
         </div>
