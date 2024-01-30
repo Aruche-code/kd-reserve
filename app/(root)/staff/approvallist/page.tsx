@@ -264,7 +264,7 @@ const Approval = () => {
                 waitinglist?.map((user, index) => (
                   <div className="mt-2 w-11/12" key={user.id}>
                     <div>
-                      <div className="mt-3 mb-5 w-full bg-white rounded-lg hover:shadow-md hover:shadow-gray-300">
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
                         {/* <div className="flex flex-col"> */}
                         <div className="flex flex-col justify-center items-center text-center">
                           <div
@@ -275,8 +275,8 @@ const Approval = () => {
                             <br />
                           </div>
                           <div className="w-2/3 mt-0 mx-2 my-2 flex justify-center items-center flex-col">
-                            <div
-                              className="border-b-2 cursor-pointer border-gray-100"
+                            <button
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() =>
                                 handleSelect(
                                   user.id,
@@ -289,10 +289,10 @@ const Approval = () => {
                               1. {user.firstYmd}
                               {"　"}
                               {user.firstStartTime} ~ {user.firstEndTime}
-                            </div>
+                            </button>
                             {/* 2. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.secondYmd) {
                                   handleSelect(
@@ -313,7 +313,7 @@ const Approval = () => {
 
                             {/* 3. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.thirdYmd) {
                                   handleSelect(
@@ -394,7 +394,7 @@ const Approval = () => {
                 noNominationList?.map((user, index) => (
                   <div className="mt-2 w-11/12" key={user.id}>
                     <div>
-                      <div className="mt-3 mb-5 w-full bg-white rounded-lg hover:shadow-md hover:shadow-gray-300">
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
                         {/* <div className="flex flex-col"> */}
                         <div className="flex flex-col justify-center items-center text-center">
                           <div
@@ -406,7 +406,7 @@ const Approval = () => {
                           </div>
                           <div className="w-2/3 mt-0 mx-2 my-2 flex justify-center items-center flex-col">
                             <div
-                              className="border-b-2 cursor-pointer border-gray-100"
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() =>
                                 handleSelect(
                                   user.id,
@@ -422,7 +422,7 @@ const Approval = () => {
                             </div>
                             {/* 2. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.secondYmd) {
                                   handleSelect(
@@ -443,7 +443,7 @@ const Approval = () => {
 
                             {/* 3. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.thirdYmd) {
                                   handleSelect(
@@ -562,7 +562,7 @@ const Approval = () => {
                 waitinglist?.map((user, index) => (
                   <div className="mt-2 w-11/12" key={user.id}>
                     <div>
-                      <div className="mt-3 mb-5 w-full bg-white rounded-lg hover:shadow-md hover:shadow-gray-300">
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
                         <div className="flex flex-row ">
                           <div
                             className="w-1/6 text-base p-3 px-5 mx-2 my-2 flex justify-center items-center"
@@ -573,7 +573,7 @@ const Approval = () => {
                           </div>
                           <div className="w-2/6 p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
                             <div
-                              className="border-b-2 cursor-pointer border-gray-100"
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() =>
                                 handleSelect(
                                   user.id,
@@ -589,7 +589,7 @@ const Approval = () => {
                             </div>
                             {/* 2. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.secondYmd) {
                                   handleSelect(
@@ -610,7 +610,7 @@ const Approval = () => {
 
                             {/* 3. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.thirdYmd) {
                                   handleSelect(
@@ -688,17 +688,20 @@ const Approval = () => {
                 <div className="py-3 text-center">指名なしの承認待ちはありません</div>
               ) : (
                 noNominationList?.map((user, index) => (
-                  <div className="mt-2" key={user.id}>
+                  <div className="mt-2 w-11/12" key={user.id}>
                     <div>
-                      <div className="mt-3 mb-5 w-full bg-white rounded-lg hover:shadow-md hover:shadow-gray-300">
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
                         <div className="flex flex-row ">
-                          <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
+                          <div
+                            className="w-1/6 text-base p-3 px-5 mx-2 my-2 flex justify-center items-center"
+                            key={user.id}
+                          >
                             {user.studentName}
                             <br />
                           </div>
-                          <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
+                          <div className="w-2/6 p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() =>
                                 handleSelect(
                                   user.id,
@@ -714,7 +717,7 @@ const Approval = () => {
                             </div>
                             {/* 2. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.secondYmd) {
                                   handleSelect(
@@ -735,7 +738,7 @@ const Approval = () => {
 
                             {/* 3. */}
                             <div
-                              className="border-b-2 cursor-pointer border-gray-200"
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
                               onClick={() => {
                                 if (user.thirdYmd) {
                                   handleSelect(
@@ -754,7 +757,7 @@ const Approval = () => {
                                 : "希望日がありません"}
                             </div>
                           </div>
-                          <div className="p-3 px-5 mx-2 my-2 border-l-2">
+                          <div className="w-3/6 p-3 px-5 mx-2 my-2 border-l-2">
                             <div className="flex flex-row">
                               {getIndex(user.id) ? (
                                 <div>
@@ -785,27 +788,11 @@ const Approval = () => {
                             </div>
                             {/* endtimeselect */}
                             <div className="flex justify-end">
-                              {/* <select
-                              onChange={(e) => setSelectValue(e.target.value)}
-                              className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md"
-                            > */}
-                              {/* {staff.map((staff) => (
-                                <option
-                                  className="text-sm"
-                                  key={staff.name}
-                                  value={staff.name}
-                                >
-                                  {staff.name}
-                                </option>
-                              ))} */}
-                              {/* </select> */}
                               <button
                                 className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
                                 onClick={() => {
-                                  const selectedStaffName = selectValue;
-                                  addNominationBooking(
+                                  addBooking(
                                     user.id,
-                                    selectedStaffName,
                                     user.studentUserId,
                                     getIndex(user.id),
                                     getFirstTime(user.id),

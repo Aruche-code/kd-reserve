@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
+// import { pusherServer } from "@/app/libs/pusher";
 
 // 先生のプロフィール等の表示   ＊2023-12-19 最終編集 後々職員プロフィール情報がレスポンスに追加される可能性あり
 export const GET = async (req: Request, res: NextResponse) => {
@@ -126,6 +127,10 @@ export const POST = async (req: Request, res: NextResponse) => {
           user: true, // userテーブルも含めて取得
         },
       });
+
+      // await pusherServer.trigger("waiting-add-channel", "waiting-add-event", {
+      //   message: "New booking delete",
+      // });
 
       return NextResponse.json({ message: "Success" }, { status: 200 });
     }

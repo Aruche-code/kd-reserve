@@ -41,14 +41,14 @@ const Record = () => {
     if(!response.responseData) {
         setIsLoading(false);
     } else {
-      console.log(response);
+      
       setnumber(response.responseData[0].email.substring(2, 9))
       setId(response.responseData[0].id)
       setName(response.responseData[0].name)
       const { studentProfile, records } = response.responseData[0];
       setStudentProfile(studentProfile);
       setStudentRecord(records);
-      console.log(records)
+     
     }
   }
 

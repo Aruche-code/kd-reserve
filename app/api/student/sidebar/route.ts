@@ -13,7 +13,6 @@ export const GET = async (req: Request, res: NextResponse) => {
         // 必要なフィールドだけを含むレスポンスを作成
         const responseData = user.map((user) => ({
             name: user.name,
-            email: user.email,
             image: user.image
         }));
 
