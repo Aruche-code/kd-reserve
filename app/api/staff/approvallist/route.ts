@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getUserMail from "@/app/actions/getUserMail";
-// import { pusherServer } from "@/app/libs/pusher";
+import getUserMail from "@/app/actions/getUserMail";import { pusherServer } from "@/app/libs/pusher";
 
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
@@ -81,9 +80,9 @@ export const POST = async (req: Request, res: NextResponse) => {
         where: { id: id },
       });
 
-      // await pusherServer.trigger("booking-channel", "booking-event", {
-      //   message: "New booking created",
-      // });
+      await pusherServer.trigger("booking-channel", "booking-event", {
+        message: "New booking created",
+      });
 
       return NextResponse.json({ message: "Success" }, { status: 201 });
     }
@@ -131,6 +130,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         thirdYmd: true,
         thirdStartTime: true,
         thirdEndTime: true,
+        createdAt: true,
       },
     });
 
@@ -151,6 +151,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         thirdYmd: true,
         thirdStartTime: true,
         thirdEndTime: true,
+        createdAt: true,
       },
     });
 

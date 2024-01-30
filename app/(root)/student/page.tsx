@@ -6,7 +6,7 @@ import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoIcon from "@mui/icons-material/Info";
-// import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/app/libs/pusher";
 
 interface Booking {
   id: string;
@@ -33,10 +33,10 @@ const Home = () => {
     mutate,
   } = useSWR<HomeData>("/api/student", fetcher);
 
-  // const channel = pusherClient.subscribe("booking-channel");
-  // channel.bind("booking-event", () => {
-  //   mutate();
-  // });
+  const channel = pusherClient.subscribe("booking-channel");
+  channel.bind("booking-event", () => {
+    mutate();
+  });
 
   const handleCancelBooking = async (id: string) => {
     try {
@@ -124,13 +124,15 @@ const Home = () => {
                   </div>
 
                   {/* キャンセルボタン */}
-                  <button
-                    type="button"
-                    className="bg-red-500 text-white text-xs px-2 py-1 mx-14 md:mx-2 lg:mx-2 rounded-lg hover:bg-red-600 active:scale-95 transition duration-300"
-                    onClick={() => handleCancelBooking(booking.id)}
-                  >
-                    キャンセル
-                  </button>
+                  <div className=" text-center">
+                    <button
+                      type="button"
+                      className=" text-white text-xs px-2 py-1 mx-2 w-1/2 md:w-2/3 rounded transition duration-300 ease-in-out transform bg-red-500 hover:bg-red-600 hover:scale-105"
+                      onClick={() => handleCancelBooking(booking.id)}
+                    >
+                      キャンセル
+                    </button>
+                  </div>
                 </div>
               ))
             )
@@ -199,8 +201,8 @@ const Home = () => {
                         {waiting.thirdStartTime && waiting.thirdEndTime
                           ? `${waiting.thirdStartTime}～${waiting.thirdEndTime}`
                           : waiting.thirdStartTime ||
-                            waiting.thirdEndTime ||
-                            ""}
+                          waiting.thirdEndTime ||
+                          ""}
                       </span>
                     </div>
                   </div>

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
-import getUserId from "@/app/actions/getUserId";
 
 // NG日程の作成
 export const POST = async (req: Request, res: NextResponse) => {
@@ -36,7 +35,13 @@ export const GET = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
     // 職員のidを取得
-    const staffUserId = await getUserId(email);
+    const staff: any = await prisma.user.findUnique({
+      where: { email: email },
+      select: {
+        id: true,
+      },
+    });
+    const staffUserId: any = staff.id;
 
     const getstaffng = await prisma.user.findUnique({
       where: { email },
@@ -78,7 +83,12 @@ export const GET = async (req: Request, res: NextResponse) => {
 export const PUT = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail(); // 変数emailに操作している職員のメールアドレスを挿入
-    const staffNgId = await getUserId(email); // staffNgIdに職員のオブジェクトidを格納する
+    const staffNgId: any = await prisma.user.findUnique({
+      where: { email: email },
+      select: {
+        id: true,
+      },
+    }); // staffNgIdに職員のオブジェクトidを格納する
 
     const { ymd, time } = await req.json();
 

@@ -226,313 +226,607 @@ const Approval = () => {
     }
   };
 
-  return (
-    <div className="flex flex-col items-center min-h-full mt-6">
-      <div className="bg-white rounded-lg shadow-md w-4/5 mt-5">
-        {/* <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
+  const MobileApprovallist = () => (
+    <div className="bg-white rounded-lg shadow-md w-full mt-5">
+      {/* <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
           ■ 承認待ち一覧
         </div> */}
-        <div className=" flex w-full items-center justify-cente">
-          <div className="flex flex-row justify-center w-full z-20 rounded-r-lg">
-            <button
-              className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected
-                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-                : "border-gray-200 bg-gray-50"
-                }`}
-              onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
-            >
-              指名あり
-            </button>
-            <button
-              className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected
-                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-                : "border-gray-200 bg-gray-50"
-                }`}
-              onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
-            >
-              指名なし
-            </button>
-          </div>
+      <div className=" flex w-full items-center justify-cente">
+        <div className="flex flex-row justify-center w-full z-20 rounded-r-lg">
+          <button
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
+            onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
+          >
+            指名あり
+          </button>
+          <button
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
+            onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
+          >
+            指名なし
+          </button>
         </div>
-        <div className="bg-gray-100 mt-0 m-4 rounded-lg">
-          <div className="mt-6 w-full bg-gray-100 h-auto rounded-lg">
-            <div className="flex flex-col items-center h-full">
+      </div>
+      <div className="bg-gray-100 mt-0 m-4 rounded-lg">
+        <div className="mt-6 w-full bg-gray-100 h-auto rounded-lg">
+          <div className="flex flex-col items-center h-full">
 
-              {isNominationSelected ? (
-                waitinglist?.length === 0 ? (
-                  <div className="py-3 text-center">指名ありの承認待ちはありません</div>
-                ) : (
-                  waitinglist?.map((user, index) => (
-                    <div className="mt-2" key={user.id}>
-                      <div>
-                        <div className="mt-3 mb-5 w-full bg-white rounded-lg hover:shadow-md hover:shadow-gray-300">
-                          <div className="flex flex-row ">
-                            <div
-                              className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center"
-                              key={user.id}
-                            >
-                              {user.studentName}
-                              <br />
-                            </div>
-                            <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                              <div
-                                className="border-b-2 cursor-pointer border-gray-100"
-                                onClick={() =>
-                                  handleSelect(
-                                    user.id,
-                                    user.firstYmd,
-                                    user.firstStartTime,
-                                    user.firstEndTime
-                                  )
-                                }
-                              >
-                                1. {user.firstYmd}
-                                {"　"}
-                                {user.firstStartTime} ~ {user.firstEndTime}
-                              </div>
-                              {/* 2. */}
-                              <div
-                                className="border-b-2 cursor-pointer border-gray-200"
-                                onClick={() => {
-                                  if (user.secondYmd) {
-                                    handleSelect(
-                                      user.id,
-                                      user.secondYmd,
-                                      user.secondStartTime,
-                                      user.secondEndTime
-                                    );
-                                  } else {
-                                  }
-                                }}
-                              >
-                                2.{" "}
-                                {user.secondYmd
-                                  ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
-                                  : "希望日がありません"}
-                              </div>
-
-                              {/* 3. */}
-                              <div
-                                className="border-b-2 cursor-pointer border-gray-200"
-                                onClick={() => {
-                                  if (user.thirdYmd) {
-                                    handleSelect(
-                                      user.id,
-                                      user.thirdYmd,
-                                      user.thirdStartTime,
-                                      user.thirdEndTime
-                                    );
-                                  } else {
-                                  }
-                                }}
-                              >
-                                3.{" "}
-                                {user.thirdYmd
-                                  ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
-                                  : "希望日がありません"}
-                              </div>
-                            </div>
-                            <div className="p-3 px-5 mx-2 my-2 border-l-2">
-                              <div className="flex flex-row">
-                                {getIndex(user.id) ? (
-                                  <div>
-                                    {getIndex(user.id)}　[{user.details}]
-                                  </div>
-                                ) : (
-                                  <div>{user.details}</div>
-                                )}
-                              </div>
-                              {/* firsttimeselect */}
-                              <div className="flex flex-row">
-                                <div className="m-2 w-full">
-                                  <Select
-                                    options={TimeSelectMenu(getFirstTime(user.id), getEndTime(user.id), user.id)}
-                                    placeholder="開始時間を選択..."
-                                    styles={customSelectStyles}
-                                    onChange={(selectedOption) => setStartTime(selectedOption as OptionType)}
-                                  />
-                                </div>
-                                <div className="m-2 w-full">
-                                  <Select
-                                    options={EndTimeOptions}
-                                    placeholder="終了時間を選択..."
-                                    styles={customSelectStyles}
-                                    onChange={(selectedOption) => setEndTime(selectedOption as OptionType)}
-                                  />
-                                </div>
-                              </div>
-                              {/* endtimeselect */}
-                              <div className="flex justify-end">
-                                <button
-                                  className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
-                                  onClick={() => {
-                                    addBooking(
-                                      user.id,
-                                      user.studentUserId,
-                                      getIndex(user.id),
-                                      getFirstTime(user.id),
-                                      getEndTime(user.id),
-                                      user.details
-                                    );
-                                  }}
-                                >
-                                  承認
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )
+            {isNominationSelected ? (
+              waitinglist?.length === 0 ? (
+                <div className="py-3 text-center">指名ありの承認待ちはありません</div>
               ) : (
-                noNominationList?.length === 0 ? (
-                  <div className="py-3 text-center">指名なしの承認待ちはありません</div>
-                ) : (
-                  noNominationList?.map((user, index) => (
-                    <div className="mt-2" key={user.id}>
-                      <div>
-                        <div className="mt-3 mb-5 w-full bg-white rounded-lg hover:shadow-md hover:shadow-gray-300">
-                          <div className="flex flex-row ">
-                            <div className="text-base p-3 px-5 mx-2 my-2 flex justify-center items-center">
-                              {user.studentName}
-                              <br />
-                            </div>
-                            <div className="p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
-                              <div
-                                className="border-b-2 cursor-pointer border-gray-200"
-                                onClick={() =>
+                waitinglist?.map((user, index) => (
+                  <div className="mt-2 w-11/12" key={user.id}>
+                    <div>
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
+                        {/* <div className="flex flex-col"> */}
+                        <div className="flex flex-col justify-center items-center text-center">
+                          <div
+                            className="w-1/3 text-base p-3 px-5 mb-0 mx-2 my-2 flex justify-center items-center"
+                            key={user.id}
+                          >
+                            {user.studentName}
+                            <br />
+                          </div>
+                          <div className="w-2/3 mt-0 mx-2 my-2 flex justify-center items-center flex-col">
+                            <button
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() =>
+                                handleSelect(
+                                  user.id,
+                                  user.firstYmd,
+                                  user.firstStartTime,
+                                  user.firstEndTime
+                                )
+                              }
+                            >
+                              1. {user.firstYmd}
+                              {"　"}
+                              {user.firstStartTime} ~ {user.firstEndTime}
+                            </button>
+                            {/* 2. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.secondYmd) {
                                   handleSelect(
                                     user.id,
-                                    user.firstYmd,
-                                    user.firstStartTime,
-                                    user.firstEndTime
-                                  )
+                                    user.secondYmd,
+                                    user.secondStartTime,
+                                    user.secondEndTime
+                                  );
+                                } else {
                                 }
-                              >
-                                1. {user.firstYmd}
-                                {"　"}
-                                {user.firstStartTime} ~ {user.firstEndTime}
-                              </div>
-                              {/* 2. */}
-                              <div
-                                className="border-b-2 cursor-pointer border-gray-200"
-                                onClick={() => {
-                                  if (user.secondYmd) {
-                                    handleSelect(
-                                      user.id,
-                                      user.secondYmd,
-                                      user.secondStartTime,
-                                      user.secondEndTime
-                                    );
-                                  } else {
-                                  }
-                                }}
-                              >
-                                2.{" "}
-                                {user.secondYmd
-                                  ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
-                                  : "希望日がありません"}
-                              </div>
-
-                              {/* 3. */}
-                              <div
-                                className="border-b-2 cursor-pointer border-gray-200"
-                                onClick={() => {
-                                  if (user.thirdYmd) {
-                                    handleSelect(
-                                      user.id,
-                                      user.thirdYmd,
-                                      user.thirdStartTime,
-                                      user.thirdEndTime
-                                    );
-                                  } else {
-                                  }
-                                }}
-                              >
-                                3.{" "}
-                                {user.thirdYmd
-                                  ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
-                                  : "希望日がありません"}
-                              </div>
+                              }}
+                            >
+                              2.{" "}
+                              {user.secondYmd
+                                ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                                : "希望日がありません"}
                             </div>
-                            <div className="p-3 px-5 mx-2 my-2 border-l-2">
-                              <div className="flex flex-row">
-                                {getIndex(user.id) ? (
-                                  <div>
-                                    {getIndex(user.id)}　[{user.details}]
-                                  </div>
-                                ) : (
-                                  <div>{user.details}</div>
-                                )}
-                              </div>
-                              {/* firsttimeselect */}
-                              <div className="flex flex-row">
-                                <div className="m-2 w-full">
-                                  <Select
-                                    options={TimeSelectMenu(getFirstTime(user.id), getEndTime(user.id), user.id)}
-                                    placeholder="開始時間を選択..."
-                                    styles={customSelectStyles}
-                                    onChange={(selectedOption) => setStartTime(selectedOption as OptionType)}
-                                  />
-                                </div>
-                                <div className="m-2 w-full">
-                                  <Select
-                                    options={EndTimeOptions}
-                                    placeholder="終了時間を選択..."
-                                    styles={customSelectStyles}
-                                    onChange={(selectedOption) => setEndTime(selectedOption as OptionType)}
-                                  />
-                                </div>
-                              </div>
-                              {/* endtimeselect */}
-                              <div className="flex justify-end">
-                                {/* <select
-                                  onChange={(e) => setSelectValue(e.target.value)}
-                                  className="px-2 py-1 mt-3 mr-3 w-32 text-sm border-gray-400 border rounded-md"
-                                > */}
-                                {/* {staff.map((staff) => (
-                                    <option
-                                      className="text-sm"
-                                      key={staff.name}
-                                      value={staff.name}
-                                    >
-                                      {staff.name}
-                                    </option>
-                                  ))} */}
-                                {/* </select> */}
-                                <button
-                                  className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
-                                  onClick={() => {
-                                    const selectedStaffName = selectValue;
-                                    addNominationBooking(
-                                      user.id,
-                                      selectedStaffName,
-                                      user.studentUserId,
-                                      getIndex(user.id),
-                                      getFirstTime(user.id),
-                                      getEndTime(user.id),
-                                      user.details
-                                    );
-                                  }}
-                                >
-                                  承認
-                                </button>
-                              </div>
+
+                            {/* 3. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.thirdYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.thirdYmd,
+                                    user.thirdStartTime,
+                                    user.thirdEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              3.{" "}
+                              {user.thirdYmd
+                                ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                                : "希望日がありません"}
                             </div>
                           </div>
                         </div>
+                        <div className="w-full p-3 px-5 mx-2 my-2 border-t-2">
+                          <div className="flex flex-row">
+                            {getIndex(user.id) ? (
+                              <div>
+                                {getIndex(user.id)}　[{user.details}]
+                              </div>
+                            ) : (
+                              <div>{user.details}</div>
+                            )}
+                          </div>
+                          {/* firsttimeselect */}
+                          <div className="flex flex-col justify-center items-center text-center">
+                            <div className="mt-4 w-1/2">
+                              <Select
+                                options={TimeSelectMenu(getFirstTime(user.id), getEndTime(user.id), user.id)}
+                                placeholder="開始時間を選択..."
+                                styles={customSelectStyles}
+                                onChange={(selectedOption) => setStartTime(selectedOption as OptionType)}
+                              />
+                            </div>
+                            <div className="mt-3 w-1/2">
+                              <Select
+                                options={EndTimeOptions}
+                                placeholder="終了時間を選択..."
+                                styles={customSelectStyles}
+                                onChange={(selectedOption) => setEndTime(selectedOption as OptionType)}
+                              />
+                            </div>
+                          </div>
+                          {/* endtimeselect */}
+                          <div className="flex justify-end">
+                            <button
+                              className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                              onClick={() => {
+                                addBooking(
+                                  user.id,
+                                  user.studentUserId,
+                                  getIndex(user.id),
+                                  getFirstTime(user.id),
+                                  getEndTime(user.id),
+                                  user.details
+                                );
+                              }}
+                            >
+                              承認
+                            </button>
+                          </div>
+                        </div>
+                        {/* </div> */}
                       </div>
                     </div>
-                  ))
-                )
-              )}
-            </div>
+                  </div>
+                ))
+              )
+            ) : (
+              noNominationList?.length === 0 ? (
+                <div className="py-3 text-center">指名なしの承認待ちはありません</div>
+              ) : (
+                noNominationList?.map((user, index) => (
+                  <div className="mt-2 w-11/12" key={user.id}>
+                    <div>
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
+                        {/* <div className="flex flex-col"> */}
+                        <div className="flex flex-col justify-center items-center text-center">
+                          <div
+                            className="w-1/3 text-base p-3 px-5 mb-0 mx-2 my-2 flex justify-center items-center"
+                            key={user.id}
+                          >
+                            {user.studentName}
+                            <br />
+                          </div>
+                          <div className="w-2/3 mt-0 mx-2 my-2 flex justify-center items-center flex-col">
+                            <div
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() =>
+                                handleSelect(
+                                  user.id,
+                                  user.firstYmd,
+                                  user.firstStartTime,
+                                  user.firstEndTime
+                                )
+                              }
+                            >
+                              1. {user.firstYmd}
+                              {"　"}
+                              {user.firstStartTime} ~ {user.firstEndTime}
+                            </div>
+                            {/* 2. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.secondYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.secondYmd,
+                                    user.secondStartTime,
+                                    user.secondEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              2.{" "}
+                              {user.secondYmd
+                                ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                                : "希望日がありません"}
+                            </div>
+
+                            {/* 3. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.thirdYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.thirdYmd,
+                                    user.thirdStartTime,
+                                    user.thirdEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              3.{" "}
+                              {user.thirdYmd
+                                ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                                : "希望日がありません"}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="w-full p-3 px-5 mx-2 my-2 border-t-2">
+                          <div className="flex flex-row">
+                            {getIndex(user.id) ? (
+                              <div>
+                                {getIndex(user.id)}　[{user.details}]
+                              </div>
+                            ) : (
+                              <div>{user.details}</div>
+                            )}
+                          </div>
+                          {/* firsttimeselect */}
+                          <div className="flex flex-col justify-center items-center text-center">
+                            <div className="mt-4 w-1/2">
+                              <Select
+                                options={TimeSelectMenu(getFirstTime(user.id), getEndTime(user.id), user.id)}
+                                placeholder="開始時間を選択..."
+                                styles={customSelectStyles}
+                                onChange={(selectedOption) => setStartTime(selectedOption as OptionType)}
+                              />
+                            </div>
+                            <div className="mt-3 w-1/2">
+                              <Select
+                                options={EndTimeOptions}
+                                placeholder="終了時間を選択..."
+                                styles={customSelectStyles}
+                                onChange={(selectedOption) => setEndTime(selectedOption as OptionType)}
+                              />
+                            </div>
+                          </div>
+                          {/* endtimeselect */}
+                          <div className="flex justify-end">
+                            <button
+                              className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                              onClick={() => {
+                                addBooking(
+                                  user.id,
+                                  user.studentUserId,
+                                  getIndex(user.id),
+                                  getFirstTime(user.id),
+                                  getEndTime(user.id),
+                                  user.details
+                                );
+                              }}
+                            >
+                              承認
+                            </button>
+                          </div>
+                        </div>
+                        {/* </div> */}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )
+            )}
           </div>
         </div>
       </div>
-    </div >
+    </div>
+  );
+
+  const PcApprovallist = () => (
+    <div className="bg-white rounded-lg shadow-md w-4/5 mt-5">
+      {/* <div className="p-3 px-6 rounded-t-lg bg-kd-sub2-cl text-white">
+      ■ 承認待ち一覧
+    </div> */}
+      <div className=" flex w-full items-center justify-cente">
+        <div className="flex flex-row justify-center w-full z-20 rounded-r-lg">
+          <button
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
+            onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
+          >
+            指名あり
+          </button>
+          <button
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
+            onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
+          >
+            指名なし
+          </button>
+        </div>
+      </div>
+      <div className="bg-gray-100 mt-0 m-4 rounded-lg">
+        <div className="mt-6 w-full bg-gray-100 h-auto rounded-lg">
+          <div className="flex flex-col items-center h-full">
+
+            {isNominationSelected ? (
+              waitinglist?.length === 0 ? (
+                <div className="py-3 text-center">指名ありの承認待ちはありません</div>
+              ) : (
+                waitinglist?.map((user, index) => (
+                  <div className="mt-2 w-11/12" key={user.id}>
+                    <div>
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
+                        <div className="flex flex-row ">
+                          <div
+                            className="w-1/6 text-base p-3 px-5 mx-2 my-2 flex justify-center items-center"
+                            key={user.id}
+                          >
+                            {user.studentName}
+                            <br />
+                          </div>
+                          <div className="w-2/6 p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
+                            <div
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() =>
+                                handleSelect(
+                                  user.id,
+                                  user.firstYmd,
+                                  user.firstStartTime,
+                                  user.firstEndTime
+                                )
+                              }
+                            >
+                              1. {user.firstYmd}
+                              {"　"}
+                              {user.firstStartTime} ~ {user.firstEndTime}
+                            </div>
+                            {/* 2. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.secondYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.secondYmd,
+                                    user.secondStartTime,
+                                    user.secondEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              2.{" "}
+                              {user.secondYmd
+                                ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                                : "希望日がありません"}
+                            </div>
+
+                            {/* 3. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.thirdYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.thirdYmd,
+                                    user.thirdStartTime,
+                                    user.thirdEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              3.{" "}
+                              {user.thirdYmd
+                                ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                                : "希望日がありません"}
+                            </div>
+                          </div>
+                          <div className="w-3/6 p-3 px-5 mx-2 my-2 border-l-2">
+                            <div className="flex flex-row">
+                              {getIndex(user.id) ? (
+                                <div>
+                                  {getIndex(user.id)}　[{user.details}]
+                                </div>
+                              ) : (
+                                <div>{user.details}</div>
+                              )}
+                            </div>
+                            {/* firsttimeselect */}
+                            <div className="flex flex-row">
+                              <div className="m-2 w-full">
+                                <Select
+                                  options={TimeSelectMenu(getFirstTime(user.id), getEndTime(user.id), user.id)}
+                                  placeholder="開始時間を選択..."
+                                  styles={customSelectStyles}
+                                  onChange={(selectedOption) => setStartTime(selectedOption as OptionType)}
+                                />
+                              </div>
+                              <div className="m-2 w-full">
+                                <Select
+                                  options={EndTimeOptions}
+                                  placeholder="終了時間を選択..."
+                                  styles={customSelectStyles}
+                                  onChange={(selectedOption) => setEndTime(selectedOption as OptionType)}
+                                />
+                              </div>
+                            </div>
+                            {/* endtimeselect */}
+                            <div className="flex justify-end">
+                              <button
+                                className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                                onClick={() => {
+                                  addBooking(
+                                    user.id,
+                                    user.studentUserId,
+                                    getIndex(user.id),
+                                    getFirstTime(user.id),
+                                    getEndTime(user.id),
+                                    user.details
+                                  );
+                                }}
+                              >
+                                承認
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )
+            ) : (
+              noNominationList?.length === 0 ? (
+                <div className="py-3 text-center">指名なしの承認待ちはありません</div>
+              ) : (
+                noNominationList?.map((user, index) => (
+                  <div className="mt-2 w-11/12" key={user.id}>
+                    <div>
+                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
+                        <div className="flex flex-row ">
+                          <div
+                            className="w-1/6 text-base p-3 px-5 mx-2 my-2 flex justify-center items-center"
+                            key={user.id}
+                          >
+                            {user.studentName}
+                            <br />
+                          </div>
+                          <div className="w-2/6 p-3 px-5 mx-2 my-2 flex justify-center items-center flex-col">
+                            <div
+                              className="rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() =>
+                                handleSelect(
+                                  user.id,
+                                  user.firstYmd,
+                                  user.firstStartTime,
+                                  user.firstEndTime
+                                )
+                              }
+                            >
+                              1. {user.firstYmd}
+                              {"　"}
+                              {user.firstStartTime} ~ {user.firstEndTime}
+                            </div>
+                            {/* 2. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.secondYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.secondYmd,
+                                    user.secondStartTime,
+                                    user.secondEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              2.{" "}
+                              {user.secondYmd
+                                ? `${user.secondYmd}　${user.secondStartTime} ~ ${user.secondEndTime}`
+                                : "希望日がありません"}
+                            </div>
+
+                            {/* 3. */}
+                            <div
+                              className="mt-1 rounded-lg border border-primary-500 px-2 py-1 text-center text-sm font-medium text-black shadow-sm transition-all hover:border-primary-700 cursor-pointer bg-gray-50"
+                              onClick={() => {
+                                if (user.thirdYmd) {
+                                  handleSelect(
+                                    user.id,
+                                    user.thirdYmd,
+                                    user.thirdStartTime,
+                                    user.thirdEndTime
+                                  );
+                                } else {
+                                }
+                              }}
+                            >
+                              3.{" "}
+                              {user.thirdYmd
+                                ? `${user.thirdYmd}　${user.thirdStartTime} ~ ${user.thirdEndTime}`
+                                : "希望日がありません"}
+                            </div>
+                          </div>
+                          <div className="w-3/6 p-3 px-5 mx-2 my-2 border-l-2">
+                            <div className="flex flex-row">
+                              {getIndex(user.id) ? (
+                                <div>
+                                  {getIndex(user.id)}　[{user.details}]
+                                </div>
+                              ) : (
+                                <div>{user.details}</div>
+                              )}
+                            </div>
+                            {/* firsttimeselect */}
+                            <div className="flex flex-row">
+                              <div className="m-2 w-full">
+                                <Select
+                                  options={TimeSelectMenu(getFirstTime(user.id), getEndTime(user.id), user.id)}
+                                  placeholder="開始時間を選択..."
+                                  styles={customSelectStyles}
+                                  onChange={(selectedOption) => setStartTime(selectedOption as OptionType)}
+                                />
+                              </div>
+                              <div className="m-2 w-full">
+                                <Select
+                                  options={EndTimeOptions}
+                                  placeholder="終了時間を選択..."
+                                  styles={customSelectStyles}
+                                  onChange={(selectedOption) => setEndTime(selectedOption as OptionType)}
+                                />
+                              </div>
+                            </div>
+                            {/* endtimeselect */}
+                            <div className="flex justify-end">
+                              <button
+                                className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                                onClick={() => {
+                                  addBooking(
+                                    user.id,
+                                    user.studentUserId,
+                                    getIndex(user.id),
+                                    getFirstTime(user.id),
+                                    getEndTime(user.id),
+                                    user.details
+                                  );
+                                }}
+                              >
+                                承認
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+
+  return (
+    <>
+      {/* モバイル向けナビゲーションバー（mdブレークポイント以下でのみ表示） */}
+      <div className="md:hidden h-full flex flex-col items-center min-h-full mt-6">{MobileApprovallist()}</div>
+
+      {/* デスクトップ向けサイドバー（mdブレークポイント以上でのみ表示） */}
+      <div className="hidden md:flex h-full flex-col items-center min-h-full mt-6">{PcApprovallist()}</div>
+    </>
   );
 };
 
