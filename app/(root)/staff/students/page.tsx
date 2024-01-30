@@ -5,6 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from 'next/navigation'
 
 interface User {
   id: number | string;
@@ -17,6 +18,7 @@ const Students = () => {
   const [user, setStudents] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const router = useRouter() 
 
   useEffect(() => {
     // 学生一覧を取得するAPIのエンドポイント
@@ -60,8 +62,11 @@ const Students = () => {
         </div>
       ))}
     </div>
-
   );
+
+  const recordClick = (id: number|string) => {
+    router.push('../staff/record/')
+  }
 
   return (
     <div className="flex flex-col justify-center items-center mt-6">
@@ -91,13 +96,15 @@ const Students = () => {
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
                 // <Link key={user.id} href={`../staff/record/${user.id}`}>
-                <Link key={user.id} href={`../staff/record/`}>
+                //<Link key={user.id} href={`../staff/record/`}>
                   <button
                     // key={user.id}
                     className={
                       "my-2 mx-5 min-w-[24ch] px-8 p-5 border-2 bg-white border-gray-100 shadow-md rounded-lg hover:border-2 hover:border-kd-sub2-cl overflow-hidden"
                     }
                     title={user.name}
+                    key={user.name}
+                    onClick={() => recordClick(user.email)}
                   >
                     {user.name.length > 8
                       ? user.name.slice(0, 8) + "..."
@@ -105,7 +112,7 @@ const Students = () => {
                     <br />
                     学籍番号：{user.studentIdNumber}
                   </button>
-                </Link>
+                //</Link>
 
               ))
             ) : (
