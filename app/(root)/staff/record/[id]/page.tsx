@@ -5,11 +5,14 @@ import { usePathname } from "next/navigation";
 
 function StudentRecordPage() {
   const pathname = usePathname();
-  const studentId = pathname.split("/").pop(); // パスの最後の部分を取得
+  // pathname が null でないことを確認
+  const studentId = pathname ? pathname.split("/").pop() : "不明";
 
   useEffect(() => {
-    // studentIdを使ってAPIコール等の処理
-    console.log(studentId);
+    if (studentId !== "不明") {
+      // studentIdを使ってAPIコール等の処理
+    }
+    // studentIdが変更された場合のみ、この効果を再実行
   }, [studentId]);
 
   return (
