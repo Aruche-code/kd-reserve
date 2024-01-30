@@ -20,6 +20,7 @@ export const GET = async (req: Request, res: NextResponse) => {
         ? user.email.replace(/\D/g, "")
         : "", // \D: 数字以外を表す正規表現
       name: user.name,
+      email: user.email
     }));
 
     return NextResponse.json(
