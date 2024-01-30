@@ -1,11 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import useSWR from "swr";
 import axios from "axios";
 import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import InfoIcon from "@mui/icons-material/Info";
+// import { pusherClient } from "@/app/libs/pusher";
 
 interface Booking {
   id: string;
@@ -32,7 +33,10 @@ const Home = () => {
     mutate,
   } = useSWR<HomeData>("/api/student", fetcher);
 
-  if (error) return <div>エラーが発生しました</div>;
+  // const channel = pusherClient.subscribe("booking-channel");
+  // channel.bind("booking-event", () => {
+  //   mutate();
+  // });
 
   const handleCancelBooking = async (id: string) => {
     try {
@@ -64,6 +68,7 @@ const Home = () => {
     </div>
   );
 
+  if (error) return <div>エラーが発生しました</div>;
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="mt-4 w-full lg:w-4/5 bg-white rounded-md shadow-md">

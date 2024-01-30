@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 
-// DELETE
 // 指定された予定を削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
   try {

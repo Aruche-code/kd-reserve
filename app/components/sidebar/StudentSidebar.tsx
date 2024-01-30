@@ -27,7 +27,6 @@ const Sidebar = () => {
       link: "/student/booking",
       gap: false,
     },
-
     {
       title: "ログアウト",
       icon: <LogoutIcon />, // ログアウトアイコン
@@ -35,7 +34,6 @@ const Sidebar = () => {
       gap: true,
     },
   ];
-
   // モバイル向けナビゲーションバーcomponent
   const renderMobileNav = () => (
     <>
@@ -67,8 +65,9 @@ const Sidebar = () => {
               menu.link ? (
                 <Link href={menu.link} key={index}>
                   <li
-                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${pathname === menu.link ? "bg-white text-kd-button-cl" : ""
-                      }`}
+                    className={`flex items-center gap-x-4 p-2 cursor-pointer hover:bg-white hover:text-kd-button-cl text-sm ${
+                      pathname === menu.link ? "bg-white text-kd-button-cl" : ""
+                    }`}
                   >
                     {menu.icon}
                     <span>{menu.title}</span>
@@ -96,7 +95,6 @@ const Sidebar = () => {
       )}
     </>
   );
-
   //標準ナビゲーションバーcomponent
   const renderSidebar = () => (
     <aside
@@ -111,8 +109,9 @@ const Sidebar = () => {
     >
       <div className="flex">
         <div
-          className={`${open ? "w-46" : "w-20"
-            } h-screen p-5 pt-8 relative duration-300 bg-kd-s`}
+          className={`${
+            open ? "w-46" : "w-20"
+          } h-screen p-5 pt-8 relative duration-300 bg-kd-s`}
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
@@ -134,8 +133,9 @@ const Sidebar = () => {
                   >
                     {menu.icon}
                     <span
-                      className={`${!open && "hidden"
-                        } origin-left duration-200`}
+                      className={`${
+                        !open && "hidden"
+                      } origin-left duration-200`}
                     >
                       {menu.title}
                     </span>
@@ -164,17 +164,14 @@ const Sidebar = () => {
       </div>
     </aside>
   );
-
   // CSSでレスポンシブデザインを制御
   return (
     <>
       {/* モバイル向けナビゲーションバー（mdブレークポイント以下でのみ表示） */}
       <div className="md:hidden">{renderMobileNav()}</div>
-
       {/* デスクトップ向けサイドバー（mdブレークポイント以上でのみ表示） */}
       <div className="hidden md:flex">{renderSidebar()}</div>
     </>
   );
 };
-
 export default Sidebar;

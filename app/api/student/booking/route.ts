@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 
-// GET
 // 先生のプロフィール等の表示   ＊2023-12-19 最終編集 後々職員プロフィール情報がレスポンスに追加される可能性あり
 export const GET = async (req: Request, res: NextResponse) => {
   try {
@@ -31,9 +30,7 @@ export const GET = async (req: Request, res: NextResponse) => {
   }
 };
 
-// POST
 // 指定したemailのUserにWaitingListを追加するAPI
-// このAPIのテストを行うにはUserモデルからstaffユーザーのオブジェクトidをPOSTのパラメータに指定する必要があります
 export const POST = async (req: Request, res: NextResponse) => {
   try {
     const email = await getUserMail();
