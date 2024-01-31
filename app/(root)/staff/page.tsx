@@ -1,6 +1,5 @@
 "use client";
 //ここが職員のホームルートになります
-//ログアウトボタンはサイドバーに組み込む予定です
 import React from "react";
 import axios from "axios";
 import Link from "next/link";
@@ -25,6 +24,7 @@ const Home = () => {
     mutate,
   } = useSWR<HomeData>("/api/staff", fetcher);
 
+  // from api/student/bookingdelete
   const channel = pusherClient.subscribe("booking-delete-channel");
   channel.bind("booking-delete-event", () => {
     mutate();
