@@ -132,8 +132,8 @@ export const POST = async (req: Request, res: NextResponse) => {
         },
       });
 
-      await pusherServer.trigger("waiting-add-channel", "waiting-add-event", {
-        message: "New waiting add",
+      await pusherServer.trigger("waiting-add-channel2", "waiting-add-event2", {
+        message: "New waiting add2",
       });
 
       return NextResponse.json({ message: "Success" }, { status: 200 });

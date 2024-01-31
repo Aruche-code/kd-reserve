@@ -160,13 +160,21 @@ export const POST = async (req: Request, res: NextResponse) => {
 // 拒否されたWaitingListを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
   try {
-    const { id } = await req.json();
+    const { id }: { id: string } = await req.json();
 
     await prisma.waitingList.delete({
       where: { id: id },
     });
 
-      return NextResponse.json({ message: "Success" }, { status: 204 });
+    //生徒側のホームルート更新
+    await pusherServer.trigger(
+      "booking-cancel-channel",
+      "booking-cancel--event",
+      {
+        message: "New booking cancel",
+      }
+    );
+    return NextResponse.json({ message: "Success" }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }

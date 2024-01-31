@@ -59,6 +59,12 @@ const Approval = () => {
     mutate();
   });
 
+  // from api/student/booking
+  const channel3 = pusherClient.subscribe("waiting-add-channel2");
+  channel3.bind("waiting-add-event2", () => {
+    mutate();
+  });
+
   //waitinglistの取得
   const waitinglist: WaitingList[] = staffData?.wait.waitingList || [];
   const noNominationList: WaitingList[] =
@@ -123,7 +129,6 @@ const Approval = () => {
       ...prev,
       [id]: [index, firsttime, endtime],
     }));
-    console.log(selectedTimes);
   };
 
   const getIndex = (id: string): string => {
@@ -194,10 +199,26 @@ const Approval = () => {
     const response = await axios.post("/api/staff/approvallist", body);
 
     if (response.status === 201) {
-      toast.success("保存できました");
+      toast.success("承認しました");
       mutate();
     } else {
-      toast.error("保存できませんでした");
+      toast.error("承認できませんでした");
+    }
+  };
+
+  const Cancel = async (id: string) => {
+    const response = await axios.delete("/api/staff/approvallist", {
+      data: { id: id },
+    });
+    try {
+      if (response.status === 200) {
+        toast.success("申請をキャンセルしました");
+        mutate();
+      } else {
+        toast.error("申請のキャンセルに失敗しました");
+      }
+    } catch (error) {
+      toast.error("エラーが発生しました");
     }
   };
 
@@ -242,19 +263,21 @@ const Approval = () => {
       <div className=" flex w-full items-center justify-cente">
         <div className="flex flex-row justify-center w-full z-20 rounded-r-lg">
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected
-              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-              : "border-gray-200 bg-gray-50"
-              }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${
+              isNominationSelected
+                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+                : "border-gray-200 bg-gray-50"
+            }`}
             onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
           >
             指名あり
           </button>
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected
-              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-              : "border-gray-200 bg-gray-50"
-              }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${
+              !isNominationSelected
+                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+                : "border-gray-200 bg-gray-50"
+            }`}
             onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
           >
             指名なし
@@ -270,7 +293,7 @@ const Approval = () => {
                   指名ありの承認待ちはありません
                 </div>
               ) : (
-                waitinglist?.map((user, index) => (
+                waitinglist?.map((user) => (
                   <div className="mt-2 px-5 w-full" key={user.id}>
                     <div>
                       <div className="mt-3 mb-5 w-full bg-white rounded-lg">
@@ -342,7 +365,7 @@ const Approval = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="mt-3 flex-grow border-b-2 m-2 border-gray-200" ></div>
+                        <div className="mt-3 flex-grow border-b-2 m-2 border-gray-200"></div>
                         <div className="w-full p-3 px-5 mx-2 my-2">
                           <div className="flex flex-row">
                             {getIndex(user.id) ? (
@@ -400,14 +423,7 @@ const Approval = () => {
                             <button
                               className="bg-red-400 hover:bg-red-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
                               onClick={() => {
-                                addBooking(
-                                  user.id,
-                                  user.studentUserId,
-                                  getIndex(user.id),
-                                  getFirstTime(user.id),
-                                  getEndTime(user.id),
-                                  user.details
-                                );
+                                Cancel(user.id);
                               }}
                             >
                               キャンセル
@@ -497,7 +513,7 @@ const Approval = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="mt-3 flex-grow border-b-2 m-2 border-gray-200" ></div>
+                      <div className="mt-3 flex-grow border-b-2 m-2 border-gray-200"></div>
                       <div className="w-full p-3 px-5 mx-2 my-2">
                         <div className="flex flex-row">
                           {getIndex(user.id) ? (
@@ -578,19 +594,21 @@ const Approval = () => {
       <div className=" flex w-full items-center justify-cente">
         <div className="flex flex-row justify-center w-full z-20 rounded-r-lg">
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected
-              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-              : "border-gray-200 bg-gray-50"
-              }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${
+              isNominationSelected
+                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+                : "border-gray-200 bg-gray-50"
+            }`}
             onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
           >
             指名あり
           </button>
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected
-              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-              : "border-gray-200 bg-gray-50"
-              }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${
+              !isNominationSelected
+                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+                : "border-gray-200 bg-gray-50"
+            }`}
             onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
           >
             指名なし
@@ -733,14 +751,7 @@ const Approval = () => {
                               <button
                                 className="bg-red-400 hover:bg-red-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
                                 onClick={() => {
-                                  addBooking(
-                                    user.id,
-                                    user.studentUserId,
-                                    getIndex(user.id),
-                                    getFirstTime(user.id),
-                                    getEndTime(user.id),
-                                    user.details
-                                  );
+                                  Cancel(user.id);
                                 }}
                               >
                                 キャンセル
@@ -758,7 +769,7 @@ const Approval = () => {
                 指名なしの承認待ちはありません
               </div>
             ) : (
-              noNominationList?.map((user, index) => (
+              noNominationList?.map((user) => (
                 <div className="mb-3 px-5 w-full" key={user.id}>
                   <div>
                     <div className="mt-3 w-full bg-white rounded-lg">
