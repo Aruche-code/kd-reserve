@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import Select from "react-select";
 import { setHours, setMinutes, addMinutes, format } from "date-fns";
 import { useSession } from "next-auth/react";
+import { pusherClient } from "@/app/libs/pusher";
 interface WaitingList {
   details: string;
   firstEndTime: string;
@@ -45,6 +46,12 @@ const Approval = () => {
     error: staffError,
     mutate,
   } = useSWR("/api/staff/approvallist", fetcher);
+
+  // from api/student/waitdelete
+  const channel = pusherClient.subscribe("waiting-delete-channel");
+  channel.bind("waiting-delete-event", () => {
+    mutate();
+  });
 
   //waitinglistの取得
   const waitinglist: WaitingList[] = staffData?.wait.waitingList || [];

@@ -11,6 +11,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
       where: { id: scheduleId },
     });
 
+    // 職員側のホームルートをリアルタイム更新
     await pusherServer.trigger(
       "booking-delete-channel",
       "booking-delete-event",

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
+import { pusherServer } from "@/app/libs/pusher";
 
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
@@ -78,6 +79,11 @@ export const POST = async (req: Request, res: NextResponse) => {
       // bookingに予定を追加したとき、waitingListの予定を削除
       await prisma.waitingList.delete({
         where: { id: id },
+      });
+
+      //生徒側のホームルートのリアルタイム更新で使用
+      await pusherServer.trigger("booking-channel2", "booking-event2", {
+        message: "New booking created2",
       });
 
       return NextResponse.json({ message: "Success" }, { status: 201 });

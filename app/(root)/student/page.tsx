@@ -33,8 +33,15 @@ const Home = () => {
     mutate,
   } = useSWR<HomeData>("/api/student", fetcher);
 
+  // from api/staff/approvallist
   const channel = pusherClient.subscribe("booking-channel");
   channel.bind("booking-event", () => {
+    mutate();
+  });
+
+  // from api/staff/approvallist/nonominationList
+  const channel2 = pusherClient.subscribe("booking-channel2");
+  channel2.bind("booking-event2", () => {
     mutate();
   });
 
@@ -201,8 +208,8 @@ const Home = () => {
                         {waiting.thirdStartTime && waiting.thirdEndTime
                           ? `${waiting.thirdStartTime}～${waiting.thirdEndTime}`
                           : waiting.thirdStartTime ||
-                          waiting.thirdEndTime ||
-                          ""}
+                            waiting.thirdEndTime ||
+                            ""}
                       </span>
                     </div>
                   </div>

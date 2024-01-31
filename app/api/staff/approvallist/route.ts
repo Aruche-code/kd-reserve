@@ -145,6 +145,7 @@ export const POST = async (req: Request, res: NextResponse) => {
         where: { id: id },
       });
 
+      //生徒側のホームルートのリアルタイム更新で使用
       await pusherServer.trigger("booking-channel", "booking-event", {
         message: "New booking created",
       });
