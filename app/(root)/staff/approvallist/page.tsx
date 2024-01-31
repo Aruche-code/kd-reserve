@@ -236,21 +236,19 @@ const Approval = () => {
       <div className=" flex w-full items-center justify-cente">
         <div className="flex flex-row justify-center w-full z-20 rounded-r-lg">
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${
-              isNominationSelected
-                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-                : "border-gray-200 bg-gray-50"
-            }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
             onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
           >
             指名あり
           </button>
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${
-              !isNominationSelected
-                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-                : "border-gray-200 bg-gray-50"
-            }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
             onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
           >
             指名なし
@@ -267,7 +265,7 @@ const Approval = () => {
                 </div>
               ) : (
                 waitinglist?.map((user, index) => (
-                  <div className="mt-2 w-11/12" key={user.id}>
+                  <div className="mt-2 px-5 w-full" key={user.id}>
                     <div>
                       <div className="mt-3 mb-5 w-full bg-white rounded-lg">
                         {/* <div className="flex flex-col"> */}
@@ -338,7 +336,8 @@ const Approval = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="w-full p-3 px-5 mx-2 my-2 border-t-2">
+                        <div className="mt-3 flex-grow border-b-2 m-2 border-gray-200" ></div>
+                        <div className="w-full p-3 px-5 mx-2 my-2">
                           <div className="flex flex-row">
                             {getIndex(user.id) ? (
                               <div>
@@ -378,7 +377,7 @@ const Approval = () => {
                           {/* endtimeselect */}
                           <div className="flex justify-end">
                             <button
-                              className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                              className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mr-2 mt-3 text-xs"
                               onClick={() => {
                                 addBooking(
                                   user.id,
@@ -391,6 +390,21 @@ const Approval = () => {
                               }}
                             >
                               承認
+                            </button>
+                            <button
+                              className="bg-red-400 hover:bg-red-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                              onClick={() => {
+                                addBooking(
+                                  user.id,
+                                  user.studentUserId,
+                                  getIndex(user.id),
+                                  getFirstTime(user.id),
+                                  getEndTime(user.id),
+                                  user.details
+                                );
+                              }}
+                            >
+                              キャンセル
                             </button>
                           </div>
                         </div>
@@ -406,7 +420,7 @@ const Approval = () => {
               </div>
             ) : (
               noNominationList?.map((user) => (
-                <div className="mt-2 w-11/12" key={user.id}>
+                <div className="mt-2 px-5 w-full" key={user.id}>
                   <div>
                     <div className="mt-3 mb-5 w-full bg-white rounded-lg">
                       {/* <div className="flex flex-col"> */}
@@ -477,7 +491,8 @@ const Approval = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="w-full p-3 px-5 mx-2 my-2 border-t-2">
+                      <div className="mt-3 flex-grow border-b-2 m-2 border-gray-200" ></div>
+                      <div className="w-full p-3 px-5 mx-2 my-2">
                         <div className="flex flex-row">
                           {getIndex(user.id) ? (
                             <div>
@@ -516,6 +531,9 @@ const Approval = () => {
                         </div>
                         {/* endtimeselect */}
                         <div className="flex justify-end">
+                          <div className="rounded-md px-4 py-1 mt-3 text-xs">
+                            承認者：{session?.user.name}
+                          </div>
                           <button
                             className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
                             onClick={() => {
@@ -554,21 +572,19 @@ const Approval = () => {
       <div className=" flex w-full items-center justify-cente">
         <div className="flex flex-row justify-center w-full z-20 rounded-r-lg">
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${
-              isNominationSelected
-                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-                : "border-gray-200 bg-gray-50"
-            }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-l-lg ${isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
             onClick={() => (setIsNominationSelected(true), clearTimeRanges())}
           >
             指名あり
           </button>
           <button
-            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${
-              !isNominationSelected
-                ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
-                : "border-gray-200 bg-gray-50"
-            }`}
+            className={`w-1/2 p-3 pb-5 shadow-lg border rounded-r-lg ${!isNominationSelected
+              ? "border-kd-sub2-cl bg-kd-sub2-cl text-white"
+              : "border-gray-200 bg-gray-50"
+              }`}
             onClick={() => (setIsNominationSelected(false), clearTimeRanges())}
           >
             指名なし
@@ -585,9 +601,9 @@ const Approval = () => {
                 </div>
               ) : (
                 waitinglist?.map((user) => (
-                  <div className="mt-2 w-11/12" key={user.id}>
+                  <div className="mb-3 px-5 w-full" key={user.id}>
                     <div>
-                      <div className="mt-3 mb-5 w-full bg-white rounded-lg">
+                      <div className="mt-3 w-full bg-white rounded-lg">
                         <div className="flex flex-row ">
                           <div
                             className="w-1/6 text-base p-3 px-5 mx-2 my-2 flex justify-center items-center"
@@ -694,7 +710,7 @@ const Approval = () => {
                             {/* endtimeselect */}
                             <div className="flex justify-end">
                               <button
-                                className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                                className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 mr-2 py-1 mt-3 text-xs"
                                 onClick={() => {
                                   addBooking(
                                     user.id,
@@ -707,6 +723,21 @@ const Approval = () => {
                                 }}
                               >
                                 承認
+                              </button>
+                              <button
+                                className="bg-red-400 hover:bg-red-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
+                                onClick={() => {
+                                  addBooking(
+                                    user.id,
+                                    user.studentUserId,
+                                    getIndex(user.id),
+                                    getFirstTime(user.id),
+                                    getEndTime(user.id),
+                                    user.details
+                                  );
+                                }}
+                              >
+                                キャンセル
                               </button>
                             </div>
                           </div>
@@ -722,12 +753,12 @@ const Approval = () => {
               </div>
             ) : (
               noNominationList?.map((user, index) => (
-                <div className="mt-2 w-11/12" key={user.id}>
+                <div className="mb-3 px-5 w-full" key={user.id}>
                   <div>
-                    <div className="mt-3 mb-5 w-full bg-white rounded-lg">
+                    <div className="mt-3 w-full bg-white rounded-lg">
                       <div className="flex flex-row ">
                         <div
-                          className="w-1/6 text-base p-3 px-5 mx-2 my-2 flex justify-center items-center"
+                          className="w-1/6 text-base p-3 px-5 mx-2 flex justify-center items-center"
                           key={user.id}
                         >
                           {user.studentName}
@@ -830,6 +861,9 @@ const Approval = () => {
                           </div>
                           {/* endtimeselect */}
                           <div className="flex justify-end">
+                            <div className="rounded-md px-4 py-1 mt-3 text-xs">
+                              承認者：{session?.user.name}
+                            </div>
                             <button
                               className="bg-kd-button-cl hover:bg-blue-500 text-white rounded-md px-4 py-1 mt-3 text-xs"
                               onClick={() => {
