@@ -45,6 +45,12 @@ const Home = () => {
     mutate();
   });
 
+  // from api/staff/approvallist
+  const channel3 = pusherClient.subscribe("booking-cancel-channel");
+  channel3.bind("booking-cancel-event", () => {
+    mutate();
+  });
+
   const handleCancelBooking = async (id: string) => {
     try {
       await axios.delete("/api/student/bookingdelete", {

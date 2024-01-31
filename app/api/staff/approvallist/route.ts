@@ -3,7 +3,7 @@ import prisma from "@/app/libs/prismadb";
 import getUserMail from "@/app/actions/getUserMail";
 import { pusherServer } from "@/app/libs/pusher";
 
-// 画面を操作している職員が指定されているWaitinglistを表示するAPI
+// 画面を操作している職員が指定されているWaitingListを表示するAPI
 export const GET = async (req: Request, res: NextResponse) => {
   try {
     // 操作している職員のidを取得
@@ -157,29 +157,24 @@ export const POST = async (req: Request, res: NextResponse) => {
   }
 };
 
-// 指定したemailのWatinglistを削除するAPI
+// 拒否されたWaitingListを削除するAPI
 export const DELETE = async (req: Request, res: NextResponse) => {
   try {
-    const email = await getUserMail();
+    const { id }: { id: string } = await req.json();
 
-    // Userを検索
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: {
-        waitinglist: true,
-      },
+    await prisma.waitingList.delete({
+      where: { id: id },
     });
 
-    if (user) {
-      // Waitinglistが存在する場合、削除
-      await prisma.waitingList.deleteMany({
-        where: {
-          userId: user.id,
-        },
-      });
-
-      return NextResponse.json({ message: "Success" }, { status: 200 });
-    }
+    //生徒側のホームルート更新
+    await pusherServer.trigger(
+      "booking-cancel-channel",
+      "booking-cancel--event",
+      {
+        message: "New booking cancel",
+      }
+    );
+    return NextResponse.json({ message: "Success" }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }
