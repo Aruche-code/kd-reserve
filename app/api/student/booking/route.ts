@@ -98,6 +98,10 @@ export const POST = async (req: Request, res: NextResponse) => {
         },
       });
 
+      await pusherServer.trigger("waiting-add-channel", "waiting-add-event", {
+        message: "New waiting add",
+      });
+
       return NextResponse.json({ message: "Success" }, { status: 200 });
     } else {
       // 職員が指名されていない場合
