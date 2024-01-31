@@ -169,7 +169,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
     //生徒側のホームルート更新
     await pusherServer.trigger(
       "booking-cancel-channel",
-      "booking-cancel--event",
+      "booking-cancel-event",
       {
         message: "New booking cancel",
       }

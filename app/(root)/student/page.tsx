@@ -1,7 +1,8 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import useSWR from "swr";
 import axios from "axios";
+import toast from "react-hot-toast";
 import CalendarTodaySharpIcon from "@mui/icons-material/CalendarTodaySharp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
@@ -56,9 +57,11 @@ const Home = () => {
       await axios.delete("/api/student/bookingdelete", {
         data: { scheduleId: id },
       });
-      mutate(); // データを再検証し、更新
+      toast.success("予約をキャンセルしました");
+      mutate();
     } catch (error) {
       console.error("Error cancelling booking:", error);
+      toast.error("予約のキャンセルに失敗");
     }
   };
 
@@ -67,9 +70,11 @@ const Home = () => {
       await axios.delete("/api/student/waitdelete", {
         data: { scheduleId: id },
       });
-      mutate(); // データを再検証し、更新
+      toast.success("承認待ちをキャンセルしました");
+      mutate();
     } catch (error) {
       console.error("Error cancelling waiting:", error);
+      toast.error("承認待ちのキャンセルに失敗");
     }
   };
 
