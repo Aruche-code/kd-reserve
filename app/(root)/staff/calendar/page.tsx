@@ -401,8 +401,8 @@ const Home = () => {
                     null
                 )}
             {/* カレンダー部分 */}
-            <div className="flex h-auto w-full justify-center items-center bg-white">
-                <div className="px-4 mt-0 w-11/12">
+            <div className="h-auto w-full justify-center items-center bg-white">
+                <div className="px-4 mt-5 w-full justify-center items-center">
                     <div>
                         <Calendar 
                             date={date}
