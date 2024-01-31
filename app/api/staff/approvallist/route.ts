@@ -1,6 +1,71 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getUserMail from "@/app/actions/getUserMail";import { pusherServer } from "@/app/libs/pusher";
+import getUserMail from "@/app/actions/getUserMail";
+import { pusherServer } from "@/app/libs/pusher";
+
+// 画面を操作している職員が指定されているWaitinglistを表示するAPI
+export const GET = async (req: Request, res: NextResponse) => {
+  try {
+    // 操作している職員のidを取得
+    const userMail = await getUserMail();
+    const staff: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 学生のid
+      },
+    });
+
+    // 操作している職員が指定されている承認待ちリストの取得
+    const waitingList = await prisma.waitingList.findMany({
+      where: { staffUserId: staff.id },
+      select: {
+        id: true,
+        studentName: true,
+        studentUserId: true,
+        details: true,
+        firstYmd: true,
+        firstStartTime: true,
+        firstEndTime: true,
+        secondYmd: true,
+        secondStartTime: true,
+        secondEndTime: true,
+        thirdYmd: true,
+        thirdStartTime: true,
+        thirdEndTime: true,
+      },
+    });
+
+    // 職員が特に指定されていない承認待ちリストの取得
+    const noNominationList = await prisma.waitingList.findMany({
+      where: { staffUserId: null },
+      select: {
+        id: true,
+        studentName: true,
+        studentUserId: true,
+        details: true,
+        firstYmd: true,
+        firstStartTime: true,
+        firstEndTime: true,
+        secondYmd: true,
+        secondStartTime: true,
+        secondEndTime: true,
+        thirdYmd: true,
+        thirdStartTime: true,
+        thirdEndTime: true,
+      },
+    });
+
+    // これまでに取得して情報をひとまとめにしてレスポンスデータを作成
+    const wait = {
+      waitingList: waitingList,
+      noNominationList: noNominationList,
+    };
+
+    return NextResponse.json({ message: "Success", wait }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json({ message: "Error", err }, { status: 500 });
+  }
+};
 
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
@@ -12,8 +77,8 @@ export const POST = async (req: Request, res: NextResponse) => {
     const staffData: any = await prisma.user.findUnique({
       where: { email: userMail },
       select: {
-        id: true, // 職員のIDを取得
-        name: true, // 職員の名前を取得
+        id: true,
+        name: true,
       },
     });
 
@@ -86,83 +151,6 @@ export const POST = async (req: Request, res: NextResponse) => {
 
       return NextResponse.json({ message: "Success" }, { status: 201 });
     }
-  } catch (err) {
-    return NextResponse.json({ message: "Error", err }, { status: 500 });
-  }
-};
-
-// 画面を操作している職員が指定されているWaitinglistを表示するAPI
-export const GET = async (req: Request, res: NextResponse) => {
-  try {
-    // すべての職員の名前のリストを取得
-    const staffUserList = await prisma.user.findMany({
-      where: { role: "staff" },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
-
-    // 操作している職員のidを取得
-    const userMail = await getUserMail();
-    const staff: any = await prisma.user.findUnique({
-      where: { email: userMail },
-      select: {
-        id: true, // 学生のid
-      },
-    });
-    const staffId: any = staff.id;
-
-    // 操作している職員が指定されている承認待ちリストの取得
-    const waitingList = await prisma.waitingList.findMany({
-      where: { staffUserId: staffId },
-      select: {
-        id: true,
-        studentName: true,
-        studentUserId: true,
-        details: true,
-        firstYmd: true,
-        firstStartTime: true,
-        firstEndTime: true,
-        secondYmd: true,
-        secondStartTime: true,
-        secondEndTime: true,
-        thirdYmd: true,
-        thirdStartTime: true,
-        thirdEndTime: true,
-        createdAt: true,
-      },
-    });
-
-    // 職員が特に指定されていない承認待ちリストの取得
-    const noNominationList = await prisma.waitingList.findMany({
-      where: { staffUserId: null },
-      select: {
-        id: true,
-        studentName: true,
-        studentUserId: true,
-        details: true,
-        firstYmd: true,
-        firstStartTime: true,
-        firstEndTime: true,
-        secondYmd: true,
-        secondStartTime: true,
-        secondEndTime: true,
-        thirdYmd: true,
-        thirdStartTime: true,
-        thirdEndTime: true,
-        createdAt: true,
-      },
-    });
-
-    // これまでに取得して情報をひとまとめにしてレスポンスデータを作成
-    const wait = {
-      staffList: staffUserList,
-      waitingList: waitingList,
-      noNominationList: noNominationList,
-    };
-
-    return NextResponse.json({ message: "Success", wait }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: "Error", err }, { status: 500 });
   }

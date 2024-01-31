@@ -5,8 +5,20 @@ import getUserMail from "@/app/actions/getUserMail";
 // Bookingコレクションに情報を登録するAPI
 export const POST = async (req: Request, res: NextResponse) => {
   try {
-    const { id, staffUserId, staffName, studentUserId, ymd, time, details } =
+    const { id, staffName, studentUserId, ymd, time, details } =
       await req.json();
+
+    // 職員のユーザーIDを取得する
+    const userMail = await getUserMail();
+    const staffData: any = await prisma.user.findUnique({
+      where: { email: userMail },
+      select: {
+        id: true, // 職員のIDを取得
+        name: true, // 職員の名前を取得
+      },
+    });
+
+    const staffUserId: any = staffData.id;
 
     // すでに同じ時間帯に予定が存在しているかの判定
     const BookingData = await prisma.booking.findMany({

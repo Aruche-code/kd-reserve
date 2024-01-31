@@ -14,8 +14,8 @@ const AuthSocialButton: React.FC<AuthSocialButtonProps> = ({
   return (
     // 様々なスタイリングクラスを持つボタン要素
     <button
-      type="button" // ボタンのタイプ
-      onClick={onClick} // propsを通して渡されたonClickハンドラーを割り当てます
+      type="button"
+      onClick={onClick}
       className="
         inline-flex w-full 
         justify-center rounded-md
@@ -35,4 +35,4 @@ const AuthSocialButton: React.FC<AuthSocialButtonProps> = ({
   );
 };
 
-export default AuthSocialButton; // 他のアプリケーションパーツで使用するためにコンポーネントをエクスポートします
+export default AuthSocialButton;
