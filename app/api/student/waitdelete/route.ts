@@ -17,7 +17,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
       "waiting-delete-channel",
       "waiting-delete-event",
       {
-        message: "New booking delete",
+        message: "New waiting delete",
       }
     );
     return NextResponse.json({ message: "Success" }, { status: 200 });

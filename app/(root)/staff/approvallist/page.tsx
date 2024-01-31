@@ -53,6 +53,12 @@ const Approval = () => {
     mutate();
   });
 
+  // from api/student/booking
+  const channel2 = pusherClient.subscribe("waiting-add-channel");
+  channel2.bind("waiting-add-event", () => {
+    mutate();
+  });
+
   //waitinglistの取得
   const waitinglist: WaitingList[] = staffData?.wait.waitingList || [];
   const noNominationList: WaitingList[] =
